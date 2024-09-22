@@ -2,6 +2,7 @@
 #include "Window.h"
 #include "SwapChain.h"
 #include "VertexBuffer.h"
+#include "Quad.h"
 
 
 class AppWindow : public Window
@@ -17,5 +18,9 @@ public:
 
 private:
 	SwapChain* swapChain;
-	VertexBuffer* vertexBuffer;
+	VertexBuffer* vertexBuffer1;
+	VertexBuffer* vertexBuffer2;
+	Quad* quad1;
+	Quad* quad2;
+	Quad* quad3;
 };

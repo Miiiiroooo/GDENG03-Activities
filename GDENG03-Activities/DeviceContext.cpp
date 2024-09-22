@@ -52,3 +52,15 @@ void DeviceContext::SetViewportSize(UINT width, UINT height)
 
 	deviceContext->RSSetViewports(1, &vp);
 }
+
+void DeviceContext::DrawQuad(Quad* quad)
+{
+	UINT stride = quad->GetStrides();
+	UINT offset = 0;
+
+	deviceContext->IASetVertexBuffers(0, 1, &quad->quad->buffer, &stride, &offset);
+	deviceContext->IASetInputLayout(quad->quad->inputLayout);
+
+	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+	deviceContext->Draw(quad->GetVertexCount(), quad->GetStartVertex());
+}

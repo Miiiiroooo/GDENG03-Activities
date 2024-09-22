@@ -1,5 +1,6 @@
 #pragma once
 #include <d3d11.h>
+#include "Quad.h"
 
 
 class SwapChain;
@@ -16,6 +17,8 @@ public:
 	void SetVertexBuffer(VertexBuffer* buffer);
 	void DrawTrianglesList(UINT vertexCount, UINT startIndex);
 	void SetViewportSize(UINT width, UINT height);
+
+	void DrawQuad(Quad* quad);
 
 
 private:
