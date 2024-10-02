@@ -5,6 +5,7 @@
 
 class SwapChain;
 class VertexBuffer;
+class ConstantBuffer;
 
 class DeviceContext
 {
@@ -17,10 +18,13 @@ public:
 	void SetVertexBuffer(VertexBuffer* buffer);
 	void DrawTrianglesList(UINT vertexCount, UINT startIndex);
 	void SetViewportSize(UINT width, UINT height);
+	void SetConstantBuffer(ConstantBuffer* buffer);
 
 	void DrawQuad(Quad* quad);
 
 
 private:
 	ID3D11DeviceContext* deviceContext;
+private:
+	friend class ConstantBuffer;
 };

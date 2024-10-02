@@ -5,6 +5,7 @@
 
 class SwapChain;
 class DeviceContext;
+class ConstantBuffer;
 class VertexBuffer;
 
 class GraphicsEngine
@@ -20,6 +21,7 @@ public:
 	SwapChain* CreateSwapChain();
 	DeviceContext* GetImmediateDeviceContext();
 	VertexBuffer* CreateVertexBuffer();
+	ConstantBuffer* CreateConstantBuffer();
 
 	bool CreateShaders();
 	bool SetShaders();
@@ -49,4 +51,5 @@ private:
 
 	friend class SwapChain;
 	friend class VertexBuffer;
+	friend class ConstantBuffer;
 };

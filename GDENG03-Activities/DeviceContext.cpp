@@ -1,6 +1,7 @@
 #include "DeviceContext.h"
 #include "SwapChain.h"
 #include "VertexBuffer.h"
+#include "ConstantBuffer.h"
 
 
 DeviceContext::DeviceContext(ID3D11DeviceContext* deviceContext) : deviceContext(deviceContext)
@@ -51,6 +52,12 @@ void DeviceContext::SetViewportSize(UINT width, UINT height)
 	vp.MaxDepth = 1.0f;
 
 	deviceContext->RSSetViewports(1, &vp);
+}
+
+void DeviceContext::SetConstantBuffer(ConstantBuffer* buffer)
+{
+	deviceContext->VSSetConstantBuffers(0, 1, &buffer->m_buffer);
+	deviceContext->PSSetConstantBuffers(0, 1, &buffer->m_buffer);
 }
 
 void DeviceContext::DrawQuad(Quad* quad)

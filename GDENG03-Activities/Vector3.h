@@ -40,17 +40,26 @@ struct VertexData
 {
 	Vector3 pos;
 	Vector3 vColor;
+	Vector3 pp;
+	Vector3 cc;
 
 
 	VertexData()
 	{
 	}
 
-	VertexData(const Vector3& pos, const Vector3& vColor) : pos(pos), vColor(vColor)
+	VertexData(const Vector3& pos, const Vector3& pp, const Vector3& vColor, const Vector3& vColor1) : pos(pos), pp(pp), vColor(vColor), cc(cc)
 	{
 	}
 
-	VertexData(const VertexData& copy) : pos(copy.pos), vColor(copy.vColor)
+	VertexData(const VertexData& copy) : pos(copy.pos), pp(copy.pp), vColor(copy.vColor), cc(copy.cc)
 	{
 	}
+};
+
+
+__declspec(align(16))
+struct ConstantData
+{
+	float m_angle;
 };

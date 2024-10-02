@@ -2,6 +2,7 @@
 #include "SwapChain.h"
 #include "DeviceContext.h"
 #include "VertexBuffer.h"
+#include "ConstantBuffer.h"
 #include <d3dcompiler.h>
 
 
@@ -89,13 +90,25 @@ VertexBuffer* GraphicsEngine::CreateVertexBuffer()
     return new VertexBuffer(); 
 }
 
+ConstantBuffer* GraphicsEngine::CreateConstantBuffer()
+{
+    return new ConstantBuffer();
+}
+
 bool GraphicsEngine::CreateShaders()
 {
-    ID3DBlob* errblob = nullptr;
+    D3DReadFileToBlob(L"VertexShader.cso", &vsBlob);
+    d3dDevice->CreateVertexShader(vsBlob->GetBufferPointer(), vsBlob->GetBufferSize(), nullptr, &vShader);
+
+    D3DReadFileToBlob(L"PixelShader.cso", &psBlob);
+    d3dDevice->CreatePixelShader(psBlob->GetBufferPointer(), psBlob->GetBufferSize(), nullptr, &pShader);
+
+    /*ID3DBlob* errblob = nullptr;
     D3DCompileFromFile(L"shader.fx", nullptr, nullptr, "vsmain", "vs_5_0", NULL, NULL, &vsBlob, &errblob);
     D3DCompileFromFile(L"shader.fx", nullptr, nullptr, "psmain", "ps_5_0", NULL, NULL, &psBlob, &errblob);
     d3dDevice->CreateVertexShader(vsBlob->GetBufferPointer(), vsBlob->GetBufferSize(), nullptr, &vShader); 
-    d3dDevice->CreatePixelShader(psBlob->GetBufferPointer(), psBlob->GetBufferSize(), nullptr, &pShader); 
+    d3dDevice->CreatePixelShader(psBlob->GetBufferPointer(), psBlob->GetBufferSize(), nullptr, &pShader); */
+
     return true;
 }
 
