@@ -40,6 +40,8 @@ void MeshRenderer::LoadPrimitive(EPrimitiveMeshTypes type)
 
 	indexBuffer = mesh->CreateIndexBuffer();
 	indexBuffer->Init();
+
+	delete mesh;
 }
 
 void MeshRenderer::LoadNonPrimitive(std::string fileName)
@@ -59,4 +61,6 @@ void MeshRenderer::Temp(const std::vector<DirectX::XMFLOAT3>& colorList)
 
 	indexBuffer = mesh->CreateIndexBuffer(); 
 	indexBuffer->Init(); 
+
+	delete mesh;
 }

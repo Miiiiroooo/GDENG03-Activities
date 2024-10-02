@@ -116,79 +116,6 @@ void AGameObject::SetEnabled(bool flag)
 #pragma endregion
 
 
-#pragma region SFML-related methods
-//sf::Sprite* AGameObject::GetSprite()
-//{
-//	return this->sprite;
-//}
-//
-//sf::Transformable* AGameObject::GetTransformable()
-//{
-//	return &this->transformable;
-//}
-//
-//sf::Transform AGameObject::GetGlobalTransform()
-//{
-//	AGameObject* parentObj = this; 
-//	std::vector<AGameObject*> parentList; 
-//
-//	while (parentObj != NULL) 
-//	{
-//		parentList.push_back(parentObj); 
-//		parentObj = parentObj->GetParent();  
-//	}
-//
-//	sf::Transform transform = sf::Transform::Identity; 
-//	int startIdx = parentList.size() - 1; 
-//
-//	for (int i = startIdx; i >= 0; i--) 
-//	{
-//		transform = transform * parentList[i]->GetTransformable()->getTransform(); 
-//	}
-//
-//	return transform;
-//}
-//
-//void AGameObject::SetLocalPosition(float x, float y)
-//{
-//	this->transformable.setPosition(x, y);
-//}
-//
-//void AGameObject::SetGlobalPosition(float x, float y)
-//{
-//	AGameObject* parentObj = this;
-//	std::vector<AGameObject*> parentList;
-//
-//	while (parentObj != NULL)
-//	{
-//		parentList.push_back(parentObj);
-//		parentObj = parentObj->GetParent();
-//	}
-//
-//	sf::Transform transform = sf::Transform::Identity;
-//	int startIdx = parentList.size() - 1;
-//
-//	for (int i = startIdx; i >= 0; i--)
-//	{
-//		transform = transform * parentList[i]->GetTransformable()->getTransform();
-//	}
-//
-//	sf::Vector2f newPos = sf::Vector2f(x, y) - transform.transformPoint(0, 0);
-//	this->transformable.setPosition(newPos); 
-//}
-//
-//sf::Vector2f AGameObject::GetLocalPosition()
-//{
-//	return this->transformable.getPosition();
-//}
-//
-//sf::Vector2f AGameObject::GetGlobalPosition()
-//{
-//	return GetGlobalTransform().transformPoint(0,0);
-//}
-#pragma endregion
-
-
 #pragma region Inheritance-related methods
 void AGameObject::AttachChild(AGameObject* child)
 {
@@ -296,6 +223,11 @@ AComponent* AGameObject::FindComponentByType(EComponentTypes type, std::string n
 
 std::vector<AComponent*> AGameObject::GetComponentsOfType(EComponentTypes type)
 {
+	if (type == EComponentTypes::Transform)
+	{
+		return { transform };
+	}
+
 	std::vector<AComponent*> foundList; 
 
 	for (size_t i = 0; i < this->componentList.size(); i++)
@@ -307,6 +239,24 @@ std::vector<AComponent*> AGameObject::GetComponentsOfType(EComponentTypes type)
 	}
 
 	return foundList; 
+}
+
+std::vector<AComponent*> AGameObject::GetComponentsInChildrenOfType(EComponentTypes type)
+{
+	std::vector<AComponent*> foundList;
+
+	for (int i = 0; i < childList.size(); i++)
+	{
+		std::vector<AComponent*> foundListInChild = childList[i]->GetComponentsOfType(type); ;
+		
+		/*std::vector<AComponent*> foundListInChild = (childList[i]->childList.size() > 0) ? 
+			childList[i]->GetComponentsInChildrenOfType(type) :
+			childList[i]->GetComponentsOfType(type);*/
+		
+		foundList.insert(foundList.end(), foundListInChild.begin(), foundListInChild.end());
+	}
+
+	return foundList;
 }
 
 ////recursive implementation; also searches through its children

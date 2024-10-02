@@ -35,6 +35,7 @@ public:
 	AComponent* FindComponentByName(std::string name);
 	AComponent* FindComponentByType(EComponentTypes type, std::string name);
 	std::vector<AComponent*> GetComponentsOfType(EComponentTypes type);
+	std::vector<AComponent*> GetComponentsInChildrenOfType(EComponentTypes type);
 	//std::vector<AComponent*> GetComponentsOfTypeRecursive(AComponent::ComponentType type);
 
 private:

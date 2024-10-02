@@ -26,6 +26,11 @@ bool ARenderer::Release()
 		indexBuffer->Release();
 	}
 
+	if (vConstantBuffer)
+	{
+		vConstantBuffer->Release();
+	}
+
 	return true;
 }
 

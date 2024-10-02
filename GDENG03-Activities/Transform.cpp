@@ -1,4 +1,5 @@
 #include "Transform.h"
+#include "AGameObject.h"
 
 
 Transform::Transform() : AComponent("Transform", EComponentTypes::Transform)
@@ -40,6 +41,29 @@ DirectX::XMFLOAT3 Transform::GetPosition()
 void Transform::SetPosition(const DirectX::XMFLOAT3& newPos)
 {
 	globalPos = newPos;
+
+	AGameObject* parentObj = owner->GetParent();
+	if (parentObj)
+	{
+		localPos.x = globalPos.x - parentObj->GetTransform()->globalPos.x;
+		localPos.y = globalPos.y - parentObj->GetTransform()->globalPos.y;
+		localPos.z = globalPos.z - parentObj->GetTransform()->globalPos.z;
+	}
+	else
+	{
+		localPos = newPos;
+	}
+
+	auto transformsFromChildren = owner->GetComponentsInChildrenOfType(EComponentTypes::Transform);
+	for (int i = 0; i < transformsFromChildren.size(); i++)
+	{
+		Transform* childTransform = (Transform*)transformsFromChildren[i];
+		DirectX::XMFLOAT3 newChildPos = newPos;
+		newChildPos.x += childTransform->localPos.x;
+		newChildPos.y += childTransform->localPos.y;
+		newChildPos.z += childTransform->localPos.z;
+		childTransform->SetPosition(newChildPos);
+	}
 }
 
 DirectX::XMFLOAT3 Transform::GetLocalPosition()
@@ -50,4 +74,23 @@ DirectX::XMFLOAT3 Transform::GetLocalPosition()
 void Transform::SetLocalPosition(const DirectX::XMFLOAT3& newPos)
 {
 	localPos = newPos;
+
+	AGameObject* parentObj = owner->GetParent(); 
+	if (parentObj) 
+	{
+		globalPos.x = localPos.x + parentObj->GetTransform()->globalPos.x;
+		globalPos.y = localPos.y + parentObj->GetTransform()->globalPos.y; 
+		globalPos.z = localPos.z + parentObj->GetTransform()->globalPos.z; 
+	}
+
+	auto transformsFromChildren = owner->GetComponentsInChildrenOfType(EComponentTypes::Transform); 
+	for (int i = 0; i < transformsFromChildren.size(); i++) 
+	{
+		Transform* childTransform = (Transform*)transformsFromChildren[i]; 
+		DirectX::XMFLOAT3 newChildPos = globalPos; 
+		newChildPos.x += childTransform->localPos.x; 
+		newChildPos.y += childTransform->localPos.y; 
+		newChildPos.z += childTransform->localPos.z; 
+		childTransform->SetPosition(newChildPos); 
+	}
 }
