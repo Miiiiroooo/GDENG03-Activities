@@ -1,33 +1,34 @@
 #include "ConstantBuffer.h"
-#include "GraphicsEngine.h"
-#include "DeviceContext.h"
 
 
-ConstantBuffer::ConstantBuffer()
+template<typename T>
+ConstantBuffer<T>::ConstantBuffer(GraphicsEngine* gfx) : AD3D11Object(gfx)
 {
 
 }
 
-ConstantBuffer::~ConstantBuffer()
+template<typename T>
+ConstantBuffer<T>::~ConstantBuffer()
 {
 
 }
 
-bool ConstantBuffer::Init(void* buffer, UINT size_buffer)
+template<typename T>
+bool ConstantBuffer<T>::Init()
 {
-	if (m_buffer)m_buffer->Release();
+	D3D11_BUFFER_DESC cbd;
+	cbd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	cbd.Usage = D3D11_USAGE_DYNAMIC;
+	cbd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	cbd.MiscFlags = 0u;
+	cbd.ByteWidth = sizeof(T);
+	cbd.StructureByteStride = 0u;
 
-	D3D11_BUFFER_DESC buff_desc = {};
-	buff_desc.Usage = D3D11_USAGE_DEFAULT;
-	buff_desc.ByteWidth = size_buffer;
-	buff_desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-	buff_desc.CPUAccessFlags = 0;
-	buff_desc.MiscFlags = 0;
-
-	D3D11_SUBRESOURCE_DATA init_data = {};
-	init_data.pSysMem = buffer;
-
-	if (FAILED(GraphicsEngine::GetInstance()->d3dDevice->CreateBuffer(&buff_desc, &init_data, &m_buffer)))
+	// reserve gpu space only, no values
+	/*D3D11_SUBRESOURCE_DATA csd = {};
+	csd.pSysMem = &constants;*/
+	
+	if (FAILED(gfx->GetDevice()->CreateBuffer(&cbd, nullptr, &pConstantBuffer))) 
 	{
 		return false;
 	}
@@ -35,14 +36,48 @@ bool ConstantBuffer::Init(void* buffer, UINT size_buffer)
 	return true;
 }
 
-void ConstantBuffer::Update(DeviceContext* context, void* buffer)
+template<typename T>
+bool ConstantBuffer<T>::Release()
 {
-	context->deviceContext->UpdateSubresource(this->m_buffer, NULL, NULL, buffer, NULL, NULL);
+	pConstantBuffer.Get()->Release();
+	delete this;
+	
+	return true;
 }
 
-bool ConstantBuffer::Release()
+template<typename T>
+bool ConstantBuffer<T>::SetConstants(const T& constants)
 {
-	if (m_buffer)m_buffer->Release();
-	delete this;
+	D3D11_MAPPED_SUBRESOURCE msr;
+
+	if (FAILED(gfx->GetDeviceContext()->Map(pConstantBuffer.Get(), 0u, D3D11_MAP_WRITE_DISCARD, 0u, &msr)))
+	{
+		return false;
+	}
+
+	memcpy(msr.pData, &constants, sizeof(constants));
+	gfx->GetDeviceContext()->Unmap(pConstantBuffer.Get(), 0u);
+
 	return true;
+}
+
+
+template<typename T>
+void VertexConstantBuffer<T>::BindToPipeline()
+{
+	gfx->GetDeviceContext()->VSSetConstantBuffers(0u, 1u, pConstantBuffer.GetAddressOf());
+}
+
+
+template<typename T>
+void GeometryConstantBuffer<T>::BindToPipeline()
+{
+	gfx->GetDeviceContext()->GSSetConstantBuffers(0u, 1u, pConstantBuffer.GetAddressOf());
+}
+
+
+template<typename T>
+void PixelConstantBuffer<T>::BindToPipeline()
+{
+	gfx->GetDeviceContext()->PSSetConstantBuffers(0u, 1u, pConstantBuffer.GetAddressOf());
 }

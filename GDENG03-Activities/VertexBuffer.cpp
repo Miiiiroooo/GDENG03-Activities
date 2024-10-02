@@ -1,64 +1,56 @@
 #include "VertexBuffer.h"
-#include "GraphicsEngine.h"
 
 
-
-VertexBuffer::VertexBuffer() : buffer(0), inputLayout(0)
+template<typename T>
+VertexBuffer<T>::VertexBuffer(GraphicsEngine* gfx, const std::vector<T>& vertices) : AD3D11Object(gfx), vertices(vertices)
 {
-
+	stride = sizeof(T);
+	listSize = vertices.size();
 }
 
-VertexBuffer::~VertexBuffer()
+template<typename T>
+VertexBuffer<T>::~VertexBuffer()
 {
-
+	
 }
 
-bool VertexBuffer::Load(void* verticesList, UINT vertexSize, UINT listSize, void* shaderCodeInBytes, UINT shaderCodeSize)
+template<typename T>
+bool VertexBuffer<T>::Init()
 {
-	if (inputLayout) inputLayout->Release();
-	if (buffer) buffer->Release();
+	D3D11_BUFFER_DESC bufferDesc = {}; 
+	bufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER; 
+	bufferDesc.Usage = D3D11_USAGE_DEFAULT; 
+	bufferDesc.CPUAccessFlags = 0u; 
+	bufferDesc.MiscFlags = 0u; 
+	bufferDesc.ByteWidth = UINT(stride * listSize); 
+	bufferDesc.StructureByteStride = stride; 
 
-	this->vertexSize = vertexSize;
-	this->listSize = listSize;
+	D3D11_SUBRESOURCE_DATA srData = {}; 
+	srData.pSysMem = vertices.data(); 
 
-	D3D11_BUFFER_DESC desc;
-	desc.Usage = D3D11_USAGE_DEFAULT;
-	desc.ByteWidth = vertexSize * listSize;
-	desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	desc.CPUAccessFlags = 0;
-	desc.MiscFlags = 0;
+	if (FAILED(gfx->GetDevice()->CreateBuffer(&bufferDesc, &srData, &pVertexBuffer)))
+	{
+		return false;
+	}
 
-	D3D11_SUBRESOURCE_DATA srData;
-	srData.pSysMem = verticesList;
-
-	if (FAILED(GraphicsEngine::GetInstance()->d3dDevice->CreateBuffer(&desc, &srData, &buffer))) return false;
-
-	D3D11_INPUT_ELEMENT_DESC layout[] = {
-		//SEMANTIC NAME - SEMANTIC INDEX  -   FORMAT   -    INPUT SLOT - ALIGNED BYTE OFFSET - INPUT SLOT CLASS - INSTANCE DATA STEP RATE
-		{"POSITION", 0,  DXGI_FORMAT_R32G32B32_FLOAT, 0,   0,    D3D11_INPUT_PER_VERTEX_DATA ,0},
-		{ "COLOR", 0,  DXGI_FORMAT_R32G32B32_FLOAT, 0,    D3D11_APPEND_ALIGNED_ELEMENT,    D3D11_INPUT_PER_VERTEX_DATA ,0 },
-		{"PP", 0,  DXGI_FORMAT_R32G32B32_FLOAT, 0,  D3D11_APPEND_ALIGNED_ELEMENT,    D3D11_INPUT_PER_VERTEX_DATA ,0 },
-		{ "CC", 0,  DXGI_FORMAT_R32G32B32_FLOAT, 0,    D3D11_APPEND_ALIGNED_ELEMENT,    D3D11_INPUT_PER_VERTEX_DATA ,0 }
-	};
-
-	UINT layoutSize = ARRAYSIZE(layout);
-
-	if (FAILED(GraphicsEngine::GetInstance()->d3dDevice->CreateInputLayout(layout, layoutSize, shaderCodeInBytes, shaderCodeSize, &inputLayout))) return false;
+	//vertices.clear();
+	//vertices.shrink_to_fit();
 
 	return true;
 }
 
-UINT VertexBuffer::GetSizeVertexList()
+template<typename T>
+void VertexBuffer<T>::BindToPipeline()
 {
-	return listSize;
+	UINT offset = 0u;
+    gfx->GetDeviceContext()->IASetVertexBuffers(0u, 1u, pVertexBuffer.GetAddressOf(), &stride, &offset);
 }
 
-bool VertexBuffer::Release()
+template<typename T>
+bool VertexBuffer<T>::Release()
 {
-	if (this == nullptr) return false;
-
-	inputLayout->Release();
-	buffer->Release();
+    pVertexBuffer.Get()->Release();
 	delete this;
-	return true;
+
+    return true;
 }

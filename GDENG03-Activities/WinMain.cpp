@@ -1,53 +1,19 @@
-#include "AppWindow.h"
-
-//#include <d3d11.h>
-//#include <DirectXMath.h>
-
-
+#include "GameEngineWindow.h"
 
 
 int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
-	AppWindow app;
+	GameEngineWindow gameEngine;
 
-	if (app.Init())
+	if (gameEngine.Init(640, 480, "Aamir Akim"))
 	{
-		while (app.IsRunning())
+		while (gameEngine.IsRunning())
 		{
-			app.Broadcast();
+			gameEngine.Update();
 		}
 	}
 
-
-
-	/*WNDCLASSEX wClass = {};
-	wClass.cbSize = sizeof(wClass);
-	wClass.style = CS_OWNDC;
-	wClass.lpfnWndProc = DefWindowProc;
-	wClass.cbClsExtra = 0;
-	wClass.cbWndExtra = 0;
-	wClass.hInstance = hInstance;
-	wClass.hCursor = nullptr;
-	wClass.hIcon = nullptr;
-	wClass.hIconSm = nullptr;
-	wClass.hbrBackground = nullptr;
-	wClass.lpszMenuName = nullptr;
-	wClass.lpszClassName = "Temp";
-
-	RegisterClassEx(&wClass);
-	HWND hWnd = CreateWindowEx(0, "Temp", "Temp Window", WS_CAPTION | WS_MINIMIZEBOX, 300, 300, 640, 480, nullptr, nullptr, hInstance, nullptr);
-
-	MSG msg = {  };
-	while (PeekMessage(&msg, hWnd, 0, 0, PM_REMOVE))
-	{
-		if (msg.message == WM_QUIT)
-		{
-			break;
-		}
-
-		TranslateMessage(&msg);
-		DispatchMessage(&msg);
-	}*/
+	gameEngine.Release();
 
 	return 0;
 }

@@ -1,26 +1,24 @@
 #pragma once
-#include <d3d11.h>
+#include <wrl.h>
+#include <vector>
+#include "AD3D11Object.h"
 
 
-
-class DeviceContext;
-
-class VertexBuffer
+template<typename T>
+class VertexBuffer : public AD3D11Object
 {
 public:
-	VertexBuffer();
+	VertexBuffer(GraphicsEngine* gfx, const std::vector<T>& vertices);
 	~VertexBuffer();
 
-	bool Load(void* verticesList, UINT vertexSize, UINT listSize, void* shaderCodeInBytes, UINT shaderCodeSize);
-	UINT GetSizeVertexList();
-	bool Release();
+	bool Init() override;
+	void BindToPipeline() override;
+	bool Release() override;
 
 
 private:
-	UINT vertexSize; 
+	UINT stride; 
 	UINT listSize;
-	ID3D11Buffer* buffer;
-	ID3D11InputLayout* inputLayout;
-
-	friend class DeviceContext;
+	std::vector<T> vertices;
+	Microsoft::WRL::ComPtr<ID3D11Buffer> pVertexBuffer;
 };

@@ -1,29 +1,25 @@
 struct VS_INPUT
 {
-    float4 pos : POSITION0;
-    float3 color : COLOR0;
-    float4 pos1 : PP;
-    float3 color1 : CC;
+    float3 pos : POSITION;
+    float3 color : COLOR;
 };
 
 struct VS_OUTPUT
 {
     float4 pos : SV_POSITION;
-    float3 color : COLOR0;
-    float3 color1 : COLOR1;
+    float3 color : COLOR;
 };
 
-cbuffer ConstantData : register(b0)
+cbuffer TMatrix
 {
-    float m_angle;
+    matrix transform;
 };
+
 
 VS_OUTPUT main(VS_INPUT input)
 {
     VS_OUTPUT vso;
-    float3 newPos = lerp(input.pos, input.pos1, (sin(m_angle) + 1.0f) / 2.0f);
-    vso.pos = float4(newPos, 1.0f);
+    vso.pos = mul(float4(input.pos, 1.0f), transform);
     vso.color = input.color;
-    vso.color1 = input.color1;
     return vso;
 }

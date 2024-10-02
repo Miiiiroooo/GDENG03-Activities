@@ -1,126 +1,151 @@
 #include "GraphicsEngine.h"
-#include "SwapChain.h"
-#include "DeviceContext.h"
-#include "VertexBuffer.h"
-#include "ConstantBuffer.h"
-#include <d3dcompiler.h>
+#include "ShaderManager.h"
 
 
-GraphicsEngine* GraphicsEngine::sharedInstance = NULL;
+GraphicsEngine* GraphicsEngine::sharedInstance = nullptr;
 
 GraphicsEngine* GraphicsEngine::GetInstance()
 {
-    if (sharedInstance == NULL)
+    if (sharedInstance == nullptr)
     {
-        sharedInstance = new GraphicsEngine(); 
+        sharedInstance = new GraphicsEngine();
     }
 
     return sharedInstance;
 }
 
+GraphicsEngine::GraphicsEngine() : d3d11Device(nullptr), d3d11Context(nullptr),
+    dxgiDevice(nullptr), dxgiAdapter(nullptr), dxgiFactory(nullptr)
+{
+
+}
+
+GraphicsEngine::~GraphicsEngine()
+{
+
+}
+
 bool GraphicsEngine::Init()
 {
-    D3D_DRIVER_TYPE driverTypes[] = {
-        D3D_DRIVER_TYPE_HARDWARE,
-        D3D_DRIVER_TYPE_WARP,
-        D3D_DRIVER_TYPE_REFERENCE
+    D3D_DRIVER_TYPE driverTypes[] = { 
+         D3D_DRIVER_TYPE_HARDWARE, 
+         D3D_DRIVER_TYPE_WARP, 
+         D3D_DRIVER_TYPE_REFERENCE 
     };
-    UINT numDriverTypes = ARRAYSIZE(driverTypes);
+    UINT numDriverTypes = ARRAYSIZE(driverTypes); 
 
-    D3D_FEATURE_LEVEL featureLevels[] = {
-        D3D_FEATURE_LEVEL_11_0
+    D3D_FEATURE_LEVEL featureLevels[] = { 
+        D3D_FEATURE_LEVEL_11_0 
     };
-    UINT numFeatureLevels = ARRAYSIZE(featureLevels);
+    UINT numFeatureLevels = ARRAYSIZE(featureLevels); 
 
-    HRESULT res = 0;
+    HRESULT res = 0; 
 
-    for (UINT i = 0; i < numDriverTypes;)
+    for (UINT i = 0; i < numDriverTypes;) 
     {
         if (SUCCEEDED(res = D3D11CreateDevice(nullptr, driverTypes[i], nullptr, 0, 
-            featureLevels, numFeatureLevels, D3D11_SDK_VERSION, 
-            &d3dDevice, &featureLevel, &d3d11ImmContext)))
+            featureLevels, numFeatureLevels, D3D11_SDK_VERSION,  
+            &d3d11Device, nullptr, &d3d11Context))) 
         {
             break;
         }
-        
-        i++; 
+
+        i++;
     }
 
     if (FAILED(res)) return false;
 
-    immDeviceContext = new DeviceContext(d3d11ImmContext); 
+    d3d11Device.Get()->QueryInterface(__uuidof(IDXGIDevice), (void**)&dxgiDevice);
+    dxgiDevice.Get()->GetParent(__uuidof(IDXGIAdapter), (void**)&dxgiAdapter); 
+    dxgiAdapter.Get()->GetParent(__uuidof(IDXGIFactory), (void**)&dxgiFactory);
 
-    d3dDevice->QueryInterface(__uuidof(IDXGIDevice), (void**)&dxgiDevice);
-    dxgiDevice->GetParent(__uuidof(IDXGIAdapter), (void**)&dxgiAdapter);
-    dxgiAdapter->GetParent(__uuidof(IDXGIFactory), (void**)&dxgiFactory);
+    return InitializeShaders();
+}
+
+bool GraphicsEngine::InitializeShaders()
+{
+    ShaderManager* sm = ShaderManager::GetInstance();
+
+    std::vector<D3D11_INPUT_ELEMENT_DESC> layout = {
+        //SEMANTIC NAME - SEMANTIC INDEX  -   FORMAT   -    INPUT SLOT - ALIGNED BYTE OFFSET - INPUT SLOT CLASS - INSTANCE DATA STEP RATE
+        {"POSITION",          0,    DXGI_FORMAT_R32G32B32_FLOAT,  0,           0,       D3D11_INPUT_PER_VERTEX_DATA,   0},
+        {"COLOR",             0,    DXGI_FORMAT_R32G32B32_FLOAT,  0,    D3D11_APPEND_ALIGNED_ELEMENT,       D3D11_INPUT_PER_VERTEX_DATA,   0}
+    };
+
+    if (!sm->CreateVertexShader(L"VertexShader.cso", layout))
+    {
+        return false;
+    }
+
+    if (!sm->CreatePixelShader(L"PixelShader.cso"))
+    {
+        return false;
+    }
+
+    if (sm->CreateShaderProgram(L"DefaultShader", L"VertexShader.cso", L"PixelShader.cso"))
+    {
+        return false;
+    }
 
     return true;
 }
 
 bool GraphicsEngine::Release()
 {
-    if (vShader) vShader->Release();
-    if (pShader) pShader->Release();
+    for (auto& sc : swapChainList)
+    {
+        if (sc != nullptr)
+        {
+            sc->Release();
+        }
+    }
+    swapChainList.clear();
+    swapChainList.shrink_to_fit();
 
-    if (vsBlob) vsBlob->Release();
-    if (psBlob) psBlob->Release();
+    dxgiFactory.Get()->Release();
+    dxgiAdapter.Get()->Release();
+    dxgiDevice.Get()->Release();
 
-    dxgiFactory->Release();
-    dxgiAdapter->Release();
-    dxgiDevice->Release();
-
-    immDeviceContext->Release();
-    d3dDevice->Release();
-
-    return true;
-}
-
-SwapChain* GraphicsEngine::CreateSwapChain()
-{
-    return new SwapChain();
-}
-
-DeviceContext* GraphicsEngine::GetImmediateDeviceContext()
-{
-    return immDeviceContext;
-}
-
-VertexBuffer* GraphicsEngine::CreateVertexBuffer()
-{
-    return new VertexBuffer(); 
-}
-
-ConstantBuffer* GraphicsEngine::CreateConstantBuffer()
-{
-    return new ConstantBuffer();
-}
-
-bool GraphicsEngine::CreateShaders()
-{
-    D3DReadFileToBlob(L"VertexShader.cso", &vsBlob);
-    d3dDevice->CreateVertexShader(vsBlob->GetBufferPointer(), vsBlob->GetBufferSize(), nullptr, &vShader);
-
-    D3DReadFileToBlob(L"PixelShader.cso", &psBlob);
-    d3dDevice->CreatePixelShader(psBlob->GetBufferPointer(), psBlob->GetBufferSize(), nullptr, &pShader);
-
-    /*ID3DBlob* errblob = nullptr;
-    D3DCompileFromFile(L"shader.fx", nullptr, nullptr, "vsmain", "vs_5_0", NULL, NULL, &vsBlob, &errblob);
-    D3DCompileFromFile(L"shader.fx", nullptr, nullptr, "psmain", "ps_5_0", NULL, NULL, &psBlob, &errblob);
-    d3dDevice->CreateVertexShader(vsBlob->GetBufferPointer(), vsBlob->GetBufferSize(), nullptr, &vShader); 
-    d3dDevice->CreatePixelShader(psBlob->GetBufferPointer(), psBlob->GetBufferSize(), nullptr, &pShader); */
+    d3d11Context.Get()->Release();
+    d3d11Device.Get()->Release();
 
     return true;
 }
 
-bool GraphicsEngine::SetShaders()
+ID3D11Device* GraphicsEngine::GetDevice()
 {
-    d3d11ImmContext->VSSetShader(vShader, nullptr, 0);
-    d3d11ImmContext->PSSetShader(pShader, nullptr, 0);
-    return true;
+    return d3d11Device.Get();
 }
 
-void GraphicsEngine::GetShaderBufferAndSize(void** bytecode, UINT* size)
+ID3D11DeviceContext* GraphicsEngine::GetDeviceContext()
 {
-    *bytecode = this->vsBlob->GetBufferPointer(); 
-    *size = (UINT)this->vsBlob->GetBufferSize(); 
+    return d3d11Context.Get();
+}
+
+IDXGIFactory* GraphicsEngine::GetFactory()
+{
+    return dxgiFactory.Get();
+}
+
+SwapChain* GraphicsEngine::CreateSwapChain(HWND hWnd, UINT width, UINT height)
+{
+    SwapChain* sc = new SwapChain(this);
+    if (!sc->Init(hWnd, width, height))
+    {
+        return nullptr;
+    }
+
+    swapChainList.push_back(sc);
+    return sc;
+}
+
+void GraphicsEngine::SetViewport(UINT width, UINT height)
+{
+    D3D11_VIEWPORT vp = {};
+    vp.Width = width;
+    vp.Height = height;
+    vp.MinDepth = 0.0f;
+    vp.MaxDepth = 1.0f;
+
+    d3d11Context->RSSetViewports(1, &vp);
 }

@@ -2,7 +2,7 @@
 #include "GraphicsEngine.h"
 
 
-SwapChain::SwapChain()
+SwapChain::SwapChain(GraphicsEngine* gfx) : gfx (gfx)
 {
 
 }
@@ -14,9 +14,10 @@ SwapChain::~SwapChain()
 
 bool SwapChain::Init(HWND hWnd, UINT width, UINT height)
 {
-	ID3D11Device* device = GraphicsEngine::GetInstance()->d3dDevice;
+	ID3D11Device* device = gfx->GetDevice();
 
-	DXGI_SWAP_CHAIN_DESC desc;
+
+	DXGI_SWAP_CHAIN_DESC desc = {};
 	ZeroMemory(&desc, sizeof(desc));
 	desc.BufferCount = 1;
 	desc.BufferDesc.Width = width;
@@ -29,28 +30,54 @@ bool SwapChain::Init(HWND hWnd, UINT width, UINT height)
 	desc.SampleDesc.Count = 1;
 	desc.SampleDesc.Quality = 0;
 	desc.Windowed = TRUE;
+	 
+	HRESULT res = gfx->GetFactory()->CreateSwapChain(device, &desc, &swapChain);
 
-	HRESULT res = GraphicsEngine::GetInstance()->dxgiFactory->CreateSwapChain(device, &desc, &swapChain);
-
-	if (FAILED(res)) return false;
+	if (FAILED(res))
+	{
+		return false;
+	}
 
 	ID3D11Texture2D* buffer;
-	res = swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)&buffer); 
+	res = swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)&buffer);
 
-	if (FAILED(res)) return false;
-	
-	res = device->CreateRenderTargetView(buffer, nullptr, &renderTargetView);
+	if (FAILED(res))
+	{
+		return false;
+	}
+
+	res = device->CreateRenderTargetView(buffer, nullptr, &renderTargetView); 
 	buffer->Release();
 
-	if (FAILED(res)) return false; 
+	if (FAILED(res))
+	{
+		return false;
+	}
+
+	gfx->GetDeviceContext()->OMSetRenderTargets(1u, renderTargetView.GetAddressOf(), nullptr);
 
 	return true;
 }
 
 bool SwapChain::Release()
 {
-	swapChain->Release(); 
+	swapChain.Get()->Release();
+	renderTargetView.Get()->Release();
 	delete this;
+
+	return true;
+}
+
+bool SwapChain::ClearBuffer(float r, float g, float b)
+{
+	if (renderTargetView.Get() == nullptr)
+	{
+		return false;
+	}
+
+	const float color[] = { r, g, b, 1.0f };
+	gfx->GetDeviceContext()->ClearRenderTargetView(renderTargetView.Get(), color);
+	//gfx->GetDeviceContext()->ClearDepthStencilView(pDSV.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0u);
 
 	return true;
 }

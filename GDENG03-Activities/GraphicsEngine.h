@@ -1,12 +1,9 @@
 #pragma once
+#include <wrl.h>
 #include <d3d11.h>
+#include <vector>
+#include "SwapChain.h"
 
-
-
-class SwapChain;
-class DeviceContext;
-class ConstantBuffer;
-class VertexBuffer;
 
 class GraphicsEngine
 {
@@ -18,38 +15,30 @@ public:
 	bool Init();
 	bool Release();
 
-	SwapChain* CreateSwapChain();
-	DeviceContext* GetImmediateDeviceContext();
-	VertexBuffer* CreateVertexBuffer();
-	ConstantBuffer* CreateConstantBuffer();
+	ID3D11Device* GetDevice();
+	ID3D11DeviceContext* GetDeviceContext();
+	IDXGIFactory* GetFactory();
+	SwapChain* CreateSwapChain(HWND hWnd, UINT width, UINT height);
 
-	bool CreateShaders();
-	bool SetShaders();
-	void GetShaderBufferAndSize(void** bytecode, UINT* size);
+	void SetViewport(UINT width, UINT height);
 
 
 private:
-	GraphicsEngine() {};
-	~GraphicsEngine() {};
+	GraphicsEngine();
+	~GraphicsEngine();
+
+	bool InitializeShaders();
+
 
 private:
 	static GraphicsEngine* sharedInstance;
 
-	ID3D11Device* d3dDevice;
-	D3D_FEATURE_LEVEL featureLevel;
-	ID3D11DeviceContext* d3d11ImmContext;
-	DeviceContext* immDeviceContext;
+	Microsoft::WRL::ComPtr<ID3D11Device> d3d11Device;
+	Microsoft::WRL::ComPtr<ID3D11DeviceContext> d3d11Context;
 
-	IDXGIDevice* dxgiDevice;
-	IDXGIAdapter* dxgiAdapter;
-	IDXGIFactory* dxgiFactory;
+	Microsoft::WRL::ComPtr<IDXGIDevice> dxgiDevice;
+	Microsoft::WRL::ComPtr<IDXGIAdapter> dxgiAdapter;
+	Microsoft::WRL::ComPtr<IDXGIFactory> dxgiFactory;
 
-	ID3DBlob* vsBlob = nullptr;
-	ID3DBlob* psBlob = nullptr;
-	ID3D11VertexShader* vShader = nullptr;
-	ID3D11PixelShader* pShader = nullptr;
-
-	friend class SwapChain;
-	friend class VertexBuffer;
-	friend class ConstantBuffer;
+	std::vector<SwapChain*> swapChainList;
 };

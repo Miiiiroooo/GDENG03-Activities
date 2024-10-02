@@ -1,25 +1,25 @@
 #pragma once
+#include <wrl.h>
 #include <d3d11.h>
 
 
+class GraphicsEngine;
 
-class DeviceContext;
-
-class SwapChain
+class SwapChain 
 {
 public:
-	SwapChain();
+	SwapChain(GraphicsEngine* gfx);
 	~SwapChain();
 
 	bool Init(HWND hWnd, UINT width, UINT height);
 	bool Release();
 
+	bool ClearBuffer(float r, float g, float b);
 	bool Present(bool vSync);
 
 
 private:
-	IDXGISwapChain* swapChain;
-	ID3D11RenderTargetView* renderTargetView;
-
-	friend class DeviceContext;
+	GraphicsEngine* gfx;
+	Microsoft::WRL::ComPtr<IDXGISwapChain> swapChain;
+	Microsoft::WRL::ComPtr<ID3D11RenderTargetView> renderTargetView;
 };
