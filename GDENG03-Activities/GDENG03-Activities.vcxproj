@@ -19,61 +19,63 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AComponent.cpp" />
-    <ClCompile Include="AGameObject.cpp" />
-    <ClCompile Include="ARenderer.cpp" />
-    <ClCompile Include="ConstantBuffer.cpp" />
-    <ClCompile Include="EmptyGameObject.cpp" />
-    <ClCompile Include="GameEngineWindow.cpp" />
-    <ClCompile Include="GameObjectManager.cpp" />
-    <ClCompile Include="GraphicsEngine.cpp" />
-    <ClCompile Include="IndexBuffer.cpp" />
-    <ClCompile Include="MeshRenderer.cpp" />
-    <ClCompile Include="Shader.cpp" />
-    <ClCompile Include="ShaderManager.cpp" />
-    <ClCompile Include="SwapChain.cpp" />
-    <ClCompile Include="Transform.cpp" />
-    <ClCompile Include="VertexBuffer.cpp" />
-    <ClCompile Include="Window.cpp" />
-    <ClCompile Include="WindowsMessageMap.cpp" />
-    <ClCompile Include="WinMain.cpp" />
+    <ClCompile Include="Code\DirectXClasses\Buffers\ConstantBuffer.cpp" />
+    <ClCompile Include="Code\DirectXClasses\Buffers\IndexBuffer.cpp" />
+    <ClCompile Include="Code\DirectXClasses\Buffers\VertexBuffer.cpp" />
+    <ClCompile Include="Code\DirectXClasses\Shader.cpp" />
+    <ClCompile Include="Code\DirectXClasses\SwapChain.cpp" />
+    <ClCompile Include="Code\GameEngine\Components\AComponent.cpp" />
+    <ClCompile Include="Code\GameEngine\Components\Renderer\ARenderer.cpp" />
+    <ClCompile Include="Code\GameEngine\Components\Renderer\MeshRenderer.cpp" />
+    <ClCompile Include="Code\GameEngine\Components\Transform.cpp" />
+    <ClCompile Include="Code\GameEngine\EngineTime.cpp" />
+    <ClCompile Include="Code\GameEngine\GameEngineWindow.cpp" />
+    <ClCompile Include="Code\GameEngine\GameObjects\AGameObject.cpp" />
+    <ClCompile Include="Code\GameEngine\GameObjects\EmptyGameObject.cpp" />
+    <ClCompile Include="Code\GameEngine\Graphics\GraphicsEngine.cpp" />
+    <ClCompile Include="Code\GameEngine\Graphics\ShaderManager.cpp" />
+    <ClCompile Include="Code\GameEngine\Managers\GameObjectManager.cpp" />
+    <ClCompile Include="Code\WindowsMessageMap.cpp" />
+    <ClCompile Include="Code\WindowSystem\Window.cpp" />
+    <ClCompile Include="Code\WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AComponent.h" />
-    <ClInclude Include="AD3D11Object.h" />
-    <ClInclude Include="AGameObject.h" />
-    <ClInclude Include="AMesh.h" />
-    <ClInclude Include="ARenderer.h" />
-    <ClInclude Include="BufferDataTypes.h" />
-    <ClInclude Include="ConstantBuffer.h" />
-    <ClInclude Include="CubeMesh.h" />
-    <ClInclude Include="EComponentTypes.h" />
-    <ClInclude Include="EmptyGameObject.h" />
-    <ClInclude Include="EPrimitiveMeshTypes.h" />
-    <ClInclude Include="GameEngineWindow.h" />
-    <ClInclude Include="GameObjectManager.h" />
-    <ClInclude Include="GraphicsEngine.h" />
-    <ClInclude Include="IndexBuffer.h" />
-    <ClInclude Include="MeshRenderer.h" />
-    <ClInclude Include="QuadMesh.h" />
-    <ClInclude Include="Shader.h" />
-    <ClInclude Include="ShaderManager.h" />
-    <ClInclude Include="SwapChain.h" />
-    <ClInclude Include="Transform.h" />
-    <ClInclude Include="VertexBuffer.h" />
-    <ClInclude Include="Window.h" />
-    <ClInclude Include="WindowsMessageMap.h" />
+    <ClInclude Include="Code\DirectXClasses\AD3D11Object.h" />
+    <ClInclude Include="Code\DirectXClasses\Buffers\BufferDataTypes.h" />
+    <ClInclude Include="Code\DirectXClasses\Buffers\ConstantBuffer.h" />
+    <ClInclude Include="Code\DirectXClasses\Buffers\IndexBuffer.h" />
+    <ClInclude Include="Code\DirectXClasses\Buffers\VertexBuffer.h" />
+    <ClInclude Include="Code\DirectXClasses\Shader.h" />
+    <ClInclude Include="Code\DirectXClasses\SwapChain.h" />
+    <ClInclude Include="Code\GameEngine\Components\AComponent.h" />
+    <ClInclude Include="Code\GameEngine\Components\EComponentTypes.h" />
+    <ClInclude Include="Code\GameEngine\Components\Renderer\ARenderer.h" />
+    <ClInclude Include="Code\GameEngine\Components\Renderer\MeshRenderer.h" />
+    <ClInclude Include="Code\GameEngine\Components\Transform.h" />
+    <ClInclude Include="Code\GameEngine\EngineTime.h" />
+    <ClInclude Include="Code\GameEngine\GameEngineWindow.h" />
+    <ClInclude Include="Code\GameEngine\GameObjects\AGameObject.h" />
+    <ClInclude Include="Code\GameEngine\GameObjects\EmptyGameObject.h" />
+    <ClInclude Include="Code\GameEngine\Graphics\GraphicsEngine.h" />
+    <ClInclude Include="Code\GameEngine\Graphics\ShaderManager.h" />
+    <ClInclude Include="Code\GameEngine\Managers\GameObjectManager.h" />
+    <ClInclude Include="Code\GameEngine\Meshes\AMesh.h" />
+    <ClInclude Include="Code\GameEngine\Meshes\CubeMesh.h" />
+    <ClInclude Include="Code\GameEngine\Meshes\EPrimitiveMeshTypes.h" />
+    <ClInclude Include="Code\GameEngine\Meshes\QuadMesh.h" />
+    <ClInclude Include="Code\WindowsMessageMap.h" />
+    <ClInclude Include="Code\WindowSystem\Window.h" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="PixelShader.hlsl">
+    <FxCompile Include="Code\Shaders\PixelShader.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)/Code/Shaders/%(Filename).cso</ObjectFileOutput>
     </FxCompile>
-    <FxCompile Include="VertexShader.hlsl">
+    <FxCompile Include="Code\Shaders\VertexShader.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)/Code/Shaders/%(Filename).cso</ObjectFileOutput>
     </FxCompile>
   </ItemGroup>
   <PropertyGroup Label="Globals">
