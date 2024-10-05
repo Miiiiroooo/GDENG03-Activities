@@ -62,6 +62,6 @@ LPCWSTR ARenderer::GetShaderType()
 
 void ARenderer::InitRenderer()
 {
-	vConstantBuffer = new VertexConstantBuffer<TMatrix>(GraphicsEngine::GetInstance());
+	vConstantBuffer = new VertexConstantBuffer<TMatrix>(GraphicsEngine::GetInstance(), 0u);
 	vConstantBuffer->Init();
 }

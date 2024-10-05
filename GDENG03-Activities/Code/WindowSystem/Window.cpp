@@ -1,5 +1,6 @@
 #include "Window.h"
 #include "../WindowsMessageMap.h"
+#include "../GameEngine/EngineTime.h"
 
 
 Window::Window() : width (640), height(480), isRunning(false),
@@ -89,6 +90,7 @@ bool Window::Release()
 
 bool Window::Update()
 {
+	EngineTime::LogStartFrame();
 	this->OnUpdate();
 
 	MSG msg = {  };
@@ -102,6 +104,7 @@ bool Window::Update()
 		TranslateMessage(&msg);
 		DispatchMessage(&msg);
 	}
+	EngineTime::LogEndFrame();
 
 	return true;
 }

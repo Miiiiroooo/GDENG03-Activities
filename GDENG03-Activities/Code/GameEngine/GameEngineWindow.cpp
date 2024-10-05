@@ -2,7 +2,7 @@
 #include "EngineTime.h"
 #include "Managers/GameObjectManager.h"
 #include "GameObjects/EmptyGameObject.h"
-#include "Components/Renderer/MeshRenderer.h"
+#include <math.h>
 
 
 GameEngineWindow::GameEngineWindow()
@@ -17,80 +17,78 @@ GameEngineWindow::~GameEngineWindow()
 
 void GameEngineWindow::OnCreate(HWND hWnd)
 {
-	// initialize graphics
+	// initialize game engine
 	GraphicsEngine::GetInstance()->Init();
 	GraphicsEngine::GetInstance()->SetViewport(windowSize.right - windowSize.left, windowSize.bottom - windowSize.top);
-
+	swapChain = GraphicsEngine::GetInstance()->CreateSwapChain(hWnd, windowSize.right - windowSize.left, windowSize.bottom - windowSize.top);
 	EngineTime::Initialize();
 
-	// setup the objects
+
+	// Temp
+	vConstant = new VertexConstantBuffer<TempConstant>(GraphicsEngine::GetInstance(), 1u);
+	vConstant->Init();
+	pConstant = new PixelConstantBuffer<TempConstant>(GraphicsEngine::GetInstance(), 0u);
+	pConstant->Init();
+
+
+	// SLIDE 13
 	EmptyGameObject* empty1 = new EmptyGameObject("temp1");
 	Transform* transform1 = empty1->GetTransform(); 
-	transform1->Position = { -0.5f,  0.5f,  0.0f }; 
-	transform1->Scale = { 0.5f,  0.5f,  1.0f };
 	GameObjectManager::GetInstance()->AddObject(empty1);
 
 	MeshRenderer* renderer1 = new MeshRenderer(L"DefaultShader");
-	renderer1->Temp({
-		{1.0f, 0.0f, 0.0f},
-		{0.0f, 1.0f, 0.0f},
-		{0.0f, 0.0f, 1.0f},
-		{1.0f, 1.0f, 0.0f},
-		});
+	renderer1->TempAnimation(1);
 	empty1->AttachComponent(renderer1);
 	GameObjectManager::GetInstance()->BindRendererToShader(renderer1); 
 
-	EmptyGameObject* empty2 = new EmptyGameObject("temp2");
+
+	// SLIDE 14
+	/*EmptyGameObject* empty2 = new EmptyGameObject("temp2"); 
 	Transform* transform2 = empty2->GetTransform(); 
-	transform2->Position = { 0.5f,  0.5f,  0.0f }; 
-	transform2->Scale = { 0.5f,  0.5f,  1.0f }; 
 	GameObjectManager::GetInstance()->AddObject(empty2); 
 
 	MeshRenderer* renderer2 = new MeshRenderer(L"DefaultShader"); 
-	renderer2->Temp({ 
-		{0.0f, 0.0f, 1.0f},
-		{0.2f, 0.6f, 1.0f},
-		{0.0f, 0.0f, 1.0f},
-		{0.2f, 0.6f, 1.0f},
-		});
-	empty2->AttachComponent(renderer2);
-	GameObjectManager::GetInstance()->BindRendererToShader(renderer2); 
-
-	EmptyGameObject* empty3 = new EmptyGameObject("temp3"); 
-	Transform* transform3 = empty3->GetTransform(); 
-	transform3->Position = { 0.0f,  -0.35f,  0.0f }; 
-	transform3->Scale = { 1.0f,  1.0f,  1.0f }; 
-	GameObjectManager::GetInstance()->AddObject(empty3); 
-
-	MeshRenderer* renderer3 = new MeshRenderer(L"DefaultShader");
-	renderer3->Temp({
-		{0.6f, 0.8f, 1.0f},
-		{0.0f, 0.4f, 0.6f},
-		{0.0f, 0.4f, 0.6f},
-		{0.6f, 0.8f, 1.0f},
-		});
-	empty3->AttachComponent(renderer3);
-	GameObjectManager::GetInstance()->BindRendererToShader(renderer3); 
-	
-	// initialize swap chain
-	swapChain = GraphicsEngine::GetInstance()->CreateSwapChain(hWnd, windowSize.right - windowSize.left, windowSize.bottom - windowSize.top);
+	renderer2->TempAnimation(2); 
+	empty2->AttachComponent(renderer2); 
+	GameObjectManager::GetInstance()->BindRendererToShader(renderer2); */
 }
 
 void GameEngineWindow::OnUpdate()
 {
-	// change timesscale here
+	// SLIDE 13
+	animSpeed = 15;
+	totalAngleAnimation += animSpeed * EngineTime::GetDeltaTime();
+	totalAngleTimeScale += timeScaleSpeed * EngineTime::GetFixedDeltaTime();
+
+	float newScale = (std::sin(totalAngleTimeScale * M_PI / 180.f)  + 1.0f) * (35.0f / 2.0f); // clamp between 0 and 35
+	EngineTime::SetTimeScale(newScale);
+
+	TempConstant cc;
+	cc.m_angle = totalAngleAnimation * M_PI / 180.f;
+
+
+	// SLIDE 14
+	/*animSpeed = 60;
+	totalAngleAnimation += animSpeed * EngineTime::GetDeltaTime(); 
+
+	TempConstant cc; 
+	cc.m_angle = totalAngleAnimation * M_PI / 180.f; */
 
 
 
-	EngineTime::LogStartFrame();
+	vConstant->SetConstants(cc);
+	vConstant->BindToPipeline();
+	pConstant->SetConstants(cc);
+	pConstant->BindToPipeline();
+
+
+
 
 	swapChain->ClearBuffer(0.0f, 0.4f, 0.6f);
 	//GameObjectManager::GetInstance()->ProcessInputs();
 	GameObjectManager::GetInstance()->Update(EngineTime::GetDeltaTime());
 	GameObjectManager::GetInstance()->Draw();
 	swapChain->Present(true);
-
-	EngineTime::LogEndFrame();
 }
 
 void GameEngineWindow::OnDestroy()

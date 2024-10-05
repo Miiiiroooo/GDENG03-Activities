@@ -58,6 +58,9 @@ void MeshRenderer::LoadNonPrimitive(std::string fileName)
 
 }
 
+
+
+
 void MeshRenderer::Temp(const std::vector<DirectX::XMFLOAT3>& colorList)
 {
 	InitRenderer();
@@ -72,4 +75,19 @@ void MeshRenderer::Temp(const std::vector<DirectX::XMFLOAT3>& colorList)
 	indexBuffer->Init(); 
 
 	delete mesh;
+}
+
+void MeshRenderer::TempAnimation(int animType)
+{
+	InitRenderer();
+
+	QuadMesh<TempVertex>* mesh = new QuadMesh<TempVertex>();
+	VertexBuffer<TempVertex>* vb = (animType == 1) ? mesh->TempAnimation() : mesh->TempAnimation2();
+	vb->Init(); 
+	bufferList.push_back(vb); 
+
+	indexBuffer = (animType == 1) ? mesh->CreateIndexBuffer() : mesh->TempAnimation2Index();
+	indexBuffer->Init(); 
+
+	delete mesh; 
 }

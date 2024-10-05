@@ -7,12 +7,24 @@ void EngineTime::Initialize()
 {
 	sharedInstance = new EngineTime();
 	sharedInstance->deltaTime = 0;
-	sharedInstance->timeSinceStartUp = 0;
+	sharedInstance->fixedDeltaTime = 0;
+	sharedInstance->timeSinceStartup = 0;
+	sharedInstance->timeScale = 1;
 }
 
 double EngineTime::GetDeltaTime()
 {
 	return sharedInstance->deltaTime;
+}
+
+double EngineTime::GetFixedDeltaTime()
+{
+	return sharedInstance->fixedDeltaTime;
+}
+
+double EngineTime::GetTimeSinceStartup()
+{
+	return sharedInstance->timeSinceStartup;
 }
 
 void EngineTime::SetTimeScale(float newScale)
@@ -31,6 +43,15 @@ void EngineTime::LogEndFrame()
 	sharedInstance->end = std::chrono::system_clock::now();
 	std::chrono::duration<double> elapsedInSeconds = sharedInstance->end - sharedInstance->start;
 
-	sharedInstance->deltaTime = elapsedInSeconds.count() / (double)sharedInstance->timeScale;
-	sharedInstance->timeSinceStartUp += elapsedInSeconds.count();
+	if (sharedInstance->timeScale > 0)
+	{
+		sharedInstance->deltaTime = elapsedInSeconds.count() * (double)sharedInstance->timeScale;
+	}
+	else
+	{
+		sharedInstance->deltaTime = 0;
+	}
+
+	sharedInstance->fixedDeltaTime = elapsedInSeconds.count(); 
+	sharedInstance->timeSinceStartup += elapsedInSeconds.count();
 }

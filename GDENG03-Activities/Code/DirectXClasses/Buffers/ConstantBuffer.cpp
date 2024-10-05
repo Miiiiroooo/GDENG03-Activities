@@ -2,7 +2,7 @@
 
 
 template<typename T>
-ConstantBuffer<T>::ConstantBuffer(GraphicsEngine* gfx) : AD3D11Object(gfx)
+ConstantBuffer<T>::ConstantBuffer(GraphicsEngine* gfx, const UINT& registerSlot) : AD3D11Object(gfx), registerSlot(registerSlot)
 {
 
 }
@@ -65,19 +65,19 @@ bool ConstantBuffer<T>::SetConstants(const T& constants)
 template<typename T>
 void VertexConstantBuffer<T>::BindToPipeline()
 {
-	gfx->GetDeviceContext()->VSSetConstantBuffers(0u, 1u, pConstantBuffer.GetAddressOf());
+	gfx->GetDeviceContext()->VSSetConstantBuffers(registerSlot, 1u, pConstantBuffer.GetAddressOf());
 }
 
 
 template<typename T>
 void GeometryConstantBuffer<T>::BindToPipeline()
 {
-	gfx->GetDeviceContext()->GSSetConstantBuffers(0u, 1u, pConstantBuffer.GetAddressOf());
+	gfx->GetDeviceContext()->GSSetConstantBuffers(registerSlot, 1u, pConstantBuffer.GetAddressOf());
 }
 
 
 template<typename T>
 void PixelConstantBuffer<T>::BindToPipeline()
 {
-	gfx->GetDeviceContext()->PSSetConstantBuffers(0u, 1u, pConstantBuffer.GetAddressOf());
+	gfx->GetDeviceContext()->PSSetConstantBuffers(registerSlot, 1u, pConstantBuffer.GetAddressOf());
 }

@@ -3,7 +3,7 @@
 #include <ctime>
 
 
-class GameEngineWindow;
+class Window;
 
 class EngineTime
 {
@@ -13,6 +13,8 @@ public:
 
 	static void Initialize();
 	static double GetDeltaTime();
+	static double GetFixedDeltaTime();
+	static double GetTimeSinceStartup();
 	static void SetTimeScale(float newScale);
 
 private:
@@ -28,9 +30,11 @@ private:
 
 	std::chrono::system_clock::time_point start;
 	std::chrono::system_clock::time_point end;
+
 	double deltaTime;
-	double timeSinceStartUp;
+	double fixedDeltaTime;
+	double timeSinceStartup;
 	float timeScale;
 
-	friend class GameEngineWindow;
+	friend class Window;
 };
