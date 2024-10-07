@@ -1,8 +1,6 @@
 #pragma once
 #include "../WindowSystem/Window.h"
 #include "../DirectXClasses/SwapChain.h"
-#include "Components/Renderer/MeshRenderer.h"
-#include "../DirectXClasses/Buffers/BufferDataTypes.h"
 
 
 class GameEngineWindow : public Window
@@ -20,12 +18,4 @@ protected:
 
 private:
 	SwapChain* swapChain;
-
-	float totalAngleAnimation = -90;
-	float totalAngleTimeScale = -30;
-	float animSpeed = 15;
-	float timeScaleSpeed = 30;
-
-	VertexConstantBuffer<TempConstant>* vConstant;
-	PixelConstantBuffer<TempConstant>* pConstant;
 };

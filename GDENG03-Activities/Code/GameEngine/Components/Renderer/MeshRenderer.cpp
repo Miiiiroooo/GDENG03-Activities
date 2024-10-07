@@ -1,5 +1,6 @@
 #include "MeshRenderer.h"
 #include "../../Meshes/QuadMesh.h"
+#include "../../Meshes/CubeMesh.h"
 
 
 MeshRenderer::MeshRenderer() : ARenderer("MesehRenderer", L"DefaultShader")
@@ -24,7 +25,7 @@ void MeshRenderer::LoadPrimitive(EPrimitiveMeshTypes type)
 	switch (type)
 	{
 	case EPrimitiveMeshTypes::Cube:
-		// add cubue here
+		mesh = new CubeMesh<VertexData>(); 
 		break;
 	case EPrimitiveMeshTypes::Sphere:
 		// add sphere here
@@ -75,19 +76,4 @@ void MeshRenderer::Temp(const std::vector<DirectX::XMFLOAT3>& colorList)
 	indexBuffer->Init(); 
 
 	delete mesh;
-}
-
-void MeshRenderer::TempAnimation(int animType)
-{
-	InitRenderer();
-
-	QuadMesh<TempVertex>* mesh = new QuadMesh<TempVertex>();
-	VertexBuffer<TempVertex>* vb = (animType == 1) ? mesh->TempAnimation() : mesh->TempAnimation2();
-	vb->Init(); 
-	bufferList.push_back(vb); 
-
-	indexBuffer = (animType == 1) ? mesh->CreateIndexBuffer() : mesh->TempAnimation2Index();
-	indexBuffer->Init(); 
-
-	delete mesh; 
 }

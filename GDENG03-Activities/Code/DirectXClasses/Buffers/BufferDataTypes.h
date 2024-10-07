@@ -20,38 +20,8 @@ struct VertexData
 	}
 };
 
+__declspec(align(16))
 struct TMatrix
 {
 	DirectX::XMMATRIX transform;
-};
-
-
-
-
-
-__declspec(align(16))
-struct TempConstant
-{
-	float m_angle;
-};
-
-struct TempVertex
-{
-	DirectX::XMFLOAT3 pos;
-	DirectX::XMFLOAT3 vColor;
-	DirectX::XMFLOAT3 pos1;
-	DirectX::XMFLOAT3 vColor1;
-
-	TempVertex() : pos(0.0f, 0.0f, 0.0f), vColor(0.0f, 0.0f, 0.0f), pos1(0.0f, 0.0f, 0.0f), vColor1(0.0f, 0.0f, 0.0f)
-	{
-	}
-
-	TempVertex(const DirectX::XMFLOAT3& pos, const DirectX::XMFLOAT3& vColor, const DirectX::XMFLOAT3& pos1, const DirectX::XMFLOAT3& vColor1) :
-		pos(pos), vColor(vColor), pos1(pos1), vColor1(vColor1)
-	{
-	}
-
-	TempVertex(const TempVertex& copy) : pos(copy.pos), vColor(copy.vColor), pos1(copy.pos1), vColor1(copy.vColor1)
-	{
-	}
 };

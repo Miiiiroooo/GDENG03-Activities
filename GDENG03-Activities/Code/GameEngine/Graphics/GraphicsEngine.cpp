@@ -70,9 +70,7 @@ bool GraphicsEngine::InitializeShaders()
     std::vector<D3D11_INPUT_ELEMENT_DESC> layout = {
         //SEMANTIC NAME - SEMANTIC INDEX  -   FORMAT   -    INPUT SLOT - ALIGNED BYTE OFFSET - INPUT SLOT CLASS - INSTANCE DATA STEP RATE
         {"POSITION",          0,    DXGI_FORMAT_R32G32B32_FLOAT,  0,           0,       D3D11_INPUT_PER_VERTEX_DATA,   0},
-        {"COLOR",             0,    DXGI_FORMAT_R32G32B32_FLOAT,  0,    D3D11_APPEND_ALIGNED_ELEMENT,       D3D11_INPUT_PER_VERTEX_DATA,   0},
-        {"POSITION",         1,    DXGI_FORMAT_R32G32B32_FLOAT,  0,    D3D11_APPEND_ALIGNED_ELEMENT,       D3D11_INPUT_PER_VERTEX_DATA,   0},
-        {"COLOR",            1,    DXGI_FORMAT_R32G32B32_FLOAT,  0,    D3D11_APPEND_ALIGNED_ELEMENT,       D3D11_INPUT_PER_VERTEX_DATA,   0}
+        {"COLOR",             0,    DXGI_FORMAT_R32G32B32_FLOAT,  0,    D3D11_APPEND_ALIGNED_ELEMENT,       D3D11_INPUT_PER_VERTEX_DATA,   0}
     };
 
     if (!sm->CreateVertexShader(L"VertexShader.cso", layout))
