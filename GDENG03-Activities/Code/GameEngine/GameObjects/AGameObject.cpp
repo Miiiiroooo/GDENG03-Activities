@@ -173,6 +173,8 @@ Transform* AGameObject::GetTransform()
 
 void AGameObject::AttachComponent(AComponent* component)
 {
+	if (component->GetType() == EComponentTypes::Transform) return;
+
 	this->componentList.push_back(component);  
 	component->AttachOwner(this);  
 }
