@@ -10,47 +10,52 @@ std::string Print(DirectX::XMFLOAT3 value)
 
 void ForTesting()
 {
-	EmptyGameObject* e1 = new EmptyGameObject("e1"); 
-	Transform* transform1 = e1->GetTransform(); 
-	transform1->LocalScale = { 2.0f,  2.0f,  2.0f };
+	EmptyGameObject* e1 = new EmptyGameObject("e1");
+	Transform* transform1 = e1->GetTransform();
+	transform1->Position = { 1.0f,  0.0f,  0.0f };
+	//transform1->Rotate(Vector3(0, 1, 0), 30);
+	//transform1->Rotate(Vector3(1, 0, 0), 270);
 
 	EmptyGameObject* e2 = new EmptyGameObject("e2");
-	e1->AttachChild(e2); 
-	Transform* transform2 = e2->GetTransform(); 
-	transform2->LocalScale = { 0.75f, 0.75f, 0.75f };
+	e1->AttachChild(e2);
+	Transform* transform2 = e2->GetTransform();
+	transform2->Position = { -1.0f,  0.0f,  0.0f };
+	transform2->Rotate(30, 0, 0);
 
-	EmptyGameObject* e3 = new EmptyGameObject("e3"); 
-	e2->AttachChild(e3); 
-	Transform* transform3 = e3->GetTransform(); 
-	transform3->LocalScale = { 0.75f, 0.75f, 0.75f };
+	EmptyGameObject* e3 = new EmptyGameObject("e3");
+	Transform* transform3 = e3->GetTransform();
+	transform3->Position = { 3.0f,  0.0f,  0.0f };
+	e2->AttachChild(e3);
 
-	std::string to_print = "Awake   e1 " + Print(transform1->LocalScale) + " " + Print(transform1->Position) + "\n";
-	OutputDebugString(to_print.c_str()); 
-	to_print = "Awake   e2 " + Print(transform2->LocalScale) + " " + Print(transform2->Position) + "\n";
-	OutputDebugString(to_print.c_str()); 
-	to_print = "Awake   e3 " + Print(transform3->LocalScale) + " " + Print(transform3->Position) + "\n\n";
-	OutputDebugString(to_print.c_str()); 
 
-	transform3->LocalScale = { 2.0f, 0.75f, 0.75f };
 
-	to_print = "Start   e1 " + Print(transform1->LocalScale) + " " + Print(transform1->Position) + "\n";
-	OutputDebugString(to_print.c_str()); 
-	to_print = "Start   e2 " + Print(transform2->LocalScale) + " " + Print(transform2->Position) + "\n";
-	OutputDebugString(to_print.c_str()); 
-	to_print = "Start   e3 " + Print(transform3->LocalScale) + " " + Print(transform3->Position) + "\n\n";
-	OutputDebugString(to_print.c_str()); 
+	std::string to_print = "Awake   e1 " + Print(transform1->GetEulerAngles()) + " " + Print(transform1->GetLocalEulerAngles()) + "\n";
+	OutputDebugString(to_print.c_str());
+	to_print = "Awake   e2 " + Print(transform2->GetEulerAngles()) + " " + Print(transform2->GetLocalEulerAngles()) + "\n";
+	OutputDebugString(to_print.c_str());
+	to_print = "Awake   e3 " + Print(transform3->Position) + " " + Print(transform3->LocalPosition) + "\n\n";
+	OutputDebugString(to_print.c_str());
+
+	transform1->Position = { -5.0f, 0.0f, 0.0f };
+	transform1->Rotate(0, 30, 0);
+
+	to_print = "Start   e1 " + Print(transform1->GetEulerAngles()) + " " + Print(transform1->GetLocalEulerAngles()) + "\n";
+	OutputDebugString(to_print.c_str());
+	to_print = "Start   e2 " + Print(transform2->GetEulerAngles()) + " " + Print(transform2->GetLocalEulerAngles()) + "\n";
+	OutputDebugString(to_print.c_str());
+	to_print = "Start   e3 " + Print(transform3->Position) + " " + Print(transform3->LocalPosition) + "\n\n";
+	OutputDebugString(to_print.c_str());
 }
 
+#include <GeometricPrimitive.h>
 
 int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
 	//ForTesting();
 
-
-
 	GameEngineWindow gameEngine;  
 
-	if (gameEngine.Init(640, 480, "Aamir Akim"))  
+	if (gameEngine.Init(1280, 960, "Aamir Akim"))  
 	{
 		while (gameEngine.IsRunning())  
 		{

@@ -38,6 +38,7 @@
     <ClCompile Include="Code\WindowsMessageMap.cpp" />
     <ClCompile Include="Code\WindowSystem\Window.cpp" />
     <ClCompile Include="Code\WinMain.cpp" />
+    <ClCompile Include="Code\GameEngine\GameObjects\Primitives\CubeObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\DirectXClasses\AD3D11Object.h" />
@@ -65,6 +66,7 @@
     <ClInclude Include="Code\GameEngine\Meshes\QuadMesh.h" />
     <ClInclude Include="Code\WindowsMessageMap.h" />
     <ClInclude Include="Code\WindowSystem\Window.h" />
+    <ClInclude Include="Code\GameEngine\GameObjects\Primitives\CubeObject.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Code\Shaders\PixelShader.hlsl">

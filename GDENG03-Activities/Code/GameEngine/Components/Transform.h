@@ -4,6 +4,8 @@
 #include "../../DirectXClasses/Buffers/BufferDataTypes.h"
 
 
+using namespace DirectX::SimpleMath;
+
 class Transform : public AComponent
 {
 public:
@@ -12,37 +14,57 @@ public:
 
 	void Perform() override;
 	TMatrix CreateTransformationMatrix();
+	void RecalculateChildTransformWithoutParent();
+	void RecalculateChildTransformWithParent(const Transform* parent);
 
-	#pragma region Properties
-	DirectX::XMFLOAT3 GetPosition();
-	void SetPosition(const DirectX::XMFLOAT3& newPos);
-	__declspec(property(get = GetPosition, put = SetPosition)) DirectX::XMFLOAT3 Position;
+	#pragma region Getters Setters
+	Vector3 GetPosition();
+	void SetPosition(const Vector3& newPos);
+	__declspec(property(get = GetPosition, put = SetPosition)) Vector3 Position;
 
-	DirectX::XMFLOAT3 GetLocalPosition();
-	void SetLocalPosition(const DirectX::XMFLOAT3& newPos);
-	__declspec(property(get = GetLocalPosition, put = SetLocalPosition)) DirectX::XMFLOAT3 LocalPosition;
+	Vector3 GetLocalPosition();
+	void SetLocalPosition(const Vector3& newPos);
+	__declspec(property(get = GetLocalPosition, put = SetLocalPosition)) Vector3 LocalPosition;
 
-	DirectX::XMFLOAT3 GetLocalScale();
-	void SetLocalScale(const DirectX::XMFLOAT3& newScale);
-	__declspec(property(get = GetLocalScale, put = SetLocalScale)) DirectX::XMFLOAT3 LocalScale;
+
+	Vector3 GetLocalScale();
+	void SetLocalScale(const Vector3& newScale);
+	__declspec(property(get = GetLocalScale, put = SetLocalScale)) Vector3 LocalScale;
+
+
+	Vector3 GetEulerAngles();
+	Vector3 GetLocalEulerAngles();
+	Vector3 GetLocalRight();
+	Vector3 GetLocalUp();
+	Vector3 GetLocalForward();
 	#pragma endregion
 
-
+	void Rotate(float xAngleInDeg, float yAngleInDeg, float zAngleInDeg);
+	void Rotate(const Vector3& eulerInDeg);
+	void Rotate(const Vector3& axis, float angleInDeg);
 
 private:
 	void UpdateGlobalScaleWithChildren();
 
+	void RotateFromParent(const Vector3& eulerInDeg, const Quaternion& toRotate, const Transform* parent);
+	void RotateFromParent(const Quaternion& toRotate, const Transform* parent);
+
+	void UpdateLocalEulerAnglesWithChildren(const Transform* parent);
+	void UpdateLocalVectors();
+
 
 private:
-	DirectX::XMFLOAT3 globalPos;
-	DirectX::XMFLOAT3 localPos;
+	Vector3 globalPos;
+	Vector3 localPos;
 
-	DirectX::XMFLOAT3 globalScale; 
-	DirectX::XMFLOAT3 localScale; 
+	Vector3 globalScale;
+	Vector3 localScale;
 
-	DirectX::XMFLOAT3 eulerAngles;
-	DirectX::XMFLOAT4 orientation;
-	DirectX::XMFLOAT3 localRight;
-	DirectX::XMFLOAT3 localUp;
-	DirectX::XMFLOAT3 localForward;
+	Vector3 eulerAngles;
+	Vector3 localEulerAngles;
+	Quaternion orientation;
+
+	Vector3 localRight;
+	Vector3 localUp;
+	Vector3 localForward;
 };

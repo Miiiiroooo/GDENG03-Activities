@@ -38,6 +38,9 @@
     <Filter Include="Shaders">
       <UniqueIdentifier>{4cbf040a-27dd-48c6-8fa1-e80397905657}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameEngine\GameObjects\Primitives">
+      <UniqueIdentifier>{50d02913-8377-4dea-9301-56f4446de050}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\WinMain.cpp" />
@@ -92,6 +95,9 @@
     </ClCompile>
     <ClCompile Include="Code\WindowSystem\Window.cpp">
       <Filter>WindowsSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\GameEngine\GameObjects\Primitives\CubeObject.cpp">
+      <Filter>GameEngine\GameObjects\Primitives</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -167,6 +173,9 @@
     </ClInclude>
     <ClInclude Include="Code\WindowSystem\Window.h">
       <Filter>WindowsSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\GameEngine\GameObjects\Primitives\CubeObject.h">
+      <Filter>GameEngine\GameObjects\Primitives</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

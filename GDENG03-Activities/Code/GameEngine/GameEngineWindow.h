@@ -1,6 +1,7 @@
 #pragma once
 #include "../WindowSystem/Window.h"
 #include "../DirectXClasses/SwapChain.h"
+#include "Components/Transform.h"
 
 
 class GameEngineWindow : public Window
@@ -18,4 +19,9 @@ protected:
 
 private:
 	SwapChain* swapChain;
+
+	float rSpeed = 20;
+	Transform* t1;
+	Transform* t2;
+	Transform* t3;
 };

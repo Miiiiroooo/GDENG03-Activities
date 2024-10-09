@@ -4,16 +4,19 @@
 
 Transform::Transform() : AComponent("Transform", EComponentTypes::Transform)
 {
-	globalPos = { 0.0f, 0.0f, 0.0f };
-	localPos = { 0.0f, 0.0f, 0.0f };
+	globalPos = Vector3::Zero; 
+	localPos = Vector3::Zero; 
 
-	globalScale = { 1.0f, 1.0f, 1.0f };
-	localScale = { 1.0f, 1.0f, 1.0f };
+	globalScale = Vector3::One;  
+	localScale = Vector3::One;
 
-	eulerAngles = { 0.0f, 0.0f, 0.0f };
-	localRight = { 1.0f, 0.0f, 0.0f };
-	localUp = { 0.0f, 1.0f, 0.0f };
-	localForward = { 0.0f, 0.0f, 1.0f };
+	eulerAngles = Vector3::Zero; 
+	localEulerAngles = Vector3::Zero;
+	orientation = Quaternion::Identity;
+
+	localRight = Vector3::Right;
+	localUp = Vector3::Up;
+	localForward = Vector3::Backward; // backward returns (0,0,1)
 }
 
 Transform::~Transform()
@@ -30,90 +33,98 @@ TMatrix Transform::CreateTransformationMatrix()
 {
 	return TMatrix{
 		DirectX::XMMatrixTranspose(
-			//DirectX::XMMatrixRotationX(temp * M_PI / 180.f) * 
-			DirectX::XMMatrixScaling(globalScale.x, globalScale.y, globalScale.z) *
-			DirectX::XMMatrixTranslation(globalPos.x, globalPos.y, globalPos.z) *
-			DirectX::XMMatrixPerspectiveLH(1, 0.75f, 0.5f, 10.f)
+			Matrix::CreateScale(globalScale) * 
+			Matrix::CreateFromQuaternion(orientation) * 
+			Matrix::CreateTranslation(globalPos) *
+			DirectX::XMMatrixPerspectiveLH(1, 0.75f, 0.5f, 10.f) // remove after use
 		)};
 }
 
+void Transform::RecalculateChildTransformWithoutParent() 
+{
+	localPos = globalPos;
+	localScale = globalScale;
+	localEulerAngles = eulerAngles;
+
+	// no need to update children since the local and global values are still the same 
+}
+
+void Transform::RecalculateChildTransformWithParent(const Transform* parent)
+{
+	this->SetLocalPosition(this->globalPos - parent->globalPos);
+
+	// Vector3 division from SimpleMath defaults to 'inf' value if there's division by 0
+	Vector3 newScale;
+	newScale.x = (parent->globalScale.x == 0) ? 0 : (this->globalScale.x / parent->globalScale.x);
+	newScale.y = (parent->globalScale.y == 0) ? 0 : (this->globalScale.y / parent->globalScale.y);
+	newScale.z = (parent->globalScale.z == 0) ? 0 : (this->globalScale.z / parent->globalScale.z);
+	this->SetLocalScale(newScale);
+
+	UpdateLocalEulerAnglesWithChildren(parent);
+}
+
+
 #pragma region Position
-DirectX::XMFLOAT3 Transform::GetPosition()
+Vector3 Transform::GetPosition()
 {
 	return globalPos;
 }
 
-void Transform::SetPosition(const DirectX::XMFLOAT3& newPos)
+void Transform::SetPosition(const Vector3& newPos)
 {
 	// set value
 	globalPos = newPos;
 
 	// update local position, taking consideration of the parent
 	AGameObject* parentObj = owner->GetParent();
-	if (parentObj)
-	{
-		localPos.x = globalPos.x - parentObj->GetTransform()->globalPos.x;
-		localPos.y = globalPos.y - parentObj->GetTransform()->globalPos.y;
-		localPos.z = globalPos.z - parentObj->GetTransform()->globalPos.z;
-	}
-	else
-	{
-		localPos = newPos;
-	}
+
+	localPos = (parentObj) ? 
+		globalPos - parentObj->GetTransform()->globalPos : 
+		globalPos; 
 
 	// update all the transforms of every 'descendant'
 	auto transformsFromChildren = owner->GetComponentsInChildrenOfType(EComponentTypes::Transform);
 	for (int i = 0; i < transformsFromChildren.size(); i++)
 	{
 		Transform* childTransform = (Transform*)transformsFromChildren[i];
-		DirectX::XMFLOAT3 newChildPos = newPos;
-		newChildPos.x += childTransform->localPos.x;
-		newChildPos.y += childTransform->localPos.y;
-		newChildPos.z += childTransform->localPos.z;
-		childTransform->SetPosition(newChildPos);
+		childTransform->SetPosition(newPos + childTransform->localPos);
 	}
 }
 
-DirectX::XMFLOAT3 Transform::GetLocalPosition()
+Vector3 Transform::GetLocalPosition()
 {
 	return localPos;
 }
 
-void Transform::SetLocalPosition(const DirectX::XMFLOAT3& newPos)
+void Transform::SetLocalPosition(const Vector3& newPos)
 {
 	// set value
 	localPos = newPos;
 
 	// update global position, taking consideration of the parent
 	AGameObject* parentObj = owner->GetParent(); 
-	if (parentObj) 
-	{
-		globalPos.x = localPos.x + parentObj->GetTransform()->globalPos.x;
-		globalPos.y = localPos.y + parentObj->GetTransform()->globalPos.y; 
-		globalPos.z = localPos.z + parentObj->GetTransform()->globalPos.z; 
-	}
+	globalPos = (parentObj) ?
+		localPos + parentObj->GetTransform()->globalPos :
+		localPos;
 
 	// update all the transforms of every 'descendant'
 	auto transformsFromChildren = owner->GetComponentsInChildrenOfType(EComponentTypes::Transform); 
 	for (int i = 0; i < transformsFromChildren.size(); i++) 
 	{
 		Transform* childTransform = (Transform*)transformsFromChildren[i]; 
-		DirectX::XMFLOAT3 newChildPos = globalPos; 
-		newChildPos.x += childTransform->localPos.x; 
-		newChildPos.y += childTransform->localPos.y; 
-		newChildPos.z += childTransform->localPos.z; 
-		childTransform->SetPosition(newChildPos); 
+		childTransform->SetPosition(globalPos + childTransform->localPos); 
 	}
 }
 #pragma endregion
 
+
 #pragma region Scale
-DirectX::XMFLOAT3 Transform::GetLocalScale()
+Vector3 Transform::GetLocalScale()
 {
 	return localScale;
 }
 
-void Transform::SetLocalScale(const DirectX::XMFLOAT3& newScale)
+void Transform::SetLocalScale(const Vector3& newScale)
 {
 	// set value
 	localScale = newScale; 
@@ -126,16 +137,9 @@ void Transform::UpdateGlobalScaleWithChildren()
 {
 	// update global scale, taking consideration of the parent
 	AGameObject* parentObj = owner->GetParent();
-	if (parentObj)
-	{
-		globalScale.x = localScale.x * parentObj->GetTransform()->globalScale.x;
-		globalScale.y = localScale.y * parentObj->GetTransform()->globalScale.y;
-		globalScale.z = localScale.z * parentObj->GetTransform()->globalScale.z;
-	}
-	else
-	{
-		globalScale = localScale;
-	}
+	globalScale = (parentObj) ?
+		localScale * parentObj->GetTransform()->globalScale :
+		localScale;
 
 	// update all the transforms of every 'descendant'
 	auto transformsFromChildren = owner->GetComponentsInChildrenOfType(EComponentTypes::Transform);
@@ -146,3 +150,158 @@ void Transform::UpdateGlobalScaleWithChildren()
 	}
 }
 #pragma endregion 
+
+
+#pragma region Rotation
+Vector3 Transform::GetEulerAngles()
+{
+	return eulerAngles;
+}
+
+Vector3 Transform::GetLocalEulerAngles()
+{
+	return localEulerAngles;
+}
+
+Vector3 Transform::GetLocalRight() 
+{
+	return localRight;
+}
+
+Vector3 Transform::GetLocalUp() 
+{
+	return localUp;
+}
+
+Vector3 Transform::GetLocalForward() 
+{
+	return localForward;
+}
+
+
+void Transform::Rotate(float xAngleInDeg, float yAngleInDeg, float zAngleInDeg)
+{
+	Rotate(Vector3(xAngleInDeg, yAngleInDeg, zAngleInDeg));
+}
+
+void Transform::Rotate(const Vector3& eulerInDeg)
+{
+	Quaternion yaw = Quaternion::CreateFromAxisAngle(localUp, eulerInDeg.y * (M_PI / 180.f));
+	Quaternion pitch = Quaternion::CreateFromAxisAngle(localRight, eulerInDeg.x * (M_PI / 180.f));
+	Quaternion roll = Quaternion::CreateFromAxisAngle(localForward, eulerInDeg.z * (M_PI / 180.f));
+	Quaternion toRotate = yaw * pitch * roll;
+	//Quaternion toRotate = Quaternion::CreateFromYawPitchRoll(eulerInDeg * (M_PI / 180.f)); 
+	orientation *= toRotate;
+
+	// update euler angles and local vectors
+	eulerAngles += eulerInDeg;
+	UpdateLocalVectors(); 
+
+	// update local euler angles, taking consideration of the parent
+	AGameObject* parentObj = owner->GetParent();
+
+	localEulerAngles = (parentObj) ?
+		eulerAngles - parentObj->GetTransform()->eulerAngles :
+		eulerAngles;
+
+	// update all the transforms of every 'descendant'
+	auto transformsFromChildren = owner->GetComponentsInChildrenOfType(EComponentTypes::Transform);
+	for (int i = 0; i < transformsFromChildren.size(); i++)
+	{
+		Transform* childTransform = (Transform*)transformsFromChildren[i];
+		childTransform->RotateFromParent(eulerInDeg, toRotate, this);
+	}
+}
+
+void Transform::RotateFromParent(const Vector3& eulerInDeg, const Quaternion& toRotate, const Transform* parent)
+{
+	orientation *= toRotate;  
+	 
+	// update all euler angles and local vectors
+	eulerAngles += eulerInDeg;
+	localEulerAngles = eulerAngles - parent->eulerAngles;
+	UpdateLocalVectors(); 
+
+	// update position based on an offset from parent
+	Vector3 displacement = globalPos - parent->globalPos;
+	displacement = Vector3::Transform(displacement, toRotate);
+	SetPosition(parent->globalPos + displacement);
+
+	// update all the transforms of every 'descendant'
+	auto transformsFromChildren = owner->GetComponentsInChildrenOfType(EComponentTypes::Transform); 
+	for (int i = 0; i < transformsFromChildren.size(); i++) 
+	{
+		Transform* childTransform = (Transform*)transformsFromChildren[i]; 
+		childTransform->RotateFromParent(eulerInDeg, toRotate, this);
+	}
+}
+
+
+void Transform::Rotate(const Vector3& axis, float angleInDeg)
+{
+	Quaternion toRotate = Quaternion::CreateFromAxisAngle(axis, DirectX::XMConvertToRadians(angleInDeg)); 
+	orientation *= toRotate;
+
+	// update euler angles and local vectors
+	eulerAngles += toRotate.ToEuler() * (180.f / M_PI);
+	UpdateLocalVectors();
+
+	// update local euler angles, taking consideration of the parent
+	AGameObject* parentObj = owner->GetParent(); 
+
+	localEulerAngles = (parentObj) ? 
+		eulerAngles - parentObj->GetTransform()->eulerAngles : 
+		eulerAngles;
+
+	// update all the transforms of every 'descendant'
+	auto transformsFromChildren = owner->GetComponentsInChildrenOfType(EComponentTypes::Transform); 
+	for (int i = 0; i < transformsFromChildren.size(); i++) 
+	{
+		Transform* childTransform = (Transform*)transformsFromChildren[i]; 
+		childTransform->RotateFromParent(toRotate, this);
+	}
+}
+
+void Transform::RotateFromParent(const Quaternion& toRotate, const Transform* parent)
+{
+	orientation *= toRotate;
+
+	// update all euler angles and local vectors
+	eulerAngles += toRotate.ToEuler() * (180.f / M_PI);
+	localEulerAngles = eulerAngles - parent->eulerAngles;
+	UpdateLocalVectors();
+
+	// update position based on an offset from parent
+	Vector3 displacement = globalPos - parent->globalPos; 
+	displacement = Vector3::Transform(displacement, toRotate);
+	SetPosition(parent->globalPos + displacement); 
+
+	// update all the transforms of every 'descendant'
+	auto transformsFromChildren = owner->GetComponentsInChildrenOfType(EComponentTypes::Transform);
+	for (int i = 0; i < transformsFromChildren.size(); i++)
+	{
+		Transform* childTransform = (Transform*)transformsFromChildren[i];
+		childTransform->RotateFromParent(toRotate, this);
+	}
+}
+
+
+void Transform::UpdateLocalEulerAnglesWithChildren(const Transform* parent)
+{
+	localEulerAngles = eulerAngles - parent->eulerAngles;
+
+	auto transformsFromChildren = owner->GetComponentsInChildrenOfType(EComponentTypes::Transform); 
+	for (int i = 0; i < transformsFromChildren.size(); i++) 
+	{
+		Transform* childTransform = (Transform*)transformsFromChildren[i]; 
+		childTransform->UpdateLocalEulerAnglesWithChildren(this);
+	}
+}
+
+void Transform::UpdateLocalVectors()
+{
+	Vector3::Transform(Vector3::Right, orientation, localRight);
+	Vector3::Transform(Vector3::Up, orientation, localUp);
+	Vector3::Transform(Vector3::Backward, orientation, localForward); // backward returns (0,0,1)
+}
+#pragma endregion

@@ -127,6 +127,7 @@ void AGameObject::AttachChild(AGameObject* child)
 	this->childList.push_back(child); 
 	child->SetParent(this);
 	child->Initialize(); 
+	child->transform->RecalculateChildTransformWithParent(this->transform);
 }
 
 void AGameObject::DetachChild(AGameObject* child)
@@ -147,6 +148,7 @@ void AGameObject::DetachChild(AGameObject* child)
 	}
 
 	child->SetParent(NULL); 
+	child->transform->RecalculateChildTransformWithoutParent();
 
 	//this->childList.erase(std::remove(this->childList.begin(), this->childList.end(), child), this->childList.end());
 }

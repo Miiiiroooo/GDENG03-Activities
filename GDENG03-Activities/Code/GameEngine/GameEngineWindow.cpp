@@ -1,8 +1,7 @@
 #include "GameEngineWindow.h"
 #include "EngineTime.h"
 #include "Managers/GameObjectManager.h"
-#include "GameObjects/EmptyGameObject.h"
-#include "Components/Renderer/MeshRenderer.h"
+#include "GameObjects/Primitives/CubeObject.h"
 
 
 GameEngineWindow::GameEngineWindow()
@@ -25,21 +24,38 @@ void GameEngineWindow::OnCreate(HWND hWnd)
 
 
 	// setup the objects
-	EmptyGameObject* empty1 = new EmptyGameObject("temp1");
-	Transform* transform1 = empty1->GetTransform(); 
-	transform1->Position = { 0.0f,  0.0f,  2.0f }; 
-	//transform1->LocalScale = { 1.0f,  1.0f,  1.0f };
-	GameObjectManager::GetInstance()->AddObject(empty1);
+	CubeObject* cube1 = new CubeObject();
+	t1 = cube1->GetTransform(); 
+	t1->Position = { 0.0f,  0.0f,  5.0f };
+	GameObjectManager::GetInstance()->AddObject(cube1);
 
-	MeshRenderer* renderer1 = new MeshRenderer(L"DefaultShader");
-	renderer1->LoadPrimitive(EPrimitiveMeshTypes::Cube);
-	empty1->AttachComponent(renderer1);
-	GameObjectManager::GetInstance()->BindRendererToShader(renderer1);
+	CubeObject* cube2 = new CubeObject();
+	cube1->AttachChild(cube2); 
+	t2 = cube2->GetTransform(); 
+	t2->Position = { 2.0f,  0.0f,  5.0f }; 
+
+	CubeObject* cube3 = new CubeObject();
+	cube2->AttachChild(cube3);
+	t3 = cube3->GetTransform(); 
+	t3->Position = { -2.0f,  0.0f,  5.0f }; 
+
+	t2->Rotate(0, 0, 30);
+	t2->Rotate(30, 0, 0);
+	//t2->Rotate(t2->GetLocalRight(), 30);
 }
 
 void GameEngineWindow::OnUpdate()
 {
-	swapChain->ClearBuffer(0.0f, 0.4f, 0.6f);
+	t1->Rotate(0, rSpeed * EngineTime::GetDeltaTime(), 0); 
+	t2->Rotate(rSpeed * EngineTime::GetDeltaTime(), 0, 0); 
+	t3->Rotate(0, rSpeed * EngineTime::GetDeltaTime(), 0); 
+
+	/*t1->Rotate(Vector3::Up, rSpeed * EngineTime::GetDeltaTime());
+	t2->Rotate(t2->GetLocalRight(), rSpeed * EngineTime::GetDeltaTime());
+	t3->Rotate(t3->GetLocalUp(), rSpeed * EngineTime::GetDeltaTime());*/
+
+
+	swapChain->ClearBuffer(0.4f, 0.4f, 0.6f);
 	//GameObjectManager::GetInstance()->ProcessInputs();
 	GameObjectManager::GetInstance()->Update(EngineTime::GetDeltaTime());
 	GameObjectManager::GetInstance()->Draw();
