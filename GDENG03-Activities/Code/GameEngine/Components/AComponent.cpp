@@ -1,4 +1,6 @@
 #include "AComponent.h"
+#include "../GameObjects/AGameObject.h"
+
 
 // constructor and destructor of the AComponent Class
 AComponent::AComponent(std::string name, EComponentTypes type)
@@ -19,6 +21,7 @@ AComponent::~AComponent()
 void AComponent::AttachOwner(AGameObject* object)
 {
 	this->owner = object;
+	this->transform = object->GetTransform();
 }
 
 

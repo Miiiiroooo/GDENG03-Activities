@@ -1,17 +1,19 @@
 #pragma once
-#include <DirectXMath.h>
+#include <SimpleMath.h>
 
+
+using namespace DirectX::SimpleMath;
 
 struct VertexData
 {
-	DirectX::XMFLOAT3 pos;
-	DirectX::XMFLOAT3 vColor;
+	Vector3 pos;
+	Vector3 vColor;
 
 	VertexData() : pos(0.0f, 0.0f, 0.0f), vColor(0.0f, 0.0f, 0.0f)
 	{
 	}
 
-	VertexData(const DirectX::XMFLOAT3& pos, const DirectX::XMFLOAT3& vColor) : pos(pos), vColor(vColor)
+	VertexData(const Vector3& pos, const Vector3& vColor) : pos(pos), vColor(vColor)
 	{
 	}
 
@@ -23,5 +25,12 @@ struct VertexData
 __declspec(align(16))
 struct TMatrix
 {
-	DirectX::XMMATRIX transform;
+	Matrix transform;
+};
+
+__declspec(align(16))
+struct VPMatrix
+{
+	Matrix view;
+	Matrix projection;
 };

@@ -104,6 +104,11 @@ std::string AGameObject::GetName()
 	return this->name;
 }
 
+void AGameObject::SetName(std::string newName)
+{
+	this->name = newName;
+}
+
 bool AGameObject::IsEnabled()
 {
 	return enabled;
@@ -119,9 +124,11 @@ void AGameObject::SetEnabled(bool flag)
 #pragma region Inheritance-related methods
 void AGameObject::AttachChild(AGameObject* child)
 {
-	if (child == this)
+	if (child == this) return;
+
+	if (child->parent != nullptr)
 	{
-		return;
+		child->parent->DetachChild(child);
 	}
 
 	this->childList.push_back(child); 
@@ -132,6 +139,8 @@ void AGameObject::AttachChild(AGameObject* child)
 
 void AGameObject::DetachChild(AGameObject* child)
 {
+	if (child == this) return;
+
 	int index = -1;
 
 	for (size_t i = 0; i < this->childList.size(); i++)
@@ -173,7 +182,8 @@ Transform* AGameObject::GetTransform()
 
 void AGameObject::AttachComponent(AComponent* component)
 {
-	if (component->GetType() == EComponentTypes::Transform) return;
+	if (component->GetType() == EComponentTypes::NotSet ||
+		(component->GetType() == EComponentTypes::Transform && component != transform)) return;
 
 	this->componentList.push_back(component);  
 	component->AttachOwner(this);  

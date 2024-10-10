@@ -3,6 +3,7 @@
 #include "EComponentTypes.h"
 
 class AGameObject;
+class Transform;
 
 class AComponent
 {
@@ -22,6 +23,8 @@ public:
 
 protected:
 	AGameObject* owner;
+	Transform* transform;
+
 	EComponentTypes type;
 	std::string name;
 	float deltaTimeInSeconds;

@@ -19,6 +19,8 @@ public:
 	virtual void Draw(); 
 
 	std::string GetName();
+	void SetName(std::string newName);
+	__declspec(property(get = GetName, put = SetName)) std::string Name;
 	bool IsEnabled();
 	void SetEnabled(bool flag);
 	__declspec(property(get = IsEnabled, put = SetEnabled)) bool Enabled;

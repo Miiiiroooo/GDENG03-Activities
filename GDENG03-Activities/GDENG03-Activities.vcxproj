@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Code\GameEngine\Components\Camera\Camera.cpp" />
     <ClCompile Include="Code\DirectXClasses\Buffers\ConstantBuffer.cpp" />
     <ClCompile Include="Code\DirectXClasses\Buffers\IndexBuffer.cpp" />
     <ClCompile Include="Code\DirectXClasses\Buffers\VertexBuffer.cpp" />
@@ -41,6 +42,7 @@
     <ClCompile Include="Code\GameEngine\GameObjects\Primitives\CubeObject.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Code\GameEngine\Components\Camera\Camera.h" />
     <ClInclude Include="Code\DirectXClasses\AD3D11Object.h" />
     <ClInclude Include="Code\DirectXClasses\Buffers\BufferDataTypes.h" />
     <ClInclude Include="Code\DirectXClasses\Buffers\ConstantBuffer.h" />
@@ -67,6 +69,7 @@
     <ClInclude Include="Code\WindowsMessageMap.h" />
     <ClInclude Include="Code\WindowSystem\Window.h" />
     <ClInclude Include="Code\GameEngine\GameObjects\Primitives\CubeObject.h" />
+    <ClInclude Include="Code\GameEngine\Components\Camera\EProjectionTypes.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Code\Shaders\PixelShader.hlsl">

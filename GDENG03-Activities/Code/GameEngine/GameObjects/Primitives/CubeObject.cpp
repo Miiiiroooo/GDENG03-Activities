@@ -7,6 +7,11 @@ CubeObject::CubeObject() : AGameObject("CubeObj")
 
 }
 
+CubeObject::CubeObject(std::string name) : AGameObject(name)
+{
+
+}
+
 CubeObject::~CubeObject()
 {
 

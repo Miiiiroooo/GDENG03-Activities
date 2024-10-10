@@ -3,7 +3,7 @@
 #include "../../Meshes/CubeMesh.h"
 
 
-MeshRenderer::MeshRenderer() : ARenderer("MesehRenderer", L"DefaultShader")
+MeshRenderer::MeshRenderer() : ARenderer("MeshRenderer", L"DefaultShader")
 {
 	topologyType = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 }

@@ -55,7 +55,7 @@ int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 	GameEngineWindow gameEngine;  
 
-	if (gameEngine.Init(1280, 960, "Aamir Akim"))  
+	if (gameEngine.Init(640, 480, "Aamir Akim"))  
 	{
 		while (gameEngine.IsRunning())  
 		{

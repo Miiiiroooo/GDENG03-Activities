@@ -41,6 +41,9 @@
     <Filter Include="GameEngine\GameObjects\Primitives">
       <UniqueIdentifier>{50d02913-8377-4dea-9301-56f4446de050}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameEngine\Components\Camera">
+      <UniqueIdentifier>{e43d8e90-b56b-4dd8-8f09-e2328695a0e6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\WinMain.cpp" />
@@ -98,6 +101,9 @@
     </ClCompile>
     <ClCompile Include="Code\GameEngine\GameObjects\Primitives\CubeObject.cpp">
       <Filter>GameEngine\GameObjects\Primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\GameEngine\Components\Camera\Camera.cpp">
+      <Filter>GameEngine\Components\Camera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -176,6 +182,12 @@
     </ClInclude>
     <ClInclude Include="Code\GameEngine\GameObjects\Primitives\CubeObject.h">
       <Filter>GameEngine\GameObjects\Primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\GameEngine\Components\Camera\Camera.h">
+      <Filter>GameEngine\Components\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\GameEngine\Components\Camera\EProjectionTypes.h">
+      <Filter>GameEngine\Components\Camera</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

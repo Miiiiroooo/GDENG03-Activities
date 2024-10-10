@@ -7,5 +7,6 @@ enum class EComponentTypes
 	Renderer = 1,
 	Input = 2,
 	Transform = 3,
-	Physics = 4
+	Camera = 4,
+	Physics = 5
 };
