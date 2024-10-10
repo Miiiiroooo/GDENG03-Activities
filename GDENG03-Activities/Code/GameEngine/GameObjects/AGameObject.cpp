@@ -40,25 +40,25 @@ AGameObject::~AGameObject()
 
 
 #pragma region Game-related methods
-//void AGameObject::ProcessInputs(sf::Event event)
-//{
-//	if (this->enabled)
-//	{
-//		std::vector<AComponent*> componentList = this->GetComponentsOfType(EComponentTypes::Input);
-//
-//		for (size_t i = 0; i < componentList.size(); i++)
-//		{
-//			GenericInputController* inputController = (GenericInputController*)componentList[i];
-//			inputController->AssignEvent(event); 
-//			inputController->Perform(); 
-//		}
-//
-//		for (size_t i = 0; i < this->childList.size(); i++)
-//		{
-//			this->childList[i]->ProcessInputs(event); 
-//		}
-//	}
-//}
+void AGameObject::ProcessInputs(UINT msg)
+{
+	if (this->enabled)
+	{
+		std::vector<AComponent*> componentList = this->GetComponentsOfType(EComponentTypes::Input);
+
+		for (size_t i = 0; i < componentList.size(); i++)
+		{
+			/*GenericInputController* inputController = (GenericInputController*)componentList[i];
+			inputController->AssignEvent(event); 
+			inputController->Perform(); */
+		}
+
+		for (size_t i = 0; i < this->childList.size(); i++)
+		{
+			this->childList[i]->ProcessInputs(msg);
+		}
+	}
+}
 
 void AGameObject::Update(float dt) 
 {

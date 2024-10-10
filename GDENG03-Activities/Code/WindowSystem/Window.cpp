@@ -91,7 +91,6 @@ bool Window::Release()
 bool Window::Update()
 {
 	EngineTime::LogStartFrame();
-	this->OnUpdate();
 
 	MSG msg = {  };
 	while (PeekMessage(&msg, hWnd, 0, 0, PM_REMOVE) > 0)
@@ -104,6 +103,8 @@ bool Window::Update()
 		TranslateMessage(&msg);
 		DispatchMessage(&msg);
 	}
+
+	this->OnUpdate(msg.message);
 	EngineTime::LogEndFrame();
 
 	return true;

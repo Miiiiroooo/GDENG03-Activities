@@ -53,9 +53,26 @@ int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 {
 	//ForTesting();
 
+
+	float size = 8.f;
+	Vector2 dir = Vector2::UnitY;
+	float currAngle = 0;
+	float angleIncrements = 360.f / size - 1.f;
+
+	for (int i = 1; i < size; i++)
+	{
+		dir.x = sin(currAngle * M_PI / 180.f) / 2.f;
+		dir.y = cos(currAngle * M_PI / 180.f) / 2.f;
+		Vector3 newVert = Vector3(dir.x, dir.y, 0.0f);
+		currAngle += angleIncrements;
+
+		int temp = 0;
+	}
+
+
 	GameEngineWindow gameEngine;  
 
-	if (gameEngine.Init(640, 480, "Aamir Akim"))  
+	if (gameEngine.Init(1024, 768, "Aamir Akim"))  
 	{
 		while (gameEngine.IsRunning())  
 		{

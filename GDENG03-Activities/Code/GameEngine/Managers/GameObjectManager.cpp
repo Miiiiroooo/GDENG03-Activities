@@ -16,13 +16,13 @@ GameObjectManager* GameObjectManager::GetInstance()
 
 
 #pragma region Game-related methods
-//void GameObjectManager::ProcessInput(sf::Event event)
-//{
-//	for (size_t i = 0; i < gameObjectList.size(); i++) 
-//	{
-//		gameObjectList[i]->ProcessInputs(event); 
-//	}
-//}
+void GameObjectManager::ProcessInputs(UINT msg)
+{
+	for (size_t i = 0; i < gameObjectList.size(); i++) 
+	{
+		gameObjectList[i]->ProcessInputs(msg);
+	}
+}
 
 void GameObjectManager::Update(float deltaTime)
 {

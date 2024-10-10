@@ -35,8 +35,8 @@ TMatrix Transform::CreateTransformationMatrix()
 		DirectX::XMMatrixTranspose(
 			Matrix::CreateScale(globalScale) * 
 			Matrix::CreateFromQuaternion(orientation) * 
-			Matrix::CreateTranslation(globalPos) *
-			DirectX::XMMatrixPerspectiveLH(1, 0.75f, 0.5f, 10.f) // remove after use
+			Matrix::CreateTranslation(globalPos) 
+			//DirectX::XMMatrixPerspectiveLH(1, 0.75f, 0.5f, 10.f) // remove after use
 		)};
 }
 

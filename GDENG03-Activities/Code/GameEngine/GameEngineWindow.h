@@ -12,7 +12,7 @@ public:
 
 protected:
 	void OnCreate(HWND hWnd) override;
-	void OnUpdate() override;
+	void OnUpdate(UINT msg) override;
 	void OnDestroy() override;
 	LRESULT CALLBACK HandleWindowMessages(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) override;
 

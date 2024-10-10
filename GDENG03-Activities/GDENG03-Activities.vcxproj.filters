@@ -44,6 +44,9 @@
     <Filter Include="GameEngine\Components\Camera">
       <UniqueIdentifier>{e43d8e90-b56b-4dd8-8f09-e2328695a0e6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameEngine\Components\Inputs">
+      <UniqueIdentifier>{84f264cc-c605-4607-b4bc-0295b743b218}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\WinMain.cpp" />
@@ -104,6 +107,9 @@
     </ClCompile>
     <ClCompile Include="Code\GameEngine\Components\Camera\Camera.cpp">
       <Filter>GameEngine\Components\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\GameEngine\Components\CircleBehavior.cpp">
+      <Filter>GameEngine\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -188,6 +194,12 @@
     </ClInclude>
     <ClInclude Include="Code\GameEngine\Components\Camera\EProjectionTypes.h">
       <Filter>GameEngine\Components\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\GameEngine\Meshes\CircleMesh.h">
+      <Filter>GameEngine\Meshes</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\GameEngine\Components\CircleBehavior.h">
+      <Filter>GameEngine\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -10,5 +10,6 @@ enum class EPrimitiveMeshTypes
 	Plane,
 	Cylinder,
 	Cone,
-	Capsule
+	Capsule,
+	Circle
 };

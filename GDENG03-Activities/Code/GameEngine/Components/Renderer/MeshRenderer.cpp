@@ -1,6 +1,7 @@
 #include "MeshRenderer.h"
 #include "../../Meshes/QuadMesh.h"
 #include "../../Meshes/CubeMesh.h"
+#include "../../Meshes/CircleMesh.h"
 
 
 MeshRenderer::MeshRenderer() : ARenderer("MeshRenderer", L"DefaultShader")
@@ -35,6 +36,9 @@ void MeshRenderer::LoadPrimitive(EPrimitiveMeshTypes type)
 		break;
 	case EPrimitiveMeshTypes::Plane:
 		// add plane here
+		break;
+	case EPrimitiveMeshTypes::Circle:
+		mesh = new CircleMesh<VertexData>();
 		break;
 	default:
 		break;
