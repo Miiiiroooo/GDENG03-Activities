@@ -185,3 +185,4 @@ node_modules/
 ![Mm]edia/*
 ![Ss]haders/*
 ![Ll]ibs/*
+!**/[Pp]ackages/** 
