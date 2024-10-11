@@ -19,7 +19,7 @@ public:
 
 protected:
 	virtual void OnCreate(HWND hWnd) = 0;
-	virtual void OnUpdate(UINT msg) = 0;
+	virtual void OnUpdate() = 0;
 	virtual void OnDestroy();
 
 	static LRESULT CALLBACK StaticWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);

@@ -7,18 +7,20 @@
 class GameEngineWindow : public Window
 {
 public:
-	GameEngineWindow();
+	GameEngineWindow(int fps);
 	~GameEngineWindow();
 
 protected:
 	void OnCreate(HWND hWnd) override;
-	void OnUpdate(UINT msg) override;
+	void OnUpdate() override;
 	void OnDestroy() override;
 	LRESULT CALLBACK HandleWindowMessages(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) override;
 
 
 private:
 	SwapChain* swapChain;
+	int fps;
+	float currDelta;
 
 	float rSpeed = 20;
 	Transform* t1;

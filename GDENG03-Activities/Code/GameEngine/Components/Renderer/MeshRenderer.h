@@ -14,4 +14,5 @@ public:
 
 
 	void Temp(const std::vector<DirectX::XMFLOAT3>& colorList);
+	void CreateCircle(Vector3 color);
 };

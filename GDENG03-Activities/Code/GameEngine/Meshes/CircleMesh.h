@@ -54,5 +54,33 @@ public:
 
 		return new IndexBuffer(GraphicsEngine::GetInstance(), indices);
 	}
+
+
+	VertexBuffer<T>* Temp(Vector3 color) 
+	{
+		float size = 21;
+
+		std::vector<T> data(size);
+		data[0].pos = Vector3::Zero;
+		data[0].vColor = color;
+
+		Vector2 dir = Vector2::UnitY;
+		float currAngle = 0;
+		float angleIncrements = 360.f / (size - 1.f);
+
+		for (int i = 1; i < size; i++)
+		{
+			dir.x = sin(currAngle * M_PI / 180.f) / 2.f;
+			dir.y = cos(currAngle * M_PI / 180.f) / 2.f;
+			Vector3 newVert = Vector3(dir.x, dir.y, 0.0f);
+
+			data[i].pos = newVert;
+			data[i].vColor = color;
+
+			currAngle += angleIncrements;
+		}
+
+		return new VertexBuffer<T>(GraphicsEngine::GetInstance(), data);
+	}
 };
 

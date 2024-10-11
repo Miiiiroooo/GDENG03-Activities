@@ -1,4 +1,5 @@
 #include "AGameObject.h"
+#include "../Components/Inputs/GenericInputController.h"
 #include "../Components/Renderer/ARenderer.h"
 
 
@@ -40,7 +41,7 @@ AGameObject::~AGameObject()
 
 
 #pragma region Game-related methods
-void AGameObject::ProcessInputs(UINT msg)
+void AGameObject::ProcessInputs(WPARAM wParam, LPARAM lParam)
 {
 	if (this->enabled)
 	{
@@ -48,14 +49,14 @@ void AGameObject::ProcessInputs(UINT msg)
 
 		for (size_t i = 0; i < componentList.size(); i++)
 		{
-			/*GenericInputController* inputController = (GenericInputController*)componentList[i];
-			inputController->AssignEvent(event); 
-			inputController->Perform(); */
+			GenericInputController* inputController = (GenericInputController*)componentList[i];
+			inputController->ProcessInputs(wParam, lParam); 
+			inputController->Perform(); 
 		}
 
 		for (size_t i = 0; i < this->childList.size(); i++)
 		{
-			this->childList[i]->ProcessInputs(msg);
+			this->childList[i]->ProcessInputs(wParam, lParam);
 		}
 	}
 }
@@ -184,6 +185,13 @@ void AGameObject::AttachComponent(AComponent* component)
 {
 	if (component->GetType() == EComponentTypes::NotSet ||
 		(component->GetType() == EComponentTypes::Transform && component != transform)) return;
+
+	auto itr = std::find_if(componentList.begin(), componentList.end(), [&component](AComponent* componentInList) 
+	{
+			return (component == componentInList);
+	});
+
+	if (itr != componentList.end()) return;
 
 	this->componentList.push_back(component);  
 	component->AttachOwner(this);  

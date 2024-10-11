@@ -47,6 +47,9 @@
     <Filter Include="GameEngine\Components\Inputs">
       <UniqueIdentifier>{84f264cc-c605-4607-b4bc-0295b743b218}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameEngine\Components\Scripts">
+      <UniqueIdentifier>{cdbe7f35-6707-4e09-87ea-e58ab5b45eaa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\WinMain.cpp" />
@@ -108,8 +111,20 @@
     <ClCompile Include="Code\GameEngine\Components\Camera\Camera.cpp">
       <Filter>GameEngine\Components\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="Code\GameEngine\Components\CircleBehavior.cpp">
-      <Filter>GameEngine\Components</Filter>
+    <ClCompile Include="Code\GameEngine\Components\Inputs\CircleSpawnerInputListener.cpp">
+      <Filter>GameEngine\Components\Inputs</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\GameEngine\Components\Inputs\GenericInputController.cpp">
+      <Filter>GameEngine\Components\Inputs</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\GameEngine\Components\Scripts\CircleBehavior.cpp">
+      <Filter>GameEngine\Components\Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\GameEngine\Components\Scripts\CircleSpawner.cpp">
+      <Filter>GameEngine\Components\Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\GameEngine\GameObjects\Primitives\CircleObject.cpp">
+      <Filter>GameEngine\GameObjects\Primitives</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -198,8 +213,20 @@
     <ClInclude Include="Code\GameEngine\Meshes\CircleMesh.h">
       <Filter>GameEngine\Meshes</Filter>
     </ClInclude>
-    <ClInclude Include="Code\GameEngine\Components\CircleBehavior.h">
-      <Filter>GameEngine\Components</Filter>
+    <ClInclude Include="Code\GameEngine\Components\Inputs\CircleSpawnerInputListener.h">
+      <Filter>GameEngine\Components\Inputs</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\GameEngine\Components\Inputs\GenericInputController.h">
+      <Filter>GameEngine\Components\Inputs</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\GameEngine\Components\Scripts\CircleBehavior.h">
+      <Filter>GameEngine\Components\Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\GameEngine\Components\Scripts\CircleSpawner.h">
+      <Filter>GameEngine\Components\Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\GameEngine\GameObjects\Primitives\CircleObject.h">
+      <Filter>GameEngine\GameObjects\Primitives</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

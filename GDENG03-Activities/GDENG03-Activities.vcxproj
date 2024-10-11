@@ -19,7 +19,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Code\GameEngine\Components\CircleBehavior.cpp" />
+    <ClCompile Include="Code\GameEngine\GameObjects\Primitives\CircleObject.cpp" />
+    <ClCompile Include="Code\GameEngine\Components\Scripts\CircleSpawner.cpp" />
+    <ClCompile Include="Code\GameEngine\Components\Inputs\CircleSpawnerInputListener.cpp" />
+    <ClCompile Include="Code\GameEngine\Components\Scripts\CircleBehavior.cpp" />
     <ClCompile Include="Code\GameEngine\Components\Camera\Camera.cpp" />
     <ClCompile Include="Code\DirectXClasses\Buffers\ConstantBuffer.cpp" />
     <ClCompile Include="Code\DirectXClasses\Buffers\IndexBuffer.cpp" />
@@ -41,9 +44,13 @@
     <ClCompile Include="Code\WindowSystem\Window.cpp" />
     <ClCompile Include="Code\WinMain.cpp" />
     <ClCompile Include="Code\GameEngine\GameObjects\Primitives\CubeObject.cpp" />
+    <ClCompile Include="Code\GameEngine\Components\Inputs\GenericInputController.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Code\GameEngine\Components\CircleBehavior.h" />
+    <ClInclude Include="Code\GameEngine\GameObjects\Primitives\CircleObject.h" />
+    <ClInclude Include="Code\GameEngine\Components\Scripts\CircleSpawner.h" />
+    <ClInclude Include="Code\GameEngine\Components\Inputs\CircleSpawnerInputListener.h" />
+    <ClInclude Include="Code\GameEngine\Components\Scripts\CircleBehavior.h" />
     <ClInclude Include="Code\GameEngine\Meshes\CircleMesh.h" />
     <ClInclude Include="Code\GameEngine\Components\Camera\Camera.h" />
     <ClInclude Include="Code\DirectXClasses\AD3D11Object.h" />
@@ -73,6 +80,7 @@
     <ClInclude Include="Code\WindowSystem\Window.h" />
     <ClInclude Include="Code\GameEngine\GameObjects\Primitives\CubeObject.h" />
     <ClInclude Include="Code\GameEngine\Components\Camera\EProjectionTypes.h" />
+    <ClInclude Include="Code\GameEngine\Components\Inputs\GenericInputController.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Code\Shaders\PixelShader.hlsl">

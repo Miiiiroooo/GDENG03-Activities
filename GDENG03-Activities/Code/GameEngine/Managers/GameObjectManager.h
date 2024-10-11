@@ -13,7 +13,7 @@ public:
 	GameObjectManager& operator=(const GameObjectManager&) = delete;
 
 	// Game-related methods
-	void ProcessInputs(UINT msg);
+	void ProcessInputs(WPARAM wParam, LPARAM lParam);
 	void Update(float dt);
 	void Draw();
 

@@ -81,3 +81,19 @@ void MeshRenderer::Temp(const std::vector<DirectX::XMFLOAT3>& colorList)
 
 	delete mesh;
 }
+
+void MeshRenderer::CreateCircle(Vector3 color)
+{
+	InitRenderer();
+
+	CircleMesh<VertexData>* mesh = new CircleMesh<VertexData>();
+
+	VertexBuffer<VertexData>* vb = mesh->Temp(color);
+	vb->Init();
+	bufferList.push_back(vb);
+
+	indexBuffer = mesh->CreateIndexBuffer();
+	indexBuffer->Init();
+
+	delete mesh;
+}
