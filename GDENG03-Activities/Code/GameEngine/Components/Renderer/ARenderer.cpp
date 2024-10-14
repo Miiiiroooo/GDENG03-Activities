@@ -14,21 +14,38 @@ ARenderer::~ARenderer()
 
 }
 
+void ARenderer::Clone(AComponent* copy)
+{
+	ARenderer* copyRenderer = (ARenderer*)copy;
+	if (copyRenderer == nullptr) return;
+
+	// consider creating copy for each buffer instead taking the ref from another renderer
+	Release();
+	InitRenderer();
+	shaderType = copyRenderer->shaderType;
+	topologyType = copyRenderer->topologyType;
+	buffersList = copyRenderer->buffersList;
+	indexBuffer = copyRenderer->indexBuffer;
+	//tMatrixBuffer = copyRenderer->tMatrixBuffer;
+}
+
 bool ARenderer::Release()
 {
-	for (auto& buffer : bufferList)
+	for (int i = buffersList.size() - 1; i >= 0; i--)
 	{
-		buffer->Release();
+		buffersList[i]->Release();
 	}
+	buffersList.clear();
+	buffersList.shrink_to_fit();
 
 	if (indexBuffer)
 	{
 		indexBuffer->Release();
 	}
 
-	if (vConstantBuffer)
+	if (tMatrixBuffer)
 	{
-		vConstantBuffer->Release();
+		tMatrixBuffer->Release();
 	}
 
 	return true;
@@ -36,10 +53,10 @@ bool ARenderer::Release()
 
 void ARenderer::Perform()
 {
-	if (bufferList.size() == 0) return;
+	if (buffersList.size() == 0) return;
 
 	// Bind every buffer stored in this renderer
-	for (auto& buffer : bufferList)
+	for (auto& buffer : buffersList)
 	{
 		buffer->BindToPipeline();
 	}
@@ -47,8 +64,8 @@ void ARenderer::Perform()
 	indexBuffer->BindToPipeline();
 
 	Transform* transform = owner->GetTransform();
-	vConstantBuffer->SetConstants(transform->CreateTransformationMatrix());
-	vConstantBuffer->BindToPipeline();
+	tMatrixBuffer->SetConstants(transform->CreateTransformationMatrix());
+	tMatrixBuffer->BindToPipeline();
 
 	// Set the topology type, then draw to the GPU
 	GraphicsEngine::GetInstance()->GetDeviceContext()->IASetPrimitiveTopology(topologyType);
@@ -62,6 +79,6 @@ LPCWSTR ARenderer::GetShaderType()
 
 void ARenderer::InitRenderer()
 {
-	vConstantBuffer = new VertexConstantBuffer<TMatrix>(GraphicsEngine::GetInstance(), 0u);
-	vConstantBuffer->Init();
+	tMatrixBuffer = new VertexConstantBuffer<TMatrix>(GraphicsEngine::GetInstance(), 0u);
+	tMatrixBuffer->Init();
 }

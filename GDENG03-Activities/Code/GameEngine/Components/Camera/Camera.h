@@ -2,8 +2,9 @@
 #include <SimpleMath.h>
 #include "../AComponent.h"
 #include "EProjectionTypes.h"
-#include "../../../DirectXClasses/Buffers/BufferDataTypes.h"
 #include "../../../DirectXClasses/SwapChain.h"
+#include "../../../DirectXClasses/Buffers/BufferDataTypes.h"
+#include "../../../DirectXClasses/Buffers/ConstantBuffer.cpp"
 
 
 using namespace DirectX::SimpleMath;
@@ -15,8 +16,10 @@ public:
 	Camera(std::string name, int width, int height);
 	~Camera();
 
+	bool Release();
+	void Clone(AComponent* copy) override;
 	void Perform() override;
-	VPMatrix CreateViewProjectionMatrix();
+	void BindVPMatrixToPipeline();
 
 	Vector2 GetClippingPlane();
 	void SetClippingPlane(float nearZ, float farZ);
@@ -31,6 +34,12 @@ public:
 private:
 	Vector2 clippingPlane;
 
+	VertexConstantBuffer<VPMatrix>* vpMatrixBuffer;
+
 	//SwapChain* swapChain;
 	//Color bgColor;
+
+	// add depth, dictates prioprity between cameras
+	// viewport properties
+	// clear flags, present skybox, solid color, or nothing as bg (requires swapchain)
 };

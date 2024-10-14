@@ -3,27 +3,21 @@
 
 
 template <typename T>
-class QuadMesh : public AMesh<T>
+class PlaneMesh : public AMesh<T>
 {
 public:
 	VertexBuffer<T>* CreateVertexBuffer() override
 	{
-		std::vector<T> data(4); 
-		data[0].pos = { -0.5f,  0.5f, 0.0f };
-		data[1].pos = { 0.5f,  0.5f, 0.0f };
-		data[2].pos = { -0.5f, -0.5f, 0.0f };
-		data[3].pos = { 0.5f, -0.5f, 0.0f };
+		std::vector<T> data(4);
+		data[0].pos = { -2.5f, 0.0f,  2.5f };
+		data[1].pos = {  2.5f, 0.0f,  2.5f };
+		data[2].pos = { -2.5f, 0.0f, -2.5f };
+		data[3].pos = {  2.5f, 0.0f, -2.5f };
+
 		data[0].vColor = { 1.0f, 1.0f, 1.0f };
 		data[1].vColor = { 1.0f, 1.0f, 1.0f };
 		data[2].vColor = { 1.0f, 1.0f, 1.0f };
 		data[3].vColor = { 1.0f, 1.0f, 1.0f };
-
-		/*std::vector<T> data = {
-			{{-0.5f,  0.5f, 0.0f}, {1.0f, 1.0f, 1.0f}},
-			{{ 0.5f,  0.5f, 0.0f}, {1.0f, 1.0f, 1.0f}},
-			{{-0.5f, -0.5f, 0.0f}, {1.0f, 1.0f, 1.0f}},
-			{{ 0.5f, -0.5f, 0.0f}, {1.0f, 1.0f, 1.0f}},
-		};*/
 
 		return new VertexBuffer<T>(GraphicsEngine::GetInstance(), data);
 	}

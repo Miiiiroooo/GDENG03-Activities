@@ -1,6 +1,8 @@
 #include "MeshRenderer.h"
-#include "../../Meshes/QuadMesh.h"
 #include "../../Meshes/CubeMesh.h"
+#include "../../Meshes/QuadMesh.h"
+#include "../../Meshes/PlaneMesh.h"
+#include "../../Meshes/CircleMesh.h"
 
 
 MeshRenderer::MeshRenderer() : ARenderer("MeshRenderer", L"DefaultShader")
@@ -33,8 +35,11 @@ void MeshRenderer::LoadPrimitive(EPrimitiveMeshTypes type)
 	case EPrimitiveMeshTypes::Quad:
 		mesh = new QuadMesh<VertexData>();
 		break;
+	case EPrimitiveMeshTypes::Circle:
+		mesh = new CircleMesh<VertexData>();
+		break;
 	case EPrimitiveMeshTypes::Plane:
-		// add plane here
+		mesh = new PlaneMesh<VertexData>();
 		break;
 	default:
 		break;
@@ -46,7 +51,7 @@ void MeshRenderer::LoadPrimitive(EPrimitiveMeshTypes type)
 
 	VertexBuffer<VertexData>* vb = mesh->CreateVertexBuffer();
 	vb->Init();
-	bufferList.push_back(vb);
+	buffersList.push_back(vb);
 
 	indexBuffer = mesh->CreateIndexBuffer();
 	indexBuffer->Init();
@@ -62,18 +67,18 @@ void MeshRenderer::LoadNonPrimitive(std::string fileName)
 
 
 
-void MeshRenderer::Temp(const std::vector<DirectX::XMFLOAT3>& colorList)
-{
-	InitRenderer();
-
-	QuadMesh<VertexData>* mesh = new QuadMesh<VertexData>(); 
-
-	VertexBuffer<VertexData>* vb = mesh->Temp(colorList); 
-	vb->Init(); 
-	bufferList.push_back(vb); 
-
-	indexBuffer = mesh->CreateIndexBuffer(); 
-	indexBuffer->Init(); 
-
-	delete mesh;
-}
+//void MeshRenderer::Temp()
+//{
+//	InitRenderer();
+//
+//	CubeMesh<VertexData>* mesh = new CubeMesh<VertexData>();
+//
+//	VertexBuffer<VertexData>* vb = mesh->WithColors(); 
+//	vb->Init(); 
+//	buffersList.push_back(vb); 
+//
+//	indexBuffer = mesh->CreateIndexBuffer(); 
+//	indexBuffer->Init(); 
+//
+//	delete mesh;
+//}

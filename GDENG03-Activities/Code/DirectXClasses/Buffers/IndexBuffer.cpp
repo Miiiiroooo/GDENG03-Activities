@@ -43,7 +43,11 @@ void IndexBuffer::BindToPipeline()
 
 bool IndexBuffer::Release()
 {
-	pIndexBuffer.Get()->Release();
+	if (pIndexBuffer.Get())
+	{
+		pIndexBuffer.Get()->Release();
+	}
+
 	delete this;
 
 	return true;

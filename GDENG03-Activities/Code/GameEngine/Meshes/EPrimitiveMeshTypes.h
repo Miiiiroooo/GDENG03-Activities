@@ -8,6 +8,7 @@ enum class EPrimitiveMeshTypes
 	Sphere,
 	Quad,
 	Plane,
+	Circle,
 	Cylinder,
 	Cone,
 	Capsule

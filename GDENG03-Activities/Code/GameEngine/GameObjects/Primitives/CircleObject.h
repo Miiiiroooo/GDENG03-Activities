@@ -2,12 +2,12 @@
 #include "../AGameObject.h"
 #include "../../Components/Renderer/MeshRenderer.h"
 
-class CubeObject : public AGameObject
+class CircleObject : public AGameObject
 {
 public:
-	CubeObject();
-	CubeObject(std::string name);
-	~CubeObject();
+	CircleObject();
+	CircleObject(std::string name);
+	~CircleObject();
 	void Initialize() override;
 
 

@@ -12,6 +12,7 @@ public:
 	Transform();
 	~Transform();
 
+	void Clone(AComponent* copy) override;
 	void Perform() override;
 	TMatrix CreateTransformationMatrix();
 	void RecalculateChildTransformWithoutParent();

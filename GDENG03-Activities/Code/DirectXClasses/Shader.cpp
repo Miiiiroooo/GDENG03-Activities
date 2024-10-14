@@ -86,10 +86,19 @@ void VertexShader::BindToPipeline()
 
 bool VertexShader::Release()
 {
-	vShader.Get()->Release();
+	if (vShader.Get())
+	{
+		vShader.Get()->Release();
+	}
+
+	if (inputLayout.Get())
+	{
+		inputLayout.Get()->Release();
+	}
+
 	inputElements.clear(); 
 	inputElements.shrink_to_fit();
-	inputLayout.Get()->Release(); 
+
 	Shader::Release();
 
 	return true;

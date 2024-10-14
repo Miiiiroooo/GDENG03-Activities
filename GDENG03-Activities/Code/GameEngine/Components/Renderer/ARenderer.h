@@ -13,6 +13,7 @@ public:
 	ARenderer(std::string compoonentName, LPCWSTR shaderType);
 	~ARenderer();
 
+	virtual void Clone(AComponent* copy) override;
 	virtual bool Release();
 	void Perform() override;
 	LPCWSTR GetShaderType();
@@ -25,7 +26,7 @@ protected:
 	LPCWSTR shaderType;
 	D3D11_PRIMITIVE_TOPOLOGY topologyType;
 
-	std::vector<AD3D11Object*> bufferList;
+	std::vector<AD3D11Object*> buffersList;
 	IndexBuffer* indexBuffer;
-	VertexConstantBuffer<TMatrix>* vConstantBuffer;
+	VertexConstantBuffer<TMatrix>* tMatrixBuffer;
 };

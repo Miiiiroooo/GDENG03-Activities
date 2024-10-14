@@ -48,4 +48,28 @@ public:
 		};
 		return new IndexBuffer(GraphicsEngine::GetInstance(), indices); 
 	}
+
+	/*VertexBuffer<T>* WithColors()
+	{
+		std::vector<T> data(8);
+		data[0].pos = { -0.5f,  0.5f, -0.5f };
+		data[1].pos = { 0.5f,  0.5f, -0.5f };
+		data[2].pos = { -0.5f, -0.5f, -0.5f };
+		data[3].pos = { 0.5f, -0.5f, -0.5f };
+		data[4].pos = { 0.5f,  0.5f,  0.5f };
+		data[5].pos = { -0.5f,  0.5f,  0.5f };
+		data[6].pos = { 0.5f, -0.5f,  0.5f };
+		data[7].pos = { -0.5f, -0.5f,  0.5f };
+
+		data[0].vColor = { 1.0f, 0.0f, 0.0f };
+		data[1].vColor = { 0.0f, 1.0f, 0.0f };
+		data[2].vColor = { 0.0f, 0.0f, 1.0f };
+		data[3].vColor = { 1.0f, 1.0f, 0.0f };
+		data[4].vColor = { 0.0f, 1.0f, 0.0f };
+		data[5].vColor = { 1.0f, 0.0f, 0.0f };
+		data[6].vColor = { 1.0f, 1.0f, 0.0f };
+		data[7].vColor = { 0.0f, 0.0f, 1.0f };
+
+		return new VertexBuffer<T>(GraphicsEngine::GetInstance(), data);
+	}*/
 };

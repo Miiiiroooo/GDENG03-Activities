@@ -22,4 +22,5 @@ private:
 	GraphicsEngine* gfx;
 	Microsoft::WRL::ComPtr<IDXGISwapChain> swapChain;
 	Microsoft::WRL::ComPtr<ID3D11RenderTargetView> renderTargetView;
+	Microsoft::WRL::ComPtr<ID3D11DepthStencilView> depthStencilView;
 };

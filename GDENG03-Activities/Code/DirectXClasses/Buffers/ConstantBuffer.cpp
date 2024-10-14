@@ -1,3 +1,4 @@
+#pragma once
 #include "ConstantBuffer.h"
 
 
@@ -39,7 +40,11 @@ bool ConstantBuffer<T>::Init()
 template<typename T>
 bool ConstantBuffer<T>::Release()
 {
-	pConstantBuffer.Get()->Release();
+	if (pConstantBuffer.Get())
+	{
+		pConstantBuffer.Get()->Release();
+	}
+
 	delete this;
 	
 	return true;

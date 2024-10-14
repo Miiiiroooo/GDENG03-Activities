@@ -53,7 +53,7 @@ int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 {
 	//ForTesting();
 
-	GameEngineWindow gameEngine;  
+	GameEngineWindow gameEngine(60);  
 
 	if (gameEngine.Init(640, 480, "Aamir Akim"))  
 	{

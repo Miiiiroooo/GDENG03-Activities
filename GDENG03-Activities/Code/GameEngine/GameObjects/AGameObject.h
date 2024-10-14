@@ -14,7 +14,7 @@ public:
 
 	// Game-related methods
 	virtual void Initialize() = 0;
-	//virtual void ProcessInputs(sf::Event event);
+	virtual void ProcessInputs(WPARAM wParam, LPARAM lParam);
 	virtual void Update(float dt);
 	virtual void Draw(); 
 

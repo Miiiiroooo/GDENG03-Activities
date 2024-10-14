@@ -24,6 +24,17 @@ Transform::~Transform()
 
 }
 
+void Transform::Clone(AComponent* copy)
+{
+	Transform* copyTransform = (Transform*)copy;
+	if (copyTransform == nullptr) return;
+
+	// revisit this next time
+	globalPos = copyTransform->globalPos;
+	globalScale = copyTransform->globalScale;
+	eulerAngles = copyTransform->eulerAngles;
+}
+
 void Transform::Perform()
 {
 
@@ -32,12 +43,10 @@ void Transform::Perform()
 TMatrix Transform::CreateTransformationMatrix()
 {
 	return TMatrix{
-		DirectX::XMMatrixTranspose(
 			Matrix::CreateScale(globalScale) * 
 			Matrix::CreateFromQuaternion(orientation) * 
-			Matrix::CreateTranslation(globalPos) *
-			DirectX::XMMatrixPerspectiveLH(1, 0.75f, 0.5f, 10.f) // remove after use
-		)};
+			Matrix::CreateTranslation(globalPos)
+		};
 }
 
 void Transform::RecalculateChildTransformWithoutParent() 

@@ -2,6 +2,7 @@
 #include <string>
 #include "EComponentTypes.h"
 
+
 class AGameObject;
 class Transform;
 
@@ -11,6 +12,7 @@ public:
 	AComponent(std::string name, EComponentTypes type);
 	virtual ~AComponent();
 
+	virtual void Clone(AComponent* copy) = 0;
 	void AttachOwner(AGameObject* owner);
 	void DetachOwner();
 	AGameObject* GetOwner();
@@ -27,6 +29,6 @@ protected:
 
 	EComponentTypes type;
 	std::string name;
-	float deltaTimeInSeconds;
+	float dt;
 };
 

@@ -1,3 +1,4 @@
+#pragma once
 #include "VertexBuffer.h"
 
 
@@ -49,7 +50,11 @@ void VertexBuffer<T>::BindToPipeline()
 template<typename T>
 bool VertexBuffer<T>::Release()
 {
-    pVertexBuffer.Get()->Release();
+	if (pVertexBuffer.Get())
+	{
+		pVertexBuffer.Get()->Release(); 
+	}
+
 	delete this;
 
     return true;

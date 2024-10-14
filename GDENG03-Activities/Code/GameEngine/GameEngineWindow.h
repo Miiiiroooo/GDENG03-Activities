@@ -1,13 +1,13 @@
 #pragma once
 #include "../WindowSystem/Window.h"
 #include "../DirectXClasses/SwapChain.h"
-#include "Components/Transform.h"
+#include "GameObjects/CameraObject.h"
 
 
 class GameEngineWindow : public Window
 {
 public:
-	GameEngineWindow();
+	GameEngineWindow(int fps);
 	~GameEngineWindow();
 
 protected:
@@ -19,8 +19,10 @@ protected:
 
 private:
 	SwapChain* swapChain;
+	int fps;
+	float currDelta;
 
-	float rSpeed = 20;
+	CameraObject* cam;
 	Transform* t1;
 	Transform* t2;
 	Transform* t3;

@@ -16,13 +16,13 @@ GameObjectManager* GameObjectManager::GetInstance()
 
 
 #pragma region Game-related methods
-//void GameObjectManager::ProcessInput(sf::Event event)
-//{
-//	for (size_t i = 0; i < gameObjectList.size(); i++) 
-//	{
-//		gameObjectList[i]->ProcessInputs(event); 
-//	}
-//}
+void GameObjectManager::ProcessInputs(WPARAM wParam, LPARAM lParam)
+{
+	for (size_t i = 0; i < gameObjectList.size(); i++)
+	{
+		gameObjectList[i]->ProcessInputs(wParam, lParam);
+	}
+}
 
 void GameObjectManager::Update(float deltaTime)
 {
@@ -82,12 +82,32 @@ AGameObject* GameObjectManager::FindObjectByName(std::string name)
 
 void GameObjectManager::DeleteObject(AGameObject* gameObject)
 {
-	std::string key = gameObject->GetName(); 
-	delete gameObject; 
+	// Detach from the parent
+	AGameObject* parent = gameObject->GetParent(); 
+	if (parent) parent->DetachChild(gameObject);
 
+	// remove from game object trackers
+	std::string key = gameObject->GetName(); 
 	gameObjectMap.erase(key); 
-	gameObjectList.erase(std::remove(gameObjectList.begin(), gameObjectList.end(), gameObject)); 
+
+	auto itr = std::find(gameObjectList.begin(), gameObjectList.end(), gameObject); 
+	if (itr != gameObjectList.end()) gameObjectList.erase(itr); 
 	gameObjectList.shrink_to_fit(); 
+
+	// remove from shader trackers
+	std::vector<AComponent*> componentList = gameObject->GetComponentsOfType(EComponentTypes::Renderer);
+	for (int i = 0; i < componentList.size(); i++) 
+	{
+		ARenderer* renderer = dynamic_cast<ARenderer*>(componentList[i]); 
+		if (renderer == nullptr) continue;
+
+		auto& objectsInShaderList = shaderToObjectsMap[renderer->GetShaderType()];
+		objectsInShaderList.erase(std::remove(objectsInShaderList.begin(), objectsInShaderList.end(), gameObject));
+		objectsInShaderList.shrink_to_fit();
+	}
+
+	// delete
+	delete gameObject;
 }
 
 void GameObjectManager::DeleteObjectByName(std::string name)

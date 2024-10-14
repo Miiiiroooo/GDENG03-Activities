@@ -51,5 +51,5 @@ std::string AComponent::GetName()
 
 void AComponent::SetDeltaTime(float deltaTime)
 {
-	this->deltaTimeInSeconds = deltaTime;
+	this->dt = deltaTime;
 }
