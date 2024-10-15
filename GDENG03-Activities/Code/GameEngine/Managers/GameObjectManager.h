@@ -26,14 +26,16 @@ public:
 	std::vector<AGameObject*> GetAllObjects(); 
 	int GetActiveObjectsCount();
 
+private:
+	void UnbindRendererWithChildren(AGameObject* obj);
+
 
 private:
 	GameObjectManager() {};
 	static GameObjectManager* sharedInstance;
 
-	std::unordered_map<std::string, AGameObject*> gameObjectMap;
 	std::vector<AGameObject*> gameObjectList;
-
+	std::unordered_map<std::string, AGameObject*> gameObjectMap;
 	std::unordered_map<LPCWSTR, std::vector<AGameObject*>> shaderToObjectsMap;
 };
 

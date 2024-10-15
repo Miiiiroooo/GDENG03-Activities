@@ -1,6 +1,7 @@
 #include "Camera.h"
 #include "../Transform.h"
 #include "../../Graphics/GraphicsEngine.h"
+#include "../../Graphics/CameraManager.h"
 
 
 Camera::Camera(int width, int height) : AComponent("Camera", EComponentTypes::Camera)
@@ -12,6 +13,8 @@ Camera::Camera(int width, int height) : AComponent("Camera", EComponentTypes::Ca
 
 	vpMatrixBuffer = new VertexConstantBuffer<VPMatrix>(GraphicsEngine::GetInstance(), 1u);
 	vpMatrixBuffer->Init();
+
+	CameraManager::GetInstance()->AddCamera(this);
 }
 
 Camera::Camera(std::string name, int width, int height) : AComponent(name, EComponentTypes::Camera)
@@ -23,14 +26,13 @@ Camera::Camera(std::string name, int width, int height) : AComponent(name, EComp
 
 	vpMatrixBuffer = new VertexConstantBuffer<VPMatrix>(GraphicsEngine::GetInstance(), 1u);
 	vpMatrixBuffer->Init();
+
+	CameraManager::GetInstance()->AddCamera(this); 
 }
 
 Camera::~Camera()
 {
-	if (vpMatrixBuffer)
-	{
-		vpMatrixBuffer->Release();
-	}
+	
 }
 
 bool Camera::Release()
@@ -39,6 +41,8 @@ bool Camera::Release()
 	{
 		vpMatrixBuffer->Release();
 	}
+
+	CameraManager::GetInstance()->RemoveCamera(this); 
 
 	return true;
 }

@@ -11,9 +11,11 @@ class Transform : public AComponent
 public:
 	Transform();
 	~Transform();
-
+	
 	void Clone(AComponent* copy) override;
 	void Perform() override;
+	static Vector3 CheckDivisionByZero(const Vector3& dividend, const Vector3& divisor);
+
 	TMatrix CreateTransformationMatrix();
 	void RecalculateChildTransformWithoutParent();
 	void RecalculateChildTransformWithParent(const Transform* parent);

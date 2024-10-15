@@ -43,60 +43,57 @@ AGameObject::~AGameObject()
 #pragma region Game-related methods
 void AGameObject::ProcessInputs(WPARAM wParam, LPARAM lParam)
 {
-	if (this->enabled)
+	if (!this->enabled) return;
+
+	std::vector<AComponent*> componentList = this->GetComponentsOfType(EComponentTypes::Input);
+
+	for (size_t i = 0; i < componentList.size(); i++)
 	{
-		std::vector<AComponent*> componentList = this->GetComponentsOfType(EComponentTypes::Input);
+		GenericInputController* inputController = (GenericInputController*)componentList[i];
+		inputController->ProcessInputs(wParam, lParam);
+		inputController->Perform();
+	}
 
-		for (size_t i = 0; i < componentList.size(); i++)
-		{
-			GenericInputController* inputController = (GenericInputController*)componentList[i];
-			inputController->ProcessInputs(wParam, lParam);
-			inputController->Perform();
-		}
-
-		for (size_t i = 0; i < this->childList.size(); i++)
-		{
-			this->childList[i]->ProcessInputs(wParam, lParam);
-		}
+	for (size_t i = 0; i < this->childList.size(); i++)
+	{
+		this->childList[i]->ProcessInputs(wParam, lParam);
 	}
 }
 
 void AGameObject::Update(float dt) 
 {
-	if (this->enabled)
+	if (!this->enabled) return;
+
+	std::vector<AComponent*> componentList = this->GetComponentsOfType(EComponentTypes::Script); 
+
+	for (size_t i = 0; i < componentList.size(); i++)
 	{
-		std::vector<AComponent*> componentList = this->GetComponentsOfType(EComponentTypes::Script); 
-
-		for (size_t i = 0; i < componentList.size(); i++)
-		{
-			componentList[i]->SetDeltaTime(dt);  
-			componentList[i]->Perform(); 
-		}
+		componentList[i]->SetDeltaTime(dt);  
+		componentList[i]->Perform(); 
+	}
 
 
-		for (size_t i = 0; i < childList.size(); i++)
-		{
-			childList[i]->Update(dt);  
-		}
+	for (size_t i = 0; i < childList.size(); i++)
+	{
+		childList[i]->Update(dt);  
 	}
 }
 
 void AGameObject::Draw()
 {
-	if (this->enabled) 
+	if (!this->enabled) return;
+
+	std::vector<AComponent*> rendererList = this->GetComponentsOfType(EComponentTypes::Renderer); 
+
+	for (size_t i = 0; i < rendererList.size(); i++) 
 	{
-		std::vector<AComponent*> rendererList = this->GetComponentsOfType(EComponentTypes::Renderer); 
+		ARenderer* renderer = (ARenderer*)rendererList[i];
+		renderer->Perform();
+	}
 
-		for (size_t i = 0; i < rendererList.size(); i++) 
-		{
-			ARenderer* renderer = (ARenderer*)rendererList[i];
-			renderer->Perform();
-		}
-
-		for (size_t i = 0; i < childList.size(); i++) 
-		{
-			this->childList[i]->Draw(); 
-		}
+	for (size_t i = 0; i < childList.size(); i++) 
+	{
+		this->childList[i]->Draw(); 
 	}
 }
 
@@ -125,7 +122,7 @@ void AGameObject::SetEnabled(bool flag)
 #pragma region Inheritance-related methods
 void AGameObject::AttachChild(AGameObject* child)
 {
-	if (child == this) return;
+	if (child == this || child == nullptr) return;
 
 	if (child->parent != nullptr)
 	{
@@ -140,7 +137,7 @@ void AGameObject::AttachChild(AGameObject* child)
 
 void AGameObject::DetachChild(AGameObject* child)
 {
-	if (child == this) return;
+	if (child == this || child == nullptr) return;
 
 	int index = -1;
 
@@ -166,6 +163,11 @@ void AGameObject::DetachChild(AGameObject* child)
 AGameObject* AGameObject::GetParent()
 {
 	return this->parent;
+}
+
+std::vector<AGameObject*> AGameObject::GetChildList()
+{
+	return this->childList;
 }
 
 void AGameObject::SetParent(AGameObject* parent) 
@@ -279,30 +281,4 @@ std::vector<AComponent*> AGameObject::GetComponentsInChildrenOfType(EComponentTy
 
 	return foundList;
 }
-
-////recursive implementation; also searches through its children
-//std::vector<AComponent*> AGameObject::GetComponentsOfTypeRecursive(AComponent::ComponentType type)
-//{
-//	std::vector<AComponent*> foundList; 
-//
-//	for (size_t i = 0; i < this->componentList.size(); i++)
-//	{
-//		if (this->componentList[i]->getType() == type)
-//		{
-//			foundList.push_back(this->componentList[i]);
-//		}
-//	}
-//
-//	for (size_t i = 0; i < childList.size(); i++)
-//	{
-//		foundList = this->GetComponentRecursiveProper(this->childList[i], type, foundList); 
-//	}
-//
-//	return foundList;
-//}
-//
-//std::vector<AComponent*> AGameObject::GetComponentRecursiveProper(AGameObject* object, AComponent::ComponentType type, std::vector<AComponent*> foundList)
-//{
-//	return foundList; 
-//}
 #pragma endregion

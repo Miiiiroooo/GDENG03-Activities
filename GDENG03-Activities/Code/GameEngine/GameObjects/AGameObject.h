@@ -29,6 +29,7 @@ public:
 	void AttachChild(AGameObject* child);
 	void DetachChild(AGameObject* child);
 	AGameObject* GetParent();
+	std::vector<AGameObject*> GetChildList();
 
 	// Component-related methods
 	Transform* GetTransform();
@@ -38,11 +39,9 @@ public:
 	AComponent* FindComponentByType(EComponentTypes type, std::string name);
 	std::vector<AComponent*> GetComponentsOfType(EComponentTypes type);
 	std::vector<AComponent*> GetComponentsInChildrenOfType(EComponentTypes type);
-	//std::vector<AComponent*> GetComponentsOfTypeRecursive(AComponent::ComponentType type);
 
 private:
 	void SetParent(AGameObject* parent);
-	//std::vector<AComponent*> GetComponentRecursiveProper(AGameObject* object, AComponent::ComponentType type, std::vector<AComponent*> foundList);
 
 
 protected:

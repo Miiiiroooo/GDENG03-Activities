@@ -26,4 +26,6 @@ private:
 	Transform* t1;
 	Transform* t2;
 	Transform* t3;
+	Transform* t4;
+	Transform* t5;
 };

@@ -1,5 +1,6 @@
 #include "GameObjectManager.h"
 #include "../Graphics/ShaderManager.h"
+#include "../Graphics/CameraManager.h"
 
 
 GameObjectManager* GameObjectManager::sharedInstance = NULL;
@@ -42,11 +43,24 @@ void GameObjectManager::Draw()
 		shadersList[i].pShader->BindToPipeline();
 
 		LPCWSTR shaderType = shadersList[i].shaderType;
-		auto objectsList = shaderToObjectsMap[shaderType];
+		auto& objectsList = shaderToObjectsMap[shaderType];
+		auto camerasList = CameraManager::GetInstance()->GetCamerasList();
 
-		for (size_t j = 0; j < objectsList.size(); j++)
+		for (size_t j = camerasList.size() - 1; j >= 0; j--)
 		{
-			objectsList[j]->Draw();
+			camerasList[j]->BindVPMatrixToPipeline();
+
+			for (size_t k = 0; k < objectsList.size(); k++)  
+			{
+				if (objectsList[k] == nullptr) 
+				{
+					objectsList.erase(objectsList.begin() + k); 
+					objectsList.shrink_to_fit(); 
+					continue;
+				}
+
+				objectsList[k]->Draw(); 
+			}
 		}
 	}
 }
@@ -56,6 +70,8 @@ void GameObjectManager::Draw()
 #pragma region Object-related methods
 void GameObjectManager::AddObject(AGameObject* gameObject)
 {
+	if (gameObject == nullptr) return;
+
 	gameObjectMap[gameObject->GetName()] = gameObject; 
 	gameObjectList.push_back(gameObject); 
 	gameObject->Initialize(); 
@@ -82,6 +98,8 @@ AGameObject* GameObjectManager::FindObjectByName(std::string name)
 
 void GameObjectManager::DeleteObject(AGameObject* gameObject)
 {
+	if (gameObject == nullptr) return;
+
 	// Detach from the parent
 	AGameObject* parent = gameObject->GetParent(); 
 	if (parent) parent->DetachChild(gameObject);
@@ -95,16 +113,7 @@ void GameObjectManager::DeleteObject(AGameObject* gameObject)
 	gameObjectList.shrink_to_fit(); 
 
 	// remove from shader trackers
-	std::vector<AComponent*> componentList = gameObject->GetComponentsOfType(EComponentTypes::Renderer);
-	for (int i = 0; i < componentList.size(); i++) 
-	{
-		ARenderer* renderer = dynamic_cast<ARenderer*>(componentList[i]); 
-		if (renderer == nullptr) continue;
-
-		auto& objectsInShaderList = shaderToObjectsMap[renderer->GetShaderType()];
-		objectsInShaderList.erase(std::remove(objectsInShaderList.begin(), objectsInShaderList.end(), gameObject));
-		objectsInShaderList.shrink_to_fit();
-	}
+	UnbindRendererWithChildren(gameObject);
 
 	// delete
 	delete gameObject;
@@ -128,5 +137,25 @@ std::vector<AGameObject*> GameObjectManager::GetAllObjects()
 int GameObjectManager::GetActiveObjectsCount()
 {
 	return (int)gameObjectList.size();
+}
+
+void GameObjectManager::UnbindRendererWithChildren(AGameObject* obj)
+{
+	std::vector<AComponent*> componentList = obj->GetComponentsOfType(EComponentTypes::Renderer); 
+	for (int i = 0; i < componentList.size(); i++) 
+	{
+		ARenderer* renderer = dynamic_cast<ARenderer*>(componentList[i]); 
+		if (renderer == nullptr) continue; 
+
+		auto& objectsInShaderList = shaderToObjectsMap[renderer->GetShaderType()]; 
+		objectsInShaderList.erase(std::remove(objectsInShaderList.begin(), objectsInShaderList.end(), obj)); 
+		objectsInShaderList.shrink_to_fit(); 
+	}
+
+	std::vector<AGameObject*> childList = obj->GetChildList();
+	for (int i = 0; i < childList.size(); i++) 
+	{
+		UnbindRendererWithChildren(childList[i]);
+	}
 }
 #pragma endregion

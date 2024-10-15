@@ -29,15 +29,31 @@ void Transform::Clone(AComponent* copy)
 	Transform* copyTransform = (Transform*)copy;
 	if (copyTransform == nullptr) return;
 
-	// revisit this next time
-	globalPos = copyTransform->globalPos;
-	globalScale = copyTransform->globalScale;
-	eulerAngles = copyTransform->eulerAngles;
+	SetPosition(copyTransform->globalPos);
+
+	AGameObject* parent = owner->GetParent();
+	Vector3 newScale = (parent) ? CheckDivisionByZero(copyTransform->globalScale, parent->GetTransform()->globalScale) : copyTransform->globalScale;
+	SetLocalScale(newScale);
+
+	Vector3 rotation = (parent) ?
+		copyTransform->eulerAngles - parent->GetTransform()->eulerAngles - localEulerAngles :
+		copyTransform->eulerAngles - eulerAngles;
+	Rotate(rotation);
 }
 
 void Transform::Perform()
 {
 
+}
+
+Vector3 Transform::CheckDivisionByZero(const Vector3& dividend, const Vector3& divisor)
+{
+	// Vector3 division from SimpleMath defaults to 'inf' value if there's division by 0
+	Vector3 result;
+	result.x = (divisor.x == 0) ? 0 : (dividend.x / divisor.x);
+	result.y = (divisor.y == 0) ? 0 : (dividend.y / divisor.y);
+	result.z = (divisor.z == 0) ? 0 : (dividend.z / divisor.z);
+	return result;
 }
 
 TMatrix Transform::CreateTransformationMatrix()
@@ -60,15 +76,8 @@ void Transform::RecalculateChildTransformWithoutParent()
 
 void Transform::RecalculateChildTransformWithParent(const Transform* parent)
 {
-	this->SetLocalPosition(this->globalPos - parent->globalPos);
-
-	// Vector3 division from SimpleMath defaults to 'inf' value if there's division by 0
-	Vector3 newScale;
-	newScale.x = (parent->globalScale.x == 0) ? 0 : (this->globalScale.x / parent->globalScale.x);
-	newScale.y = (parent->globalScale.y == 0) ? 0 : (this->globalScale.y / parent->globalScale.y);
-	newScale.z = (parent->globalScale.z == 0) ? 0 : (this->globalScale.z / parent->globalScale.z);
-	this->SetLocalScale(newScale);
-
+	SetLocalPosition(globalPos - parent->globalPos);
+	SetLocalScale(CheckDivisionByZero(globalScale, parent->globalScale));
 	UpdateLocalEulerAnglesWithChildren(parent);
 }
 
@@ -195,11 +204,14 @@ void Transform::Rotate(float xAngleInDeg, float yAngleInDeg, float zAngleInDeg)
 
 void Transform::Rotate(const Vector3& eulerInDeg)
 {
-	Quaternion yaw = Quaternion::CreateFromAxisAngle(localUp, eulerInDeg.y * (M_PI / 180.f));
-	Quaternion pitch = Quaternion::CreateFromAxisAngle(localRight, eulerInDeg.x * (M_PI / 180.f));
-	Quaternion roll = Quaternion::CreateFromAxisAngle(localForward, eulerInDeg.z * (M_PI / 180.f));
-	Quaternion toRotate = yaw * pitch * roll;
-	//Quaternion toRotate = Quaternion::CreateFromYawPitchRoll(eulerInDeg * (M_PI / 180.f)); 
+	Vector3 parentRight = (owner->GetParent()) ?
+		owner->GetParent()->GetTransform()->localRight :
+		Vector3::Right;
+
+	Quaternion yaw = Quaternion::CreateFromAxisAngle(Vector3::Up, eulerInDeg.y * (M_PI / 180.f)); 
+	Quaternion pitch = Quaternion::CreateFromAxisAngle(parentRight, eulerInDeg.x * (M_PI / 180.f)); 
+	Quaternion roll = Quaternion::CreateFromAxisAngle(localForward, eulerInDeg.z * (M_PI / 180.f)); 
+	Quaternion toRotate = roll * pitch * yaw; 
 	orientation *= toRotate;
 
 	// update euler angles and local vectors
