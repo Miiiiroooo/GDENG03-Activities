@@ -50,6 +50,9 @@
     <Filter Include="GameEngine\Components\Scripts">
       <UniqueIdentifier>{c1401415-0581-4e3e-b1e6-5b1726de29ef}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameEngine\GameObjects\TestCase">
+      <UniqueIdentifier>{eea18c44-fea3-4d39-ba72-d8d2984ca39c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\WinMain.cpp" />
@@ -128,6 +131,21 @@
     </ClCompile>
     <ClCompile Include="Code\GameEngine\Graphics\CameraManager.cpp">
       <Filter>GameEngine\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\GameEngine\Components\Script\RotateScript.cpp">
+      <Filter>GameEngine\Components\Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\GameEngine\GameObjects\TestCase\SpinningCube.cpp">
+      <Filter>GameEngine\GameObjects\TestCase</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\GameEngine\Components\Script\TestCase3.cpp">
+      <Filter>GameEngine\Components\Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\GameEngine\GameObjects\Primitives\TwoSidedPlaneObject.cpp">
+      <Filter>GameEngine\GameObjects\Primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\GameEngine\Components\Script\TestCase5.cpp">
+      <Filter>GameEngine\Components\Scripts</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -236,6 +254,24 @@
     </ClInclude>
     <ClInclude Include="Code\GameEngine\Graphics\CameraManager.h">
       <Filter>GameEngine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\GameEngine\Components\Script\RotateScript.h">
+      <Filter>GameEngine\Components\Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\GameEngine\GameObjects\TestCase\SpinningCube.h">
+      <Filter>GameEngine\GameObjects\TestCase</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\GameEngine\Components\Script\TestCase3.h">
+      <Filter>GameEngine\Components\Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\GameEngine\Meshes\TwoSidedPlaneMesh.h">
+      <Filter>GameEngine\Meshes</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\GameEngine\GameObjects\Primitives\TwoSidedPlaneObject.h">
+      <Filter>GameEngine\GameObjects\Primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\GameEngine\Components\Script\TestCase5.h">
+      <Filter>GameEngine\Components\Scripts</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

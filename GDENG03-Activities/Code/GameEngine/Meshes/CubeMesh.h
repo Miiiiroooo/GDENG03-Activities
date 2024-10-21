@@ -49,7 +49,7 @@ public:
 		return new IndexBuffer(GraphicsEngine::GetInstance(), indices); 
 	}
 
-	/*VertexBuffer<T>* WithColors()
+	VertexBuffer<T>* WithColors()
 	{
 		std::vector<T> data(8);
 		data[0].pos = { -0.5f,  0.5f, -0.5f };
@@ -71,5 +71,5 @@ public:
 		data[7].vColor = { 0.0f, 0.0f, 1.0f };
 
 		return new VertexBuffer<T>(GraphicsEngine::GetInstance(), data);
-	}*/
+	}
 };

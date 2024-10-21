@@ -2,16 +2,15 @@
 #include "../AGameObject.h"
 #include "../../Components/Renderer/MeshRenderer.h"
 
-class CubeObject : public AGameObject
+class TwoSidedPlaneObject : public AGameObject
 {
 public:
-	CubeObject(bool withColors);
-	CubeObject(std::string name, bool withColors);
-	~CubeObject();
+	TwoSidedPlaneObject();
+	TwoSidedPlaneObject(std::string name);
+	~TwoSidedPlaneObject();
 	void Initialize() override;
 
 
 private:
 	MeshRenderer* renderer;
-	bool withColors;
 };

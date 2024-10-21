@@ -46,6 +46,11 @@
     <ClCompile Include="Code\GameEngine\Components\Inputs\GenericInputController.cpp" />
     <ClCompile Include="Code\GameEngine\GameObjects\Primitives\QuadObject.cpp" />
     <ClCompile Include="Code\GameEngine\GameObjects\Primitives\PlaneObject.cpp" />
+    <ClCompile Include="Code\GameEngine\Components\Script\RotateScript.cpp" />
+    <ClCompile Include="Code\GameEngine\GameObjects\TestCase\SpinningCube.cpp" />
+    <ClCompile Include="Code\GameEngine\Components\Script\TestCase3.cpp" />
+    <ClCompile Include="Code\GameEngine\Components\Script\TestCase5.cpp" />
+    <ClCompile Include="Code\GameEngine\GameObjects\Primitives\TwoSidedPlaneObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\GameEngine\Graphics\CameraManager.h" />
@@ -84,6 +89,12 @@
     <ClInclude Include="Code\GameEngine\GameObjects\Primitives\QuadObject.h" />
     <ClInclude Include="Code\GameEngine\Meshes\PlaneMesh.h" />
     <ClInclude Include="Code\GameEngine\GameObjects\Primitives\PlaneObject.h" />
+    <ClInclude Include="Code\GameEngine\Components\Script\RotateScript.h" />
+    <ClInclude Include="Code\GameEngine\GameObjects\TestCase\SpinningCube.h" />
+    <ClInclude Include="Code\GameEngine\Components\Script\TestCase3.h" />
+    <ClInclude Include="Code\GameEngine\Components\Script\TestCase5.h" />
+    <ClInclude Include="Code\GameEngine\Meshes\TwoSidedPlaneMesh.h" />
+    <ClInclude Include="Code\GameEngine\GameObjects\Primitives\TwoSidedPlaneObject.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Code\Shaders\PixelShader.hlsl">

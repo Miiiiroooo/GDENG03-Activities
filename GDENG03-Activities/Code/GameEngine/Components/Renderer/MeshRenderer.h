@@ -11,4 +11,7 @@ public:
 
 	void LoadPrimitive(EPrimitiveMeshTypes type);
 	void LoadNonPrimitive(std::string fileName);
+
+
+	void LoadCubeWithColors();
 };

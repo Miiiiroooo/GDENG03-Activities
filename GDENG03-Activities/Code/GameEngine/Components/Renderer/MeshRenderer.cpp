@@ -2,6 +2,7 @@
 #include "../../Meshes/CubeMesh.h"
 #include "../../Meshes/QuadMesh.h"
 #include "../../Meshes/PlaneMesh.h"
+#include "../../Meshes/TwoSidedPlaneMesh.h"
 #include "../../Meshes/CircleMesh.h"
 
 
@@ -41,6 +42,9 @@ void MeshRenderer::LoadPrimitive(EPrimitiveMeshTypes type)
 	case EPrimitiveMeshTypes::Plane:
 		mesh = new PlaneMesh<VertexData>();
 		break;
+	case EPrimitiveMeshTypes::TwoSidedPlane:
+		mesh = new TwoSidedPlaneMesh<VertexData>();
+		break;
 	default:
 		break;
 	}
@@ -65,20 +69,18 @@ void MeshRenderer::LoadNonPrimitive(std::string fileName)
 }
 
 
+void MeshRenderer::LoadCubeWithColors()
+{
+	CubeMesh<VertexData>* mesh = new CubeMesh<VertexData>();
 
+	InitRenderer();
 
-//void MeshRenderer::Temp()
-//{
-//	InitRenderer();
-//
-//	CubeMesh<VertexData>* mesh = new CubeMesh<VertexData>();
-//
-//	VertexBuffer<VertexData>* vb = mesh->WithColors(); 
-//	vb->Init(); 
-//	buffersList.push_back(vb); 
-//
-//	indexBuffer = mesh->CreateIndexBuffer(); 
-//	indexBuffer->Init(); 
-//
-//	delete mesh;
-//}
+	VertexBuffer<VertexData>* vb = mesh->WithColors();
+	vb->Init();
+	buffersList.push_back(vb);
+
+	indexBuffer = mesh->CreateIndexBuffer();
+	indexBuffer->Init();
+
+	delete mesh;
+}
