@@ -181,7 +181,8 @@ node_modules/
 *.sln.iml
 
 # Project specific/
-!3D/*
-![Mm]edia/*
-![Ss]haders/*
-![Ll]ibs/*
+!**/3D/*
+!**/[Mm]edia/*
+!**/[Ss]haders/*
+!**/[Ll]ibs/*
+!**/[Pp]ackages/** 
