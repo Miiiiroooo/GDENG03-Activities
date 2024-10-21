@@ -20,4 +20,6 @@ void CameraObject::Initialize()
 {
 	cameraComponent = new Camera("CamComponent", screenWidth, screenHeight);
 	AttachComponent(cameraComponent);
+
+	isInitialized = true;
 }

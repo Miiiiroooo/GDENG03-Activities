@@ -22,4 +22,6 @@ void CircleObject::Initialize()
 	renderer->LoadPrimitive(EPrimitiveMeshTypes::Circle);
 	AttachComponent(renderer); 
 	GameObjectManager::GetInstance()->BindRendererToShader(renderer); 
+
+	isInitialized = true;
 }

@@ -46,7 +46,7 @@ void GameObjectManager::Draw()
 		auto& objectsList = shaderToObjectsMap[shaderType];
 		auto camerasList = CameraManager::GetInstance()->GetCamerasList();
 
-		for (size_t j = camerasList.size() - 1; j >= 0; j--)
+		for (int j = camerasList.size() - 1; j >= 0; j--)
 		{
 			camerasList[j]->BindVPMatrixToPipeline();
 
@@ -74,7 +74,7 @@ void GameObjectManager::AddObject(AGameObject* gameObject)
 
 	gameObjectMap[gameObject->GetName()] = gameObject; 
 	gameObjectList.push_back(gameObject); 
-	gameObject->Initialize(); 
+	if (!gameObject->IsInitialized()) gameObject->Initialize(); 
 }
 
 void GameObjectManager::BindRendererToShader(ARenderer* rendererComponent)

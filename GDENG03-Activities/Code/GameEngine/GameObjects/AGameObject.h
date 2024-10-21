@@ -13,6 +13,7 @@ public:
 	~AGameObject();
 
 	// Game-related methods
+	bool IsInitialized();
 	virtual void Initialize() = 0;
 	virtual void ProcessInputs(WPARAM wParam, LPARAM lParam);
 	virtual void Update(float dt);
@@ -46,7 +47,8 @@ private:
 
 protected:
 	std::string name;
-	bool enabled = true;
+	bool enabled;
+	bool isInitialized;
 	Transform* transform;
 
 	AGameObject* parent;

@@ -22,4 +22,6 @@ void QuadObject::Initialize()
 	renderer->LoadPrimitive(EPrimitiveMeshTypes::Quad);
 	AttachComponent(renderer);
 	GameObjectManager::GetInstance()->BindRendererToShader(renderer);
+
+	isInitialized = true;
 }

@@ -17,5 +17,5 @@ EmptyGameObject::~EmptyGameObject()
 // public methods of the EmptyGameObject Class
 void EmptyGameObject::Initialize()
 {
-
+	isInitialized = true;
 }

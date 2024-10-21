@@ -22,4 +22,6 @@ void CubeObject::Initialize()
 	renderer->LoadPrimitive(EPrimitiveMeshTypes::Cube);
 	AttachComponent(renderer);
 	GameObjectManager::GetInstance()->BindRendererToShader(renderer);
+
+	isInitialized = true;
 }

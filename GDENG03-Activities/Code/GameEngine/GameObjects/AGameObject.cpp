@@ -7,7 +7,9 @@
 AGameObject::AGameObject(std::string name)
 {
 	this->name = name;
-	this->parent = NULL; 
+	this->parent = NULL;
+	this->enabled = true;
+	this->isInitialized = false;
 
 	transform = new Transform();
 	AttachComponent(transform);
@@ -41,6 +43,10 @@ AGameObject::~AGameObject()
 
 
 #pragma region Game-related methods
+bool AGameObject::IsInitialized()
+{
+	return isInitialized;
+}
 void AGameObject::ProcessInputs(WPARAM wParam, LPARAM lParam)
 {
 	if (!this->enabled) return;
@@ -131,7 +137,8 @@ void AGameObject::AttachChild(AGameObject* child)
 
 	this->childList.push_back(child); 
 	child->SetParent(this);
-	child->Initialize(); 
+
+	if (!child->isInitialized) child->Initialize(); 
 	child->transform->RecalculateChildTransformWithParent(this->transform);
 }
 

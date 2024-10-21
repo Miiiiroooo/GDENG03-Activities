@@ -22,4 +22,6 @@ void PlaneObject::Initialize()
 	renderer->LoadPrimitive(EPrimitiveMeshTypes::Plane);
 	AttachComponent(renderer);
 	GameObjectManager::GetInstance()->BindRendererToShader(renderer);
+
+	isInitialized = true;
 }
