@@ -2,7 +2,8 @@ Name: Aamir Akim
 
 Submission: Rendering System Test Cases
 
-Backup:
+Github: https://github.com/Miiiiroooo/GDENG03-Activities/tree/HO-Rendering-Test-Cases  (branch: HO-Rendering-Test-Cases)
+GDrive: https://drive.google.com/file/d/1MyeBk1MAhkPCCTbNUEtVtD7qCloeiI0s/view?usp=sharing 
 
 Main: $(ProjectDir)/Code/WinMain.cpp
 
@@ -10,11 +11,3 @@ How to Run:
 - Downlaod/clone repository
 - Open the solution file in Visual Studio
 - Run the project
-
-
-x(x-1) / 2
-
-
-0 1         -> -1 0 1
-0 1 2 3     -> -3 -1 0 1 3
-0 1 2 3 4 5 -> -5 -3 -1 0 1 3 5
