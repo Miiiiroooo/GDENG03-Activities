@@ -141,6 +141,12 @@
     <ClCompile Include="Code\GameEngine\GameObjects\FreeCameraObject.cpp">
       <Filter>GameEngine\GameObjects</Filter>
     </ClCompile>
+    <ClCompile Include="Code\GameEngine\GameObjects\Primitives\ConeObject.cpp">
+      <Filter>GameEngine\GameObjects\Primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\GameEngine\GameObjects\Primitives\CylinderObject.cpp">
+      <Filter>GameEngine\GameObjects\Primitives</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\WindowsMessageMap.h" />
@@ -260,6 +266,18 @@
     </ClInclude>
     <ClInclude Include="Code\GameEngine\GameObjects\FreeCameraObject.h">
       <Filter>GameEngine\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\GameEngine\Meshes\ConeMesh.h">
+      <Filter>GameEngine\Meshes</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\GameEngine\GameObjects\Primitives\ConeObject.h">
+      <Filter>GameEngine\GameObjects\Primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\GameEngine\Meshes\CylinderMesh.h">
+      <Filter>GameEngine\Meshes</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\GameEngine\GameObjects\Primitives\CylinderObject.h">
+      <Filter>GameEngine\GameObjects\Primitives</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,12 +1,12 @@
 #include "QuadObject.h"
 #include "../../Managers/GameObjectManager.h"
 
-QuadObject::QuadObject() : AGameObject("QuadObject")
+QuadObject::QuadObject() : AGameObject("QuadObject"), renderer(nullptr)
 {
 
 }
 
-QuadObject::QuadObject(std::string name) : AGameObject(name)
+QuadObject::QuadObject(std::string name) : AGameObject(name), renderer(nullptr)
 {
 
 }

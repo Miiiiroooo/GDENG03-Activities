@@ -71,14 +71,14 @@ void FreeCameraScript::HandleLookRotation()
 
 	float x = dir.y * pitchRotationRate;
 	if (x + transform->GetEulerAngles().x > 65 || x + transform->GetEulerAngles().x < -65) x = 0;
-	transform->Rotate(transform->GetLocalRight(), x);
+	transform->Rotate(x, 0.0f, 0.0f);
 
 	float y = dir.x * yawRotationRate;
-	transform->Rotate(Vector3::Up, y); 
+	transform->Rotate(0.0f, y, 0.0f); 
 }
 
 void FreeCameraScript::HandleWheelInputs()
 {
 	int rot = Mouse::GetInstance()->GetMouseWheelRotations();
-	transform->Position += transform->GetLocalForward() * longitudinalStepDistance * rot;
+	transform->Position += transform->GetLocalForward() * longitudinalStepDistance * (float)rot;
 }

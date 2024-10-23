@@ -68,7 +68,7 @@ bool ShaderManager::CreateShaderProgram(LPCWSTR shaderType, LPCWSTR vShaderName,
     newShader.vShader = vShadersList[vShaderName];
     newShader.pShader = pShadersList[pShaderName];
 
-    int indexForNew = shaderProgramsList.size();
+    int indexForNew = (int)shaderProgramsList.size();
     for (int i = 0; i < shaderProgramsList.size(); i++)
     {
         ShaderProgram& shaderInList = shaderProgramsList[i];

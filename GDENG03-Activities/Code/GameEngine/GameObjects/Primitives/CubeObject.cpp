@@ -1,12 +1,12 @@
 #include "CubeObject.h"
 #include "../../Managers/GameObjectManager.h"
 
-CubeObject::CubeObject() : AGameObject("CubeObj")
+CubeObject::CubeObject() : AGameObject("CubeObj"), renderer(nullptr)
 {
 
 }
 
-CubeObject::CubeObject(std::string name) : AGameObject(name)
+CubeObject::CubeObject(std::string name) : AGameObject(name), renderer(nullptr)
 {
 
 }

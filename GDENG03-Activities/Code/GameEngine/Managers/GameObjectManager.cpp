@@ -46,7 +46,7 @@ void GameObjectManager::Draw()
 		auto& objectsList = shaderToObjectsMap[shaderType];
 		auto camerasList = CameraManager::GetInstance()->GetCamerasList();
 
-		for (int j = camerasList.size() - 1; j >= 0; j--)
+		for (int j = (int)camerasList.size() - 1; j >= 0; j--)
 		{
 			if (!camerasList[j]->Enabled) continue;
 

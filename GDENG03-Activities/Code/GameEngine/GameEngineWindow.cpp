@@ -2,7 +2,8 @@
 #include "EngineTime.h"
 #include "Managers/GameObjectManager.h"
 #include "GameObjects/Primitives/CubeObject.h"
-#include "GameObjects/Primitives/PlaneObject.h"
+#include "GameObjects/Primitives/ConeObject.h"
+#include "GameObjects/Primitives/CylinderObject.h"
 #include "GameObjects/CameraObject.h"
 #include "GameObjects/FreeCameraObject.h"
 
@@ -34,50 +35,31 @@ void GameEngineWindow::OnCreate(HWND hWnd)
 
 	FreeCameraObject* cam = new FreeCameraObject(width, height); 
 	cam->GetTransform()->Position = { 0.0f, 0.0f, -5.0f };
-	//cam->GetTransform()->Rotate(10, 0, 0);
 	GameObjectManager::GetInstance()->AddObject(cam);
 
 
-	CubeObject* cube = new CubeObject();
-	GameObjectManager::GetInstance()->AddObject(cube);
-	cube->GetTransform()->Position = { 0, 0, 0 };
-
-	PlaneObject* plane = new PlaneObject();
-	GameObjectManager::GetInstance()->AddObject(plane);
-	plane->GetTransform()->Position = { 0, 0, 0 };
-
-
-	/*CubeObject* cube1 = new CubeObject();
+	CubeObject* cube1 = new CubeObject();
 	GameObjectManager::GetInstance()->AddObject(cube1);
-	t1 = cube1->GetTransform();
-	t1->Position = { -10, 0, 0 };
+	cube1->GetTransform()->Position = { 0, 0, 0 };
+
+	ConeObject* cone = new ConeObject();
+	GameObjectManager::GetInstance()->AddObject(cone);
+	cone->GetTransform()->Position = { 5, 0, 0 };
+
+	CylinderObject* cylinder1 = new CylinderObject();
+	GameObjectManager::GetInstance()->AddObject(cylinder1);
+	cylinder1->GetTransform()->Position = { -5, 0, 0 };
 
 	CubeObject* cube2 = new CubeObject();
 	GameObjectManager::GetInstance()->AddObject(cube2);
-	t2 = cube2->GetTransform();
-	t2->Position = { 0, 0, 0 };
+	cube2->GetTransform()->Position = { 0, 0, 5 };
+	cube2->GetTransform()->Rotate(0.0f, 0.0f, 45.0f);
 
-	CubeObject* cube3 = new CubeObject();
-	cube2->AttachChild(cube3);
-	t3 = cube3->GetTransform();
-	t3->Position = { 10, 0, 0 };
-
-	CubeObject* cube4 = new CubeObject();
-	cube3->AttachChild(cube4);
-	t4 = cube4->GetTransform();
-	t4->Position = { 0, 0, 10 };
-
-	CubeObject* cube5 = new CubeObject();
-	GameObjectManager::GetInstance()->AddObject(cube5);
-	cube5->GetTransform()->Position = { 0, 10, 0 };
-
-	CubeObject* cube6 = new CubeObject();
-	GameObjectManager::GetInstance()->AddObject(cube6);
-	cube6->GetTransform()->Position = { 0, -10, 0 };
-
-	CubeObject* cube7 = new CubeObject();
-	GameObjectManager::GetInstance()->AddObject(cube7);
-	cube7->GetTransform()->Position = { 0, 0, -10 };*/
+	CylinderObject* cylinder2 = new CylinderObject();
+	GameObjectManager::GetInstance()->AddObject(cylinder2);
+	t1 = cylinder2->GetTransform(); 
+	t1->Position = { 0, 0, -5 }; 
+	t1->Rotate(30.0f, 0.0f, -45.0f);
 }
 
 void GameEngineWindow::OnUpdate()
@@ -89,19 +71,21 @@ void GameEngineWindow::OnUpdate()
 	if (currDelta >= secsPerFrame) 
 	{
 		currDelta -= secsPerFrame; 
-		GameObjectManager::GetInstance()->Update(secsPerFrame);
+		GameObjectManager::GetInstance()->Update(secsPerFrame); 
 
-		Keyboard::GetInstance()->FlushEventsBuffer(); 
-		Keyboard::GetInstance()->FlushCharBuffer();
-		Mouse::GetInstance()->FlushEventsBuffer();
+		t1->Rotate(35 * secsPerFrame, -55 * secsPerFrame, 45 * secsPerFrame);
+
+		Keyboard::GetInstance()->FlushEventsBuffer();  
+		Keyboard::GetInstance()->FlushCharBuffer(); 
+		Mouse::GetInstance()->FlushEventsBuffer(); 
 	}
 
-	GameObjectManager::GetInstance()->Draw();
-	swapChain->Present(true);
+	GameObjectManager::GetInstance()->Draw(); 
+	swapChain->Present(true); 
 }
 
-void GameEngineWindow::OnDestroy()
-{
+void GameEngineWindow::OnDestroy() 
+{ 
 	Window::OnDestroy();
 
 	GraphicsEngine::GetInstance()->Release();

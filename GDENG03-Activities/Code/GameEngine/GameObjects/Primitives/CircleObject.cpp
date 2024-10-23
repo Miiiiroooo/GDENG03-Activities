@@ -1,12 +1,12 @@
 #include "CircleObject.h"
 #include "../../Managers/GameObjectManager.h"
 
-CircleObject::CircleObject() : AGameObject("CircleObj")
+CircleObject::CircleObject() : AGameObject("CircleObj"), renderer(nullptr)
 {
 
 }
 
-CircleObject::CircleObject(std::string name) : AGameObject(name)
+CircleObject::CircleObject(std::string name) : AGameObject(name), renderer(nullptr)
 {
 
 }

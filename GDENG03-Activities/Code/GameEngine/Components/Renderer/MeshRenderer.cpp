@@ -3,6 +3,8 @@
 #include "../../Meshes/QuadMesh.h"
 #include "../../Meshes/PlaneMesh.h"
 #include "../../Meshes/CircleMesh.h"
+#include "../../Meshes/CylinderMesh.h"
+#include "../../Meshes/ConeMesh.h"
 
 
 MeshRenderer::MeshRenderer() : ARenderer("MeshRenderer", L"DefaultShader")
@@ -41,6 +43,12 @@ void MeshRenderer::LoadPrimitive(EPrimitiveMeshTypes type)
 	case EPrimitiveMeshTypes::Plane:
 		mesh = new PlaneMesh<VertexData>();
 		break;
+	case EPrimitiveMeshTypes::Cylinder:
+		mesh = new CylinderMesh<VertexData>();
+		break;
+	case EPrimitiveMeshTypes::Cone:
+		mesh = new ConeMesh<VertexData>(); 
+		break;
 	default:
 		break;
 	}
@@ -63,22 +71,3 @@ void MeshRenderer::LoadNonPrimitive(std::string fileName)
 {
 
 }
-
-
-
-
-//void MeshRenderer::Temp()
-//{
-//	InitRenderer();
-//
-//	CubeMesh<VertexData>* mesh = new CubeMesh<VertexData>();
-//
-//	VertexBuffer<VertexData>* vb = mesh->WithColors(); 
-//	vb->Init(); 
-//	buffersList.push_back(vb); 
-//
-//	indexBuffer = mesh->CreateIndexBuffer(); 
-//	indexBuffer->Init(); 
-//
-//	delete mesh;
-//}

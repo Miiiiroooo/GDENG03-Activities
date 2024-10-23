@@ -1,12 +1,12 @@
 #include "PlaneObject.h"
 #include "../../Managers/GameObjectManager.h"
 
-PlaneObject::PlaneObject() : AGameObject("PlaneObject")
+PlaneObject::PlaneObject() : AGameObject("PlaneObject"), renderer(nullptr)
 {
 
 }
 
-PlaneObject::PlaneObject(std::string name) : AGameObject(name)
+PlaneObject::PlaneObject(std::string name) : AGameObject(name), renderer(nullptr)
 {
 
 }

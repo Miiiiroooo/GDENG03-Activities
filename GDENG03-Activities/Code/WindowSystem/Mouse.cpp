@@ -77,7 +77,7 @@ void Mouse::FlushEventsBuffer()
 #pragma region Input-Events
 void Mouse::OnMouseMove(int x, int y)
 {
-	mousePos = Vector2(x, y);
+	mousePos = Vector2((float)x, (float)y);
 }
 
 void Mouse::OnMouseChangeFocus(bool isInWindow, int x, int y)

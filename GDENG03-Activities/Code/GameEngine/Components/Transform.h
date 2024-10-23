@@ -45,14 +45,14 @@ public:
 
 	void Rotate(float xAngleInDeg, float yAngleInDeg, float zAngleInDeg);
 	void Rotate(const Vector3& eulerInDeg);
-	void Rotate(const Vector3& axis, float angleInDeg);
+	//void Rotate(const Vector3& axis, float angleInDeg);
 
 private:
 	void UpdateTransformationMatrix();
 	void UpdateGlobalScaleWithChildren();
 
 	void RotateFromParent(const Vector3& eulerInDeg, const Quaternion& toRotate, const Transform* parent);
-	void RotateFromParent(const Quaternion& toRotate, const Transform* parent);
+	//void RotateFromParent(const Quaternion& toRotate, const Transform* parent);
 
 	void UpdateLocalEulerAnglesWithChildren(const Transform* parent);
 	void UpdateLocalVectors();
