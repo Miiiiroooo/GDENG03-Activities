@@ -46,6 +46,11 @@ void Transform::Perform()
 
 }
 
+void Transform::SetEnabled(bool flag)
+{
+
+}
+
 Vector3 Transform::CheckDivisionByZero(const Vector3& dividend, const Vector3& divisor)
 {
 	// Vector3 division from SimpleMath defaults to 'inf' value if there's division by 0
@@ -56,13 +61,18 @@ Vector3 Transform::CheckDivisionByZero(const Vector3& dividend, const Vector3& d
 	return result;
 }
 
-TMatrix Transform::CreateTransformationMatrix()
+TMatrix Transform::GetTransformationMatrix()
 {
-	return TMatrix{
+	return tMatrix;
+}
+
+void Transform::UpdateTransformationMatrix()
+{
+	tMatrix = TMatrix{
 			Matrix::CreateScale(globalScale) * 
 			Matrix::CreateFromQuaternion(orientation) * 
-			Matrix::CreateTranslation(globalPos)
-		};
+			Matrix::CreateTranslation(globalPos) 
+	};
 }
 
 void Transform::RecalculateChildTransformWithoutParent() 
@@ -107,6 +117,8 @@ void Transform::SetPosition(const Vector3& newPos)
 		Transform* childTransform = (Transform*)transformsFromChildren[i];
 		childTransform->SetPosition(newPos + childTransform->localPos);
 	}
+
+	UpdateTransformationMatrix();
 }
 
 Vector3 Transform::GetLocalPosition()
@@ -132,6 +144,8 @@ void Transform::SetLocalPosition(const Vector3& newPos)
 		Transform* childTransform = (Transform*)transformsFromChildren[i]; 
 		childTransform->SetPosition(globalPos + childTransform->localPos); 
 	}
+
+	UpdateTransformationMatrix();
 }
 #pragma endregion
 
@@ -166,6 +180,8 @@ void Transform::UpdateGlobalScaleWithChildren()
 		Transform* childTransform = (Transform*)transformsFromChildren[i];
 		childTransform->UpdateGlobalScaleWithChildren();
 	}
+
+	UpdateTransformationMatrix(); 
 }
 #pragma endregion 
 
@@ -232,6 +248,8 @@ void Transform::Rotate(const Vector3& eulerInDeg)
 		Transform* childTransform = (Transform*)transformsFromChildren[i];
 		childTransform->RotateFromParent(eulerInDeg, toRotate, this);
 	}
+
+	UpdateTransformationMatrix();
 }
 
 void Transform::RotateFromParent(const Vector3& eulerInDeg, const Quaternion& toRotate, const Transform* parent)
@@ -255,6 +273,8 @@ void Transform::RotateFromParent(const Vector3& eulerInDeg, const Quaternion& to
 		Transform* childTransform = (Transform*)transformsFromChildren[i]; 
 		childTransform->RotateFromParent(eulerInDeg, toRotate, this);
 	}
+
+	UpdateTransformationMatrix();
 }
 
 
@@ -281,6 +301,8 @@ void Transform::Rotate(const Vector3& axis, float angleInDeg)
 		Transform* childTransform = (Transform*)transformsFromChildren[i]; 
 		childTransform->RotateFromParent(toRotate, this);
 	}
+
+	UpdateTransformationMatrix();
 }
 
 void Transform::RotateFromParent(const Quaternion& toRotate, const Transform* parent)
@@ -304,6 +326,8 @@ void Transform::RotateFromParent(const Quaternion& toRotate, const Transform* pa
 		Transform* childTransform = (Transform*)transformsFromChildren[i];
 		childTransform->RotateFromParent(toRotate, this);
 	}
+
+	UpdateTransformationMatrix();
 }
 
 

@@ -10,7 +10,7 @@ MeshRenderer::MeshRenderer() : ARenderer("MeshRenderer", L"DefaultShader")
 	topologyType = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 }
 
-MeshRenderer::MeshRenderer(LPCWSTR shaderType) : ARenderer("MesehRenderer", shaderType)
+MeshRenderer::MeshRenderer(LPCWSTR shaderType) : ARenderer("MeshRenderer", shaderType)
 {
 	topologyType = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 }

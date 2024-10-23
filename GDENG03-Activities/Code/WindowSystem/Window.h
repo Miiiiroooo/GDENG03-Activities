@@ -1,7 +1,8 @@
 #pragma once
 #include <Windows.h>
 #include <string>
-#include "../GameEngine/Graphics/GraphicsEngine.h"
+#include "Keyboard.h"
+#include "Mouse.h"
 
 class Window
 {
@@ -16,7 +17,6 @@ public:
 
 	RECT GetClientWindowRect();
 
-
 protected:
 	virtual void OnCreate(HWND hWnd) = 0;
 	virtual void OnUpdate() = 0;
@@ -24,6 +24,9 @@ protected:
 
 	static LRESULT CALLBACK StaticWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 	virtual LRESULT CALLBACK HandleWindowMessages(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+
+private:
+	void OnMouseRelease(LPARAM lParam, Mouse::EMouseButtons button);
 
 
 protected:

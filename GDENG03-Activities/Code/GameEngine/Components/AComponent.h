@@ -13,14 +13,19 @@ public:
 	virtual ~AComponent();
 
 	virtual void Clone(AComponent* copy) = 0;
+	virtual void Perform() = 0;
+
 	void AttachOwner(AGameObject* owner);
 	void DetachOwner();
 	AGameObject* GetOwner();
+
 	EComponentTypes GetType();
 	std::string GetName();
 
+	bool IsEnabled();
+	virtual void SetEnabled(bool flag);
+	__declspec(property(get = IsEnabled, put = SetEnabled)) bool Enabled; 
 	void SetDeltaTime(float deltaTime);
-	virtual void Perform() = 0;
 
 
 protected:
@@ -29,6 +34,7 @@ protected:
 
 	EComponentTypes type;
 	std::string name;
+
+	bool isEnabled;
 	float dt;
 };
-

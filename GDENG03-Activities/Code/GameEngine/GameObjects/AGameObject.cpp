@@ -47,24 +47,28 @@ bool AGameObject::IsInitialized()
 {
 	return isInitialized;
 }
-void AGameObject::ProcessInputs(WPARAM wParam, LPARAM lParam)
-{
-	if (!this->enabled) return;
 
-	std::vector<AComponent*> componentList = this->GetComponentsOfType(EComponentTypes::Input);
-
-	for (size_t i = 0; i < componentList.size(); i++)
-	{
-		GenericInputController* inputController = (GenericInputController*)componentList[i];
-		inputController->ProcessInputs(wParam, lParam);
-		inputController->Perform();
-	}
-
-	for (size_t i = 0; i < this->childList.size(); i++)
-	{
-		this->childList[i]->ProcessInputs(wParam, lParam);
-	}
-}
+//void AGameObject::ProcessInputs(WPARAM wParam, LPARAM lParam)
+//{
+//	if (!this->enabled) return;
+//
+//	std::vector<AComponent*> componentList = this->GetComponentsOfType(EComponentTypes::Input);
+//
+//	for (size_t i = 0; i < componentList.size(); i++)
+//	{
+//		GenericInputController* inputController = (GenericInputController*)componentList[i];
+//		if (inputController->Enabled)
+//		{
+//			inputController->ProcessInputs(wParam, lParam);
+//			inputController->Perform(); 
+//		}
+//	}
+//
+//	for (size_t i = 0; i < this->childList.size(); i++)
+//	{
+//		this->childList[i]->ProcessInputs(wParam, lParam);
+//	}
+//}
 
 void AGameObject::Update(float dt) 
 {
@@ -74,10 +78,12 @@ void AGameObject::Update(float dt)
 
 	for (size_t i = 0; i < componentList.size(); i++)
 	{
-		componentList[i]->SetDeltaTime(dt);  
-		componentList[i]->Perform(); 
+		if (componentList[i]->Enabled)
+		{
+			componentList[i]->SetDeltaTime(dt); 
+			componentList[i]->Perform(); 
+		}
 	}
-
 
 	for (size_t i = 0; i < childList.size(); i++)
 	{
@@ -94,7 +100,7 @@ void AGameObject::Draw()
 	for (size_t i = 0; i < rendererList.size(); i++) 
 	{
 		ARenderer* renderer = (ARenderer*)rendererList[i];
-		renderer->Perform();
+		if (renderer->Enabled) renderer->Perform();
 	}
 
 	for (size_t i = 0; i < childList.size(); i++) 

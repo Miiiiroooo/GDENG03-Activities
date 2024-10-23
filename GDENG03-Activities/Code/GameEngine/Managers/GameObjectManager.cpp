@@ -17,13 +17,13 @@ GameObjectManager* GameObjectManager::GetInstance()
 
 
 #pragma region Game-related methods
-void GameObjectManager::ProcessInputs(WPARAM wParam, LPARAM lParam)
-{
-	for (size_t i = 0; i < gameObjectList.size(); i++)
-	{
-		gameObjectList[i]->ProcessInputs(wParam, lParam);
-	}
-}
+//void GameObjectManager::ProcessInputs(WPARAM wParam, LPARAM lParam)
+//{
+//	for (size_t i = 0; i < gameObjectList.size(); i++)
+//	{
+//		gameObjectList[i]->ProcessInputs(wParam, lParam);
+//	}
+//}
 
 void GameObjectManager::Update(float deltaTime)
 {
@@ -48,6 +48,8 @@ void GameObjectManager::Draw()
 
 		for (int j = camerasList.size() - 1; j >= 0; j--)
 		{
+			if (!camerasList[j]->Enabled) continue;
+
 			camerasList[j]->BindVPMatrixToPipeline();
 
 			for (size_t k = 0; k < objectsList.size(); k++)  

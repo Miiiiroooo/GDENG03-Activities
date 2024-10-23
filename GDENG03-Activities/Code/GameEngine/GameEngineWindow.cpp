@@ -42,14 +42,14 @@ void GameEngineWindow::OnCreate(HWND hWnd)
 
 	CubeObject* cube3 = new CubeObject();
 	cube2->AttachChild(cube3);
-	GameObjectManager::GetInstance()->AddObject(cube3);
+	//GameObjectManager::GetInstance()->AddObject(cube3);
 	t3 = cube3->GetTransform();
 	t3->Position = { 3, 0, 1 };
 	//t3->Rotate(50, 0, 20);
 
 	CubeObject* cube4 = new CubeObject();
 	cube3->AttachChild(cube4);
-	GameObjectManager::GetInstance()->AddObject(cube4);
+	//GameObjectManager::GetInstance()->AddObject(cube4);
 	t4 = cube4->GetTransform();
 	t4->Position = { 6, 0, 0 };
 
@@ -71,22 +71,26 @@ void GameEngineWindow::OnCreate(HWND hWnd)
 
 void GameEngineWindow::OnUpdate()
 {
-	//t1->Rotate(0, 20 * EngineTime::GetDeltaTime(), 0);
-	//t2->Rotate(20 * EngineTime::GetDeltaTime(), 0, 0);
+	t1->Rotate(0, 20 * EngineTime::GetDeltaTime(), 0);
+	t2->Rotate(20 * EngineTime::GetDeltaTime(), 0, 0);
 	t3->Rotate(0, 0, 20 * EngineTime::GetDeltaTime());
+
+
 
 
 	swapChain->ClearBuffer(0.4f, 0.4f, 0.6f);
 
 	currDelta += EngineTime::GetDeltaTime();
-
-	if (currDelta >= 1.f / (float)fps)
+	float secsPerFrame = 1.f / (float)fps;
+	if (currDelta >= secsPerFrame) 
 	{
-		currDelta -= 1.f / (float)fps;
-		GameObjectManager::GetInstance()->Update(1.f / (float)fps);
-	}
+		currDelta -= secsPerFrame; 
+		GameObjectManager::GetInstance()->Update(secsPerFrame);
 
-	cam->cameraComponent->BindVPMatrixToPipeline();
+		Keyboard::GetInstance()->FlushEventsBuffer(); 
+		Keyboard::GetInstance()->FlushCharBuffer();
+		Mouse::GetInstance()->FlushEventsBuffer();
+	}
 
 	GameObjectManager::GetInstance()->Draw();
 	swapChain->Present(true);
@@ -103,31 +107,6 @@ void GameEngineWindow::OnDestroy()
 
 LRESULT GameEngineWindow::HandleWindowMessages(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-	switch (msg)
-	{
-		case WM_SYSKEYDOWN:
-			if (wParam == VK_RETURN && (lParam & 0x60000000) == 0x20000000)
-			{
 
-			}
-			GameObjectManager::GetInstance()->ProcessInputs(wParam, lParam); 
-			break;
-
-		case WM_KEYDOWN:
-		case WM_KEYUP:
-		case WM_SYSKEYUP:
-		{
-			if (wParam == VK_ESCAPE)
-			{
-				OnDestroy();
-				PostQuitMessage(0);
-			}
-
-			GameObjectManager::GetInstance()->ProcessInputs(wParam, lParam);
-			break;
-		}
-	}
-
-
-	return DefWindowProc(hWnd, msg, wParam, lParam);
+	return Window::HandleWindowMessages(hWnd, msg, wParam, lParam);
 }

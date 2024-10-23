@@ -8,6 +8,7 @@ AComponent::AComponent(std::string name, EComponentTypes type)
 	this->name = name;
 	this->owner = NULL;
 	this->type = type;
+	this->isEnabled = true;
 }
 
 AComponent::~AComponent()
@@ -48,6 +49,15 @@ std::string AComponent::GetName()
 	return this->name;
 }
 
+bool AComponent::IsEnabled()
+{
+	return isEnabled;
+}
+
+void AComponent::SetEnabled(bool flag)
+{
+	isEnabled = flag;
+}
 
 void AComponent::SetDeltaTime(float deltaTime)
 {

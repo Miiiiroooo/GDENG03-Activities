@@ -129,6 +129,12 @@
     <ClCompile Include="Code\GameEngine\Graphics\CameraManager.cpp">
       <Filter>GameEngine\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="Code\WindowSystem\Keyboard.cpp">
+      <Filter>WindowsSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\WindowSystem\Mouse.cpp">
+      <Filter>WindowsSystem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\WindowsMessageMap.h" />
@@ -236,6 +242,12 @@
     </ClInclude>
     <ClInclude Include="Code\GameEngine\Graphics\CameraManager.h">
       <Filter>GameEngine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\WindowSystem\Keyboard.h">
+      <Filter>WindowsSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\WindowSystem\Mouse.h">
+      <Filter>WindowsSystem</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

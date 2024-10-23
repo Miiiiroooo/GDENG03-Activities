@@ -38,7 +38,6 @@ bool Window::Init(int width, int height, std::string windowName)
 		return false;
 	}
 
-	windowSize;
 	windowSize.left = 100;
 	windowSize.right = width + windowSize.left;
 	windowSize.top = 100;
@@ -132,7 +131,6 @@ LRESULT Window::StaticWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	//static WindowsMessageMap mm;
 	//OutputDebugString(mm(msg, lParam, wParam).c_str());
 
-
 	Window* window = nullptr;
 
 	switch (msg)
@@ -164,7 +162,126 @@ LRESULT Window::StaticWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
 LRESULT Window::HandleWindowMessages(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
+	switch (msg)
+	{
+		#pragma region Keyboard-Events
+		case WM_KEYDOWN:
+		case WM_SYSKEYDOWN:
+			if (!(lParam & 0x40000000)) Keyboard::GetInstance()->OnKeyPressed(static_cast<unsigned char>(wParam));
+			break;
 
+		case WM_KEYUP:
+		case WM_SYSKEYUP:
+		{
+			if (wParam == VK_ESCAPE)
+			{
+				OnDestroy();
+				PostQuitMessage(0);
+				break;
+			}
+
+			Keyboard::GetInstance()->OnKeyReleased(static_cast<unsigned char>(wParam));
+			break;
+		}
+
+		case WM_CHAR:
+			Keyboard::GetInstance()->OnChar(static_cast<unsigned char>(wParam));
+			break;
+		#pragma endregion
+
+		#pragma region Mouse-Events
+		case WM_MOUSEMOVE:
+		{
+			const POINTS pt = MAKEPOINTS(lParam); 
+
+			// if mouse is within screen of window
+			if (pt.x >= 0 && pt.x < width && pt.y >= 0 && pt.y < height)
+			{
+				Mouse::GetInstance()->OnMouseMove(pt.x, pt.y);
+				
+				// if mouse was outside window, then call 'mouse enter' event
+				if (!Mouse::GetInstance()->isInWindow)
+				{
+					SetCapture(hWnd);
+					Mouse::GetInstance()->OnMouseChangeFocus(true, pt.x, pt.y);
+				}
+			}
+			else
+			{
+				int numMouseButtons = 3;
+				bool hasOneButtonPressed = false;
+				for (int i = 1; i < numMouseButtons; i++)
+				{
+					hasOneButtonPressed = hasOneButtonPressed || Mouse::GetInstance()->buttonStates[(Mouse::EMouseButtons)i];
+				}
+
+				// if at least one mouse button is down, then keep updating mouse position
+				if (hasOneButtonPressed)
+				{
+					Mouse::GetInstance()->OnMouseMove(pt.x, pt.y); 
+				}
+				else
+				{
+					ReleaseCapture();
+					Mouse::GetInstance()->OnMouseChangeFocus(false, pt.x, pt.y);
+				}
+			}
+
+			break;
+		}
+		case WM_LBUTTONDOWN:
+		{
+			const POINTS pt = MAKEPOINTS(lParam);
+			Mouse::GetInstance()->OnMousePress(Mouse::EMouseButtons::Left, pt.x, pt.y);
+			break;
+		}
+		case WM_RBUTTONDOWN:
+		{
+			const POINTS pt = MAKEPOINTS(lParam);
+			Mouse::GetInstance()->OnMousePress(Mouse::EMouseButtons::Right, pt.x, pt.y);
+			break;
+		}
+		case WM_MBUTTONDOWN:
+		{
+			const POINTS pt = MAKEPOINTS(lParam);
+			Mouse::GetInstance()->OnMousePress(Mouse::EMouseButtons::Middle, pt.x, pt.y); 
+			break;
+		}
+		case WM_LBUTTONUP:
+		{
+			OnMouseRelease(lParam, Mouse::EMouseButtons::Left); 
+			break;
+		}
+		case WM_RBUTTONUP:
+		{
+			OnMouseRelease(lParam, Mouse::EMouseButtons::Right); 
+			break;
+		}
+		case WM_MBUTTONUP: 
+		{
+			OnMouseRelease(lParam, Mouse::EMouseButtons::Middle); 
+			break;
+		}
+		case WM_MOUSEWHEEL:
+		{
+			const POINTS pt = MAKEPOINTS(lParam); 
+			Mouse::GetInstance()->OnMouseWheelRotate(GET_WHEEL_DELTA_WPARAM(wParam), pt.x, pt.y); 
+			break;
+		}
+		#pragma endregion
+	}
 
 	return DefWindowProc(hWnd, msg, wParam, lParam);
+}
+
+void Window::OnMouseRelease(LPARAM lParam, Mouse::EMouseButtons button)
+{
+	const POINTS pt = MAKEPOINTS(lParam);
+	Mouse::GetInstance()->OnMouseRelease(button, pt.x, pt.y);
+
+	if (pt.x < 0 || pt.x >= width || pt.y < 0 || pt.y >= height)
+	{
+		ReleaseCapture();
+		Mouse::GetInstance()->OnMouseChangeFocus(false, pt.x, pt.y);
+	}
 }

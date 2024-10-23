@@ -64,7 +64,7 @@ void ARenderer::Perform()
 	indexBuffer->BindToPipeline();
 
 	Transform* transform = owner->GetTransform();
-	tMatrixBuffer->SetConstants(transform->CreateTransformationMatrix());
+	tMatrixBuffer->SetConstants(transform->GetTransformationMatrix());
 	tMatrixBuffer->BindToPipeline();
 
 	// Set the topology type, then draw to the GPU

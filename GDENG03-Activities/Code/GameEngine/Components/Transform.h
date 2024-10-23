@@ -14,9 +14,10 @@ public:
 	
 	void Clone(AComponent* copy) override;
 	void Perform() override;
+	void SetEnabled(bool flag) override;
 	static Vector3 CheckDivisionByZero(const Vector3& dividend, const Vector3& divisor);
 
-	TMatrix CreateTransformationMatrix();
+	TMatrix GetTransformationMatrix();
 	void RecalculateChildTransformWithoutParent();
 	void RecalculateChildTransformWithParent(const Transform* parent);
 
@@ -47,6 +48,7 @@ public:
 	void Rotate(const Vector3& axis, float angleInDeg);
 
 private:
+	void UpdateTransformationMatrix();
 	void UpdateGlobalScaleWithChildren();
 
 	void RotateFromParent(const Vector3& eulerInDeg, const Quaternion& toRotate, const Transform* parent);
@@ -70,4 +72,6 @@ private:
 	Vector3 localRight;
 	Vector3 localUp;
 	Vector3 localForward;
+
+	TMatrix tMatrix;
 };
