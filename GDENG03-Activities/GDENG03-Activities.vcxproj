@@ -48,6 +48,8 @@
     <ClCompile Include="Code\GameEngine\GameObjects\Primitives\PlaneObject.cpp" />
     <ClCompile Include="Code\WindowSystem\Keyboard.cpp" />
     <ClCompile Include="Code\WindowSystem\Mouse.cpp" />
+    <ClCompile Include="Code\GameEngine\Components\Scripts\FreeCameraScript.cpp" />
+    <ClCompile Include="Code\GameEngine\GameObjects\FreeCameraObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\GameEngine\Graphics\CameraManager.h" />
@@ -88,6 +90,8 @@
     <ClInclude Include="Code\GameEngine\GameObjects\Primitives\PlaneObject.h" />
     <ClInclude Include="Code\WindowSystem\Keyboard.h" />
     <ClInclude Include="Code\WindowSystem\Mouse.h" />
+    <ClInclude Include="Code\GameEngine\Components\Scripts\FreeCameraScript.h" />
+    <ClInclude Include="Code\GameEngine\GameObjects\FreeCameraObject.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Code\Shaders\PixelShader.hlsl">

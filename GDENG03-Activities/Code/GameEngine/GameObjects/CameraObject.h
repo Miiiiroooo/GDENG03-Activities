@@ -16,7 +16,7 @@ public:
 public:
 	Camera* cameraComponent;
 
-private:
+protected:
 	int screenWidth;
 	int screenHeight;
 };

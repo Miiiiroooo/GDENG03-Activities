@@ -1,7 +1,7 @@
 #pragma once
 #include "../WindowSystem/Window.h"
 #include "../DirectXClasses/SwapChain.h"
-#include "GameObjects/CameraObject.h"
+#include "../GameEngine/Components/Transform.h"
 
 
 class GameEngineWindow : public Window
@@ -22,7 +22,6 @@ private:
 	int fps;
 	float currDelta;
 
-	CameraObject* cam;
 	Transform* t1;
 	Transform* t2;
 	Transform* t3;

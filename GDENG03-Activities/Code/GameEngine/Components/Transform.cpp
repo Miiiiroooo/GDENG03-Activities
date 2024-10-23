@@ -222,10 +222,10 @@ void Transform::Rotate(const Vector3& eulerInDeg)
 {
 	Vector3 parentRight = (owner->GetParent()) ?
 		owner->GetParent()->GetTransform()->localRight :
-		Vector3::Right;
+		Vector3::Right; 
 
 	Quaternion yaw = Quaternion::CreateFromAxisAngle(Vector3::Up, eulerInDeg.y * (M_PI / 180.f)); 
-	Quaternion pitch = Quaternion::CreateFromAxisAngle(parentRight, eulerInDeg.x * (M_PI / 180.f)); 
+	Quaternion pitch = Quaternion::CreateFromAxisAngle(parentRight, eulerInDeg.x * (M_PI / 180.f)); // check THIS one more time
 	Quaternion roll = Quaternion::CreateFromAxisAngle(localForward, eulerInDeg.z * (M_PI / 180.f)); 
 	Quaternion toRotate = roll * pitch * yaw; 
 	orientation *= toRotate;
