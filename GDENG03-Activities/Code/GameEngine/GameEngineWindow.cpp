@@ -47,14 +47,15 @@ void GameEngineWindow::OnCreate(HWND hWnd)
 
 	CubeObject* cube2 = new CubeObject();
 	GameObjectManager::GetInstance()->AddObject(cube2);
-	cube2->GetTransform()->Position = { 0, 0, 5 };
-	cube2->GetTransform()->Rotate(45.0f, 0.0f, 45.0f);
+	t1 = cube2->GetTransform();
+	t1->Position = { 0, 0, 5 };
+	t1->Rotate(45.0f, 0.0f, 45.0f);
 
 	CylinderObject* cylinder2 = new CylinderObject();
 	GameObjectManager::GetInstance()->AddObject(cylinder2);
-	t1 = cylinder2->GetTransform(); 
-	t1->Position = { 0, 0, -5 }; 
-	t1->Rotate(30.0f, 0.0f, -45.0f);
+	t2 = cylinder2->GetTransform(); 
+	t2->Position = { 0, 0, -5 }; 
+	t2->Rotate(30.0f, 0.0f, -45.0f);
 
 
 	SphereObject* pawn = new SphereObject();
@@ -65,18 +66,18 @@ void GameEngineWindow::OnCreate(HWND hWnd)
 	pawn->AttachChild(shutter);
 	shutter->GetTransform()->Rotate(-90.0f, 0.0f, 0.0f);
 	shutter->GetTransform()->LocalPosition = { 0.0f, 0.0f, 1.0f};
-	//shutter->GetTransform()->LocalScale = { 1.5f, 1.0f, 1.0f };
+	shutter->GetTransform()->LocalScale = { 0.6f, 0.5f, 0.6f };
 
 	FreeCameraObject* freeCam = new FreeCameraObject(width, height); 
 	freeCam->GetTransform()->Position = { 0.0f, 0.0f, 0.0f }; 
 	GameObjectManager::GetInstance()->AddObject(freeCam); 
 
-	EmptyGameObject* e = new EmptyGameObject("CamController"); 
-	GameObjectManager::GetInstance()->AddObject(e);   
+	EmptyGameObject* e = new EmptyGameObject("CamController");  
+	GameObjectManager::GetInstance()->AddObject(e);    
 
-	CameraController* controller = new CameraController(freeCam, pawn); 
-	e->AttachComponent(controller); 
-
+	CameraController* controller = new CameraController(freeCam, pawn);  
+	e->AttachComponent(controller);  
+	 
 
 	Vector2 dir = Vector2::UnitY; 
 	float currAngle = 0; 
@@ -114,6 +115,7 @@ void GameEngineWindow::OnUpdate()
 		GameObjectManager::GetInstance()->Update(secsPerFrame); 
 
 		t1->Rotate(35 * secsPerFrame, -55 * secsPerFrame, 45 * secsPerFrame);
+		t2->Rotate(-65 * secsPerFrame, 25 * secsPerFrame, -55 * secsPerFrame);
 
 		Keyboard::FlushEventsBuffer();  
 		Keyboard::FlushCharBuffer(); 

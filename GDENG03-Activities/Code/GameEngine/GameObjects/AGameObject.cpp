@@ -127,6 +127,11 @@ bool AGameObject::IsEnabled()
 void AGameObject::SetEnabled(bool flag)
 {
 	enabled = flag;
+
+	for (size_t i = 0; i < childList.size(); i++)
+	{
+		this->childList[i]->SetEnabled(flag);
+	}
 }
 #pragma endregion
 
@@ -143,6 +148,7 @@ void AGameObject::AttachChild(AGameObject* child)
 
 	this->childList.push_back(child); 
 	child->SetParent(this);
+	if (!enabled) child->SetEnabled(false);
 
 	if (!child->isInitialized) child->Initialize(); 
 	child->transform->RecalculateChildTransformWithParent(this->transform);
