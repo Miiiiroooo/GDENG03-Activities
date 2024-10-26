@@ -2,8 +2,6 @@
 
 int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
-	//ForTesting();
-
 	GameEngineWindow gameEngine(60);  
 
 	if (gameEngine.Init(1280, 960, "Aamir Akim"))  

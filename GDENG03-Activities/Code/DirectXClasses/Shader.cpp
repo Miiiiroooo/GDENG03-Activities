@@ -68,7 +68,8 @@ bool VertexShader::Init()
 		return false;
 	}
 
-	if (FAILED(gfx->GetDevice()->CreateInputLayout(inputElements.data(), inputElements.size(), shaderBlob.Get()->GetBufferPointer(), shaderBlob.Get()->GetBufferSize(), &inputLayout)))
+	if (FAILED(gfx->GetDevice()->CreateInputLayout(inputElements.data(), (UINT)inputElements.size(), 
+		shaderBlob.Get()->GetBufferPointer(), shaderBlob.Get()->GetBufferSize(), &inputLayout)))
 	{
 		return false;
 	}

@@ -31,7 +31,7 @@ void ARenderer::Clone(AComponent* copy)
 
 bool ARenderer::Release()
 {
-	for (int i = buffersList.size() - 1; i >= 0; i--)
+	for (int i = (int)buffersList.size() - 1; i >= 0; i--)
 	{
 		buffersList[i]->Release();
 	}

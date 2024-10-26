@@ -1,18 +1,10 @@
 #include "Keyboard.h"
 
 
-#pragma region Singleton
-Keyboard* Keyboard::sharedInstance = NULL;
-
-Keyboard* Keyboard::GetInstance()
-{
-	if (sharedInstance == NULL)
-	{
-		sharedInstance = new Keyboard();
-	}
-
-	return sharedInstance;
-}
+#pragma region Static-Members
+std::unordered_map<unsigned char, bool> Keyboard::keyStates;
+std::vector<Keyboard::KeyboardEvents> Keyboard::keyEventsBuffer;
+std::vector<char> Keyboard::charBuffer;
 #pragma endregion
 
 

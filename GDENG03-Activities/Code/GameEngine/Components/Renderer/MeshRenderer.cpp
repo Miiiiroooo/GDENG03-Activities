@@ -1,8 +1,9 @@
 #include "MeshRenderer.h"
 #include "../../Meshes/CubeMesh.h"
+#include "../../Meshes/SphereMesh.h"
 #include "../../Meshes/QuadMesh.h"
-#include "../../Meshes/PlaneMesh.h"
 #include "../../Meshes/CircleMesh.h"
+#include "../../Meshes/PlaneMesh.h"
 #include "../../Meshes/CylinderMesh.h"
 #include "../../Meshes/ConeMesh.h"
 
@@ -32,7 +33,7 @@ void MeshRenderer::LoadPrimitive(EPrimitiveMeshTypes type)
 		mesh = new CubeMesh<VertexData>(); 
 		break;
 	case EPrimitiveMeshTypes::Sphere:
-		// add sphere here
+		mesh = new SphereMesh<VertexData>();
 		break;
 	case EPrimitiveMeshTypes::Quad:
 		mesh = new QuadMesh<VertexData>();

@@ -8,18 +8,18 @@ class PlaneMesh : public AMesh<T>
 public:
 	VertexBuffer<T>* CreateVertexBuffer() override
 	{
-		std::vector<T> data(4);
-		data[0].pos = { -2.5f, 0.0f,  2.5f };
-		data[1].pos = {  2.5f, 0.0f,  2.5f };
-		data[2].pos = { -2.5f, 0.0f, -2.5f };
-		data[3].pos = {  2.5f, 0.0f, -2.5f };
+		std::vector<T> vertices(4);
+		vertices[0].pos = { -2.5f, 0.0f,  2.5f };
+		vertices[1].pos = {  2.5f, 0.0f,  2.5f };
+		vertices[2].pos = { -2.5f, 0.0f, -2.5f };
+		vertices[3].pos = {  2.5f, 0.0f, -2.5f };
 
-		data[0].vColor = { 1.0f, 1.0f, 1.0f };
-		data[1].vColor = { 1.0f, 1.0f, 1.0f };
-		data[2].vColor = { 1.0f, 1.0f, 1.0f };
-		data[3].vColor = { 1.0f, 1.0f, 1.0f };
+		vertices[0].vColor = { 1.0f, 1.0f, 1.0f };
+		vertices[1].vColor = { 1.0f, 1.0f, 1.0f };
+		vertices[2].vColor = { 1.0f, 1.0f, 1.0f };
+		vertices[3].vColor = { 1.0f, 1.0f, 1.0f };
 
-		return new VertexBuffer<T>(GraphicsEngine::GetInstance(), data);
+		return new VertexBuffer<T>(GraphicsEngine::GetInstance(), vertices);
 	}
 
 	IndexBuffer* CreateIndexBuffer() override

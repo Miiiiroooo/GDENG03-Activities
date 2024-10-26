@@ -1,6 +1,7 @@
 #include "FreeCameraScript.h"
 #include "../../../WindowSystem/Keyboard.h"
 #include "../../../WindowSystem/Mouse.h"
+#include "../../MathUtils.h"
 #include "../Transform.h"
 
 
@@ -29,7 +30,7 @@ void FreeCameraScript::Clone(AComponent* copy)
 
 void FreeCameraScript::Perform()
 {
-	if (Mouse::GetInstance()->IsButtonDown(Mouse::EMouseButtons::Right))
+	if (Mouse::IsButtonDown(Mouse::EMouseButtons::Right))
 	{
 		HandleMovement(); 
 		HandleLookRotation();
@@ -46,16 +47,16 @@ void FreeCameraScript::Perform()
 void FreeCameraScript::HandleMovement()
 {
 	Vector3 total = Vector3::Zero;
-	if (Keyboard::GetInstance()->IsKeyDown('W')) total += transform->GetLocalForward();
-	if (Keyboard::GetInstance()->IsKeyDown('S')) total -= transform->GetLocalForward();
-	if (Keyboard::GetInstance()->IsKeyDown('A')) total -= transform->GetLocalRight(); 
-	if (Keyboard::GetInstance()->IsKeyDown('D')) total += transform->GetLocalRight(); 
-	if (Keyboard::GetInstance()->IsKeyDown('E')) total += Vector3::Up; 
-	if (Keyboard::GetInstance()->IsKeyDown('Q')) total -= Vector3::Up; 
+	if (Keyboard::IsKeyDown('W')) total += transform->GetLocalForward();
+	if (Keyboard::IsKeyDown('S')) total -= transform->GetLocalForward();
+	if (Keyboard::IsKeyDown('A')) total -= transform->GetLocalRight(); 
+	if (Keyboard::IsKeyDown('D')) total += transform->GetLocalRight(); 
+	if (Keyboard::IsKeyDown('E')) total += Vector3::Up; 
+	if (Keyboard::IsKeyDown('Q')) total -= Vector3::Up; 
 	total.Normalize();
 	total *= movementSpeed * dt; 
 
-	if (Keyboard::GetInstance()->IsKeyDown(VK_SHIFT)) total *= boostSpeed;
+	if (Keyboard::IsKeyDown(VK_SHIFT)) total *= boostSpeed;
 
 	transform->Position += total;
 }
@@ -63,14 +64,14 @@ void FreeCameraScript::HandleMovement()
 void FreeCameraScript::HandleLookRotation()
 {
 	oldMousePos = currMousePos;
-	currMousePos = Mouse::GetInstance()->GetMousePos();
+	currMousePos = Mouse::GetMousePos();
 
 	if (oldMousePos.x == -1 && oldMousePos.y == -1) return;
 
 	Vector2 dir = currMousePos - oldMousePos;
 
 	float x = dir.y * pitchRotationRate;
-	if (x + transform->GetEulerAngles().x > 65 || x + transform->GetEulerAngles().x < -65) x = 0;
+	if (!MathUtils::IsWithinRange(x + transform->GetEulerAngles().x, -pitchThreshold, pitchThreshold)) x = 0;
 	transform->Rotate(x, 0.0f, 0.0f);
 
 	float y = dir.x * yawRotationRate;
@@ -79,6 +80,6 @@ void FreeCameraScript::HandleLookRotation()
 
 void FreeCameraScript::HandleWheelInputs()
 {
-	int rot = Mouse::GetInstance()->GetMouseWheelRotations();
+	int rot = Mouse::GetMouseWheelRotations(); 
 	transform->Position += transform->GetLocalForward() * longitudinalStepDistance * (float)rot;
 }

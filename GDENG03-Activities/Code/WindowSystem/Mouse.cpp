@@ -1,18 +1,12 @@
 #include "Mouse.h"
 
 
-#pragma region Singleton
-Mouse* Mouse::sharedInstance = NULL;
-
-Mouse* Mouse::GetInstance()
-{
-	if (sharedInstance == NULL)
-	{
-		sharedInstance = new Mouse(); 
-	}
-
-	return sharedInstance;
-}
+#pragma region Static-Members
+bool Mouse::isInWindow = false;
+Vector2 Mouse::mousePos = Vector2::Zero;
+int Mouse::wheelDeltaTotal = 0;
+std::unordered_map<Mouse::EMouseButtons, bool> Mouse::buttonStates;
+std::vector<Mouse::MouseEvents> Mouse::mouseEventsBuffer;
 #pragma endregion
 
 
@@ -20,6 +14,11 @@ Mouse* Mouse::GetInstance()
 Vector2 Mouse::GetMousePos()
 {
 	return mousePos;
+}
+
+bool Mouse::IsMouseInWindow()
+{
+	return isInWindow;
 }
 
 bool Mouse::IsButtonDown(EMouseButtons button)
@@ -45,11 +44,6 @@ bool Mouse::IsButtonReleased(EMouseButtons button)
 		if ((int)button * 2 == (int)mEvent.EventType) return true;
 	}
 	return false;
-}
-
-bool Mouse::IsMouseInWindow()
-{
-	return isInWindow;
 }
 
 int Mouse::GetMouseWheelRotations()
@@ -82,7 +76,7 @@ void Mouse::OnMouseMove(int x, int y)
 
 void Mouse::OnMouseChangeFocus(bool isInWindow, int x, int y)
 {
-	this->isInWindow = isInWindow; 
+	Mouse::isInWindow = isInWindow; 
 
 	Vector2 pos = { (float)x, (float)y }; 
 	MouseEvents::Type eType = (isInWindow) ? MouseEvents::Type::Enter : MouseEvents::Type::Leave;

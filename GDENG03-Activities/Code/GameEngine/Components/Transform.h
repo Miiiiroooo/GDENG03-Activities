@@ -15,7 +15,6 @@ public:
 	void Clone(AComponent* copy) override;
 	void Perform() override;
 	void SetEnabled(bool flag) override;
-	static Vector3 CheckDivisionByZero(const Vector3& dividend, const Vector3& divisor);
 
 	TMatrix GetTransformationMatrix();
 	void RecalculateChildTransformWithoutParent();
@@ -42,6 +41,8 @@ public:
 	Vector3 GetLocalUp();
 	Vector3 GetLocalForward();
 	#pragma endregion
+
+	void ScaleUniformly(float factor);
 
 	void Rotate(float xAngleInDeg, float yAngleInDeg, float zAngleInDeg);
 	void Rotate(const Vector3& eulerInDeg);

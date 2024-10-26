@@ -143,8 +143,8 @@ SwapChain* GraphicsEngine::CreateSwapChain(HWND hWnd, UINT width, UINT height)
 void GraphicsEngine::SetViewport(UINT width, UINT height)
 {
     D3D11_VIEWPORT vp = {};
-    vp.Width = width;
-    vp.Height = height;
+    vp.Width = (FLOAT)width;
+    vp.Height = (FLOAT)height;
     vp.MinDepth = 0.0f;
     vp.MaxDepth = 1.0f;
 

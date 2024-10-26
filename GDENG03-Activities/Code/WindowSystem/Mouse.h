@@ -47,35 +47,34 @@ private:
 
 
 public:
-	static Mouse* GetInstance();
 	Mouse(const Mouse&) = delete;
 	Mouse& operator=(const Mouse&) = delete;
 
-	Vector2 GetMousePos();
-	bool IsButtonDown(EMouseButtons button);
-	bool IsButtonPressed(EMouseButtons button);
-	bool IsButtonReleased(EMouseButtons button); 
-	bool IsMouseInWindow();
-	int GetMouseWheelRotations();
-	void FlushEventsBuffer();
+	static Vector2 GetMousePos();
+	static bool IsMouseInWindow();
+
+	static bool IsButtonDown(EMouseButtons button);
+	static bool IsButtonPressed(EMouseButtons button);
+	static bool IsButtonReleased(EMouseButtons button);
+
+	static int GetMouseWheelRotations();
+	static void FlushEventsBuffer();
 
 private:
 	Mouse() {};
 
-	void OnMouseMove(int x, int y);
-	void OnMouseChangeFocus(bool isInWindow, int x, int y);
-	void OnMousePress(EMouseButtons button, int x, int y);
-	void OnMouseRelease(EMouseButtons button, int x, int y);
-	void OnMouseWheelRotate(int deltaWheel, int x, int y);
+	static void OnMouseMove(int x, int y);
+	static void OnMouseChangeFocus(bool isInWindow, int x, int y);
+	static void OnMousePress(EMouseButtons button, int x, int y);
+	static void OnMouseRelease(EMouseButtons button, int x, int y);
+	static void OnMouseWheelRotate(int deltaWheel, int x, int y);
 
 private:
-	static Mouse* sharedInstance;
-
-	bool isInWindow = false; 
-	Vector2 mousePos = Vector2::Zero;
-	int wheelDeltaTotal = 0;
-	std::unordered_map<EMouseButtons, bool> buttonStates;
-	std::vector<MouseEvents> mouseEventsBuffer;
+	static bool isInWindow; 
+	static Vector2 mousePos; 
+	static int wheelDeltaTotal;
+	static std::unordered_map<EMouseButtons, bool> buttonStates;
+	static std::vector<MouseEvents> mouseEventsBuffer;
 
 	friend class Window;
 };

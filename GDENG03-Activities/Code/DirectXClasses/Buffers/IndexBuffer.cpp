@@ -4,7 +4,7 @@
 IndexBuffer::IndexBuffer(GraphicsEngine* gfx, const std::vector<unsigned short>& indices) : AD3D11Object(gfx), indices(indices)
 {
 	stride = sizeof(unsigned short);
-	listSize = indices.size();
+	listSize = (UINT)indices.size();
 }
 
 IndexBuffer::~IndexBuffer()

@@ -8,26 +8,26 @@ class CubeMesh : public AMesh<T>
 public:
 	VertexBuffer<T>* CreateVertexBuffer() override
 	{
-		std::vector<T> data(8);
-		data[0].pos = { -0.5f,  0.5f, -0.5f };
-		data[1].pos = {  0.5f,  0.5f, -0.5f };
-		data[2].pos = { -0.5f, -0.5f, -0.5f };
-		data[3].pos = {  0.5f, -0.5f, -0.5f };
-		data[4].pos = {  0.5f,  0.5f,  0.5f };
-		data[5].pos = { -0.5f,  0.5f,  0.5f };
-		data[6].pos = { 0.5f, -0.5f,  0.5f };
-		data[7].pos = { -0.5f, -0.5f,  0.5f };
+		std::vector<T> vertices(8);
+		vertices[0].pos = { -0.5f,  0.5f, -0.5f };
+		vertices[1].pos = {  0.5f,  0.5f, -0.5f };
+		vertices[2].pos = { -0.5f, -0.5f, -0.5f };
+		vertices[3].pos = {  0.5f, -0.5f, -0.5f };
+		vertices[4].pos = {  0.5f,  0.5f,  0.5f };
+		vertices[5].pos = { -0.5f,  0.5f,  0.5f };
+		vertices[6].pos = { 0.5f, -0.5f,  0.5f };
+		vertices[7].pos = { -0.5f, -0.5f,  0.5f };
 
-		data[0].vColor = { 1.0f, 1.0f, 1.0f };
-		data[1].vColor = { 1.0f, 1.0f, 1.0f };
-		data[2].vColor = { 1.0f, 1.0f, 1.0f };
-		data[3].vColor = { 1.0f, 1.0f, 1.0f };
-		data[4].vColor = { 1.0f, 1.0f, 1.0f };
-		data[5].vColor = { 1.0f, 1.0f, 1.0f };
-		data[6].vColor = { 1.0f, 1.0f, 1.0f }; 
-		data[7].vColor = { 1.0f, 1.0f, 1.0f };
+		vertices[0].vColor = { 1.0f, 1.0f, 1.0f };
+		vertices[1].vColor = { 1.0f, 1.0f, 1.0f };
+		vertices[2].vColor = { 1.0f, 1.0f, 1.0f };
+		vertices[3].vColor = { 1.0f, 1.0f, 1.0f };
+		vertices[4].vColor = { 1.0f, 1.0f, 1.0f };
+		vertices[5].vColor = { 1.0f, 1.0f, 1.0f };
+		vertices[6].vColor = { 1.0f, 1.0f, 1.0f }; 
+		vertices[7].vColor = { 1.0f, 1.0f, 1.0f };
 
-		return new VertexBuffer<T>(GraphicsEngine::GetInstance(), data);
+		return new VertexBuffer<T>(GraphicsEngine::GetInstance(), vertices);
 	}
 
 	IndexBuffer* CreateIndexBuffer() override 

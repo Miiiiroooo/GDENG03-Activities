@@ -147,6 +147,15 @@
     <ClCompile Include="Code\GameEngine\GameObjects\Primitives\CylinderObject.cpp">
       <Filter>GameEngine\GameObjects\Primitives</Filter>
     </ClCompile>
+    <ClCompile Include="Code\GameEngine\Components\Scripts\CameraController.cpp">
+      <Filter>GameEngine\Components\Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\GameEngine\GameObjects\Primitives\SphereObject.cpp">
+      <Filter>GameEngine\GameObjects\Primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\GameEngine\MathUtils.cpp">
+      <Filter>GameEngine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\WindowsMessageMap.h" />
@@ -278,6 +287,18 @@
     </ClInclude>
     <ClInclude Include="Code\GameEngine\GameObjects\Primitives\CylinderObject.h">
       <Filter>GameEngine\GameObjects\Primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\GameEngine\Components\Scripts\CameraController.h">
+      <Filter>GameEngine\Components\Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\GameEngine\Meshes\SphereMesh.h">
+      <Filter>GameEngine\Meshes</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\GameEngine\GameObjects\Primitives\SphereObject.h">
+      <Filter>GameEngine\GameObjects\Primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\GameEngine\MathUtils.h">
+      <Filter>GameEngine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

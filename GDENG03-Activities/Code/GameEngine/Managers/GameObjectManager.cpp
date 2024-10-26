@@ -36,8 +36,37 @@ void GameObjectManager::Update(float deltaTime)
 void GameObjectManager::Draw()
 {
 	auto shadersList = ShaderManager::GetInstance()->GetShaderProgramsList();
+	auto camerasList = CameraManager::GetInstance()->GetCamerasList(); 
+	
+	for (int i = (int)camerasList.size() - 1; i >= 0; i--)
+	{
+		if (!camerasList[i]->Enabled || !camerasList[i]->GetOwner()->Enabled) continue; 
 
-	for (size_t i = 0; i < shadersList.size(); i++)
+		camerasList[i]->BindVPMatrixToPipeline(); 
+
+		for (size_t j = 0; j < shadersList.size(); j++) 
+		{
+			shadersList[j].vShader->BindToPipeline(); 
+			shadersList[j].pShader->BindToPipeline(); 
+
+			LPCWSTR shaderType = shadersList[j].shaderType;  
+			auto& objectsList = shaderToObjectsMap[shaderType];  
+
+			for (size_t k = 0; k < objectsList.size(); k++)
+			{
+				if (objectsList[k] == nullptr)
+				{
+					objectsList.erase(objectsList.begin() + k);
+					objectsList.shrink_to_fit();
+					continue;
+				}
+
+				objectsList[k]->Draw();
+			}
+		}
+	}
+
+	/*for (size_t i = 0; i < shadersList.size(); i++)
 	{
 		shadersList[i].vShader->BindToPipeline();
 		shadersList[i].pShader->BindToPipeline();
@@ -48,23 +77,23 @@ void GameObjectManager::Draw()
 
 		for (int j = (int)camerasList.size() - 1; j >= 0; j--)
 		{
-			if (!camerasList[j]->Enabled) continue;
+			if (!camerasList[j]->Enabled || !camerasList[j]->GetOwner()->Enabled) continue;
 
 			camerasList[j]->BindVPMatrixToPipeline();
 
-			for (size_t k = 0; k < objectsList.size(); k++)  
+			for (size_t k = 0; k < objectsList.size(); k++)
 			{
-				if (objectsList[k] == nullptr) 
+				if (objectsList[k] == nullptr)
 				{
-					objectsList.erase(objectsList.begin() + k); 
-					objectsList.shrink_to_fit(); 
+					objectsList.erase(objectsList.begin() + k);
+					objectsList.shrink_to_fit();
 					continue;
 				}
 
-				objectsList[k]->Draw(); 
+				objectsList[k]->Draw();
 			}
 		}
-	}
+	}*/
 }
 #pragma endregion
 

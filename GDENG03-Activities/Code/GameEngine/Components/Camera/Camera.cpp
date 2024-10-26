@@ -7,7 +7,7 @@
 Camera::Camera(int width, int height) : AComponent("Camera", EComponentTypes::Camera)
 {
 	ProjectionType = EProjectionTypes::Perspective;
-	AspectRatio = Vector2(width, height);
+	AspectRatio = Vector2((float)width, (float)height);
 	FieldOfView = 60.f;
 	clippingPlane = Vector2(0.1f, 1000.f);
 
@@ -20,7 +20,7 @@ Camera::Camera(int width, int height) : AComponent("Camera", EComponentTypes::Ca
 Camera::Camera(std::string name, int width, int height) : AComponent(name, EComponentTypes::Camera)
 {
 	ProjectionType = EProjectionTypes::Perspective; 
-	AspectRatio = Vector2(width, height); 
+	AspectRatio = Vector2((float)width, (float)height);
 	FieldOfView = 60.f; 
 	clippingPlane = Vector2(0.1f, 1000.f); 
 

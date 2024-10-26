@@ -27,32 +27,29 @@ private:
 
 
 public:
-	static Keyboard* GetInstance();
 	Keyboard(const Keyboard&) = delete;
 	Keyboard& operator=(const Keyboard&) = delete;
 
-	bool IsKeyDown(unsigned char key);
-	bool IsKeyPressed(unsigned char key);
-	bool IsKeyReleased(unsigned char key);
-	std::vector<char>& GetCharBuffer();
+	static bool IsKeyDown(unsigned char key);
+	static bool IsKeyPressed(unsigned char key);
+	static bool IsKeyReleased(unsigned char key);
+	static std::vector<char>& GetCharBuffer();
 
-	void FlushEventsBuffer();
-	void FlushCharBuffer();
+	static void FlushEventsBuffer();
+	static void FlushCharBuffer();
 
 private:
 	Keyboard() {};
 
-	void OnKeyPressed(unsigned char key);
-	void OnKeyReleased(unsigned char key);
-	void OnChar(char character);
+	static void OnKeyPressed(unsigned char key);
+	static void OnKeyReleased(unsigned char key);
+	static void OnChar(char character);
 
 
 private:
-	static Keyboard* sharedInstance; 
-
-	std::unordered_map<unsigned char, bool> keyStates;
-	std::vector<KeyboardEvents> keyEventsBuffer;
-	std::vector<char> charBuffer;
+	static std::unordered_map<unsigned char, bool> keyStates;
+	static std::vector<KeyboardEvents> keyEventsBuffer;
+	static std::vector<char> charBuffer;
 
 	friend class Window;
 };

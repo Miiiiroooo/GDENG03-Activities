@@ -22,7 +22,8 @@ private:
 private:
 	const float movementSpeed = 8.5f;
 	const float boostSpeed = 4.7f;
-	const float longitudinalStepDistance = 5.f;
+	const float longitudinalStepDistance = 5.0f;
+	const float pitchThreshold = 90.0f;
 
 	// camera rotation based on how much mouse pos traversed on the screen; not reliant on dt
 	float pitchRotationRate;
