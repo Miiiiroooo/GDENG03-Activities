@@ -1,7 +1,7 @@
 #include "FreeCameraScript.h"
-#include "../../../WindowSystem/Keyboard.h"
-#include "../../../WindowSystem/Mouse.h"
-#include "../../MathUtils.h"
+#include "WindowSystem/Keyboard.h"
+#include "WindowSystem/Mouse.h"
+#include "GameEngine/MathUtils.h"
 #include "../Transform.h"
 
 

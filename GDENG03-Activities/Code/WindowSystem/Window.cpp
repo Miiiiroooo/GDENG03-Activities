@@ -1,6 +1,6 @@
 #include "Window.h"
 #include "../WindowsMessageMap.h"
-#include "../GameEngine/EngineTime.h"
+#include "GameEngine/EngineTime.h"
 
 
 Window::Window() : width (640), height(480), isRunning(false),

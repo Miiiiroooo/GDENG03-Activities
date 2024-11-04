@@ -1,6 +1,6 @@
 #pragma once
 #include <unordered_map>
-#include "../../DirectXClasses/Shader.h"
+#include "DirectXClasses/Shader.h"
 
 
 class ShaderManager

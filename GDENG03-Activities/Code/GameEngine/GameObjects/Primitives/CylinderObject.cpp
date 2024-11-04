@@ -1,5 +1,5 @@
 #include "CylinderObject.h"
-#include "../../Managers/GameObjectManager.h"
+#include "GameEngine/Managers/GameObjectManager.h"
 
 CylinderObject::CylinderObject() : AGameObject("CylinderObject"), renderer(nullptr)
 { 

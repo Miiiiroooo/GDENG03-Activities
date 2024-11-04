@@ -1,5 +1,5 @@
 #include "CubeObject.h"
-#include "../../Managers/GameObjectManager.h"
+#include "GameEngine/Managers/GameObjectManager.h"
 
 CubeObject::CubeObject() : AGameObject("CubeObj"), renderer(nullptr)
 {

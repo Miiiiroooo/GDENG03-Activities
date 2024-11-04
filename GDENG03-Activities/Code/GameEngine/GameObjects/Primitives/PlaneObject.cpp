@@ -1,5 +1,5 @@
 #include "PlaneObject.h"
-#include "../../Managers/GameObjectManager.h"
+#include "GameEngine/Managers/GameObjectManager.h"
 
 PlaneObject::PlaneObject() : AGameObject("PlaneObject"), renderer(nullptr)
 {

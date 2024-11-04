@@ -1,11 +1,11 @@
 #include "MeshRenderer.h"
-#include "../../Meshes/CubeMesh.h"
-#include "../../Meshes/SphereMesh.h"
-#include "../../Meshes/QuadMesh.h"
-#include "../../Meshes/CircleMesh.h"
-#include "../../Meshes/PlaneMesh.h"
-#include "../../Meshes/CylinderMesh.h"
-#include "../../Meshes/ConeMesh.h"
+#include "GameEngine/Meshes/CubeMesh.h"
+#include "GameEngine/Meshes/SphereMesh.h"
+#include "GameEngine/Meshes/QuadMesh.h"
+#include "GameEngine/Meshes/CircleMesh.h"
+#include "GameEngine/Meshes/PlaneMesh.h"
+#include "GameEngine/Meshes/CylinderMesh.h"
+#include "GameEngine/Meshes/ConeMesh.h"
 
 
 MeshRenderer::MeshRenderer() : ARenderer("MeshRenderer", L"DefaultShader")

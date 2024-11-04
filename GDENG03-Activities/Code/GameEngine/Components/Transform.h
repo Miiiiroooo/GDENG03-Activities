@@ -1,7 +1,7 @@
 #pragma once
 #include <SimpleMath.h>
 #include "AComponent.h"
-#include "../../DirectXClasses/Buffers/BufferDataTypes.h"
+#include "DirectXClasses/Buffers/BufferDataTypes.h"
 
 
 using namespace DirectX::SimpleMath;

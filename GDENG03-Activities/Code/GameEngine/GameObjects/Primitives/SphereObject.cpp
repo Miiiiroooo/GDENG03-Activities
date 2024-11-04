@@ -1,5 +1,5 @@
 #include "SphereObject.h"
-#include "../../Managers/GameObjectManager.h"
+#include "GameEngine/Managers/GameObjectManager.h"
 
 SphereObject::SphereObject() : AGameObject("SphereObject")
 {

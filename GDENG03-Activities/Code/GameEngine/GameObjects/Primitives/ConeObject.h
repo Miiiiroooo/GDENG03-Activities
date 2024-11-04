@@ -1,6 +1,6 @@
 #pragma once
 #include "../AGameObject.h"
-#include "../../Components/Renderer/MeshRenderer.h"
+#include "GameEngine/Components/Renderer/MeshRenderer.h"
 
 class ConeObject : public AGameObject
 {

@@ -1,5 +1,5 @@
 #include "QuadObject.h"
-#include "../../Managers/GameObjectManager.h"
+#include "GameEngine/Managers/GameObjectManager.h"
 
 QuadObject::QuadObject() : AGameObject("QuadObject"), renderer(nullptr)
 {

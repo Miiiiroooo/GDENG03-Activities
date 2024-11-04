@@ -1,5 +1,5 @@
 #include "CircleObject.h"
-#include "../../Managers/GameObjectManager.h"
+#include "GameEngine/Managers/GameObjectManager.h"
 
 CircleObject::CircleObject() : AGameObject("CircleObj"), renderer(nullptr)
 {

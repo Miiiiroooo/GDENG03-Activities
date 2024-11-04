@@ -1,6 +1,6 @@
 #pragma once
-#include "../../DirectXClasses/Buffers/VertexBuffer.cpp"
-#include "../../DirectXClasses/Buffers/IndexBuffer.h"
+#include "DirectXClasses/Buffers/VertexBuffer.cpp"
+#include "DirectXClasses/Buffers/IndexBuffer.h"
 
 
 template <typename T>

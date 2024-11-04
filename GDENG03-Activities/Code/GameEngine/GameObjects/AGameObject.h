@@ -19,6 +19,7 @@ public:
 	virtual void Update(float dt);
 	virtual void Draw(); 
 
+	unsigned int GetInstanceID(); 
 	std::string GetName();
 	void SetName(std::string newName);
 	__declspec(property(get = GetName, put = SetName)) std::string Name;
@@ -29,6 +30,7 @@ public:
 	// Inheritance-related methods
 	void AttachChild(AGameObject* child);
 	void DetachChild(AGameObject* child);
+	int GetLevel();
 	AGameObject* GetParent();
 	std::vector<AGameObject*> GetChildList();
 
@@ -46,13 +48,18 @@ private:
 
 
 protected:
+	unsigned int instanceID;
 	std::string name;
 	bool enabled;
 	bool isInitialized;
 	Transform* transform;
 
+	int level;
 	AGameObject* parent;
 	std::vector<AGameObject*> childList;
 	std::vector<AComponent*> componentList; 
+
+private:
+	static int currentID;
 };
 

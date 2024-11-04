@@ -2,9 +2,9 @@
 #include <vector>
 #include <string>
 #include "../AComponent.h"
-#include "../../../DirectXClasses/Buffers/IndexBuffer.h"
-#include "../../../DirectXClasses/Buffers/ConstantBuffer.cpp"
-#include "../../../DirectXClasses/Buffers/BufferDataTypes.h"
+#include "DirectXClasses/Buffers/IndexBuffer.h"
+#include "DirectXClasses/Buffers/ConstantBuffer.cpp"
+#include "DirectXClasses/Buffers/BufferDataTypes.h"
 
 
 class ARenderer : public AComponent

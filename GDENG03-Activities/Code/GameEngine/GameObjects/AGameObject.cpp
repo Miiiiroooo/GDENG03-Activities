@@ -1,15 +1,18 @@
 #include "AGameObject.h"
-#include "../Components/Inputs/GenericInputController.h"
 #include "../Components/Renderer/ARenderer.h"
 
+
+int AGameObject::currentID = 0;
 
 #pragma region Constructor-Destructor
 AGameObject::AGameObject(std::string name)
 {
+	this->instanceID = currentID; currentID++; 
 	this->name = name;
 	this->parent = NULL;
 	this->enabled = true;
 	this->isInitialized = false;
+	this->level = 0; 
 
 	transform = new Transform();
 	AttachComponent(transform);
@@ -109,6 +112,11 @@ void AGameObject::Draw()
 	}
 }
 
+unsigned int AGameObject::GetInstanceID()
+{
+	return this->instanceID;
+}
+
 std::string AGameObject::GetName()
 {
 	return this->name;
@@ -148,6 +156,7 @@ void AGameObject::AttachChild(AGameObject* child)
 
 	this->childList.push_back(child); 
 	child->SetParent(this);
+	child->level = this->level + 1;
 	if (!enabled) child->SetEnabled(false);
 
 	if (!child->isInitialized) child->Initialize(); 
@@ -174,9 +183,15 @@ void AGameObject::DetachChild(AGameObject* child)
 	}
 
 	child->SetParent(NULL); 
+	child->level = 0; 
 	child->transform->RecalculateChildTransformWithoutParent();
 
 	//this->childList.erase(std::remove(this->childList.begin(), this->childList.end(), child), this->childList.end());
+}
+
+int AGameObject::GetLevel()
+{
+	return this->level;
 }
 
 AGameObject* AGameObject::GetParent()

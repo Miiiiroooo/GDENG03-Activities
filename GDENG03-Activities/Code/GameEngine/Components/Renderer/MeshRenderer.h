@@ -1,6 +1,6 @@
 #pragma once
 #include "ARenderer.h"
-#include "../../Meshes/EPrimitiveMeshTypes.h"
+#include "GameEngine/Meshes/EPrimitiveMeshTypes.h"
 
 class MeshRenderer : public ARenderer
 {

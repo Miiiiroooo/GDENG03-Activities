@@ -28,6 +28,8 @@ public:
 
 private:
 	void UnbindRendererWithChildren(AGameObject* obj);
+	void RemoveObject(AGameObject* gameObject);
+	void RemoveObjectByName(std::string name);
 
 
 private:

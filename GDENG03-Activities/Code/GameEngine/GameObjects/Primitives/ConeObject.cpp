@@ -1,5 +1,5 @@
 #include "ConeObject.h"
-#include "../../Managers/GameObjectManager.h"
+#include "GameEngine/Managers/GameObjectManager.h"
 
 ConeObject::ConeObject() : AGameObject("ConeObject"), renderer(nullptr)
 {

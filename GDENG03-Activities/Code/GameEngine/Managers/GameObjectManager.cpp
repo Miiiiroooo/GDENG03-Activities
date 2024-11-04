@@ -103,6 +103,11 @@ void GameObjectManager::AddObject(AGameObject* gameObject)
 {
 	if (gameObject == nullptr) return;
 
+	if (gameObject->GetParent() != nullptr)
+	{
+		gameObject->GetParent()->DetachChild(gameObject);
+	}
+
 	gameObjectMap[gameObject->GetName()] = gameObject; 
 	gameObjectList.push_back(gameObject); 
 	if (!gameObject->IsInitialized()) gameObject->Initialize(); 
@@ -131,17 +136,12 @@ void GameObjectManager::DeleteObject(AGameObject* gameObject)
 {
 	if (gameObject == nullptr) return;
 
-	// Detach from the parent
+	// Detach from the parent, extra safety check
 	AGameObject* parent = gameObject->GetParent(); 
 	if (parent) parent->DetachChild(gameObject);
 
 	// remove from game object trackers
-	std::string key = gameObject->GetName(); 
-	gameObjectMap.erase(key); 
-
-	auto itr = std::find(gameObjectList.begin(), gameObjectList.end(), gameObject); 
-	if (itr != gameObjectList.end()) gameObjectList.erase(itr); 
-	gameObjectList.shrink_to_fit(); 
+	RemoveObject(gameObject);
 
 	// remove from shader trackers
 	UnbindRendererWithChildren(gameObject);
@@ -187,6 +187,29 @@ void GameObjectManager::UnbindRendererWithChildren(AGameObject* obj)
 	for (int i = 0; i < childList.size(); i++) 
 	{
 		UnbindRendererWithChildren(childList[i]);
+	}
+}
+
+void GameObjectManager::RemoveObject(AGameObject* gameObject)
+{
+	if (gameObject == nullptr) return;
+
+	// remove from game object trackers
+	std::string key = gameObject->GetName();
+	gameObjectMap.erase(key);
+
+	auto itr = std::find(gameObjectList.begin(), gameObjectList.end(), gameObject);
+	if (itr != gameObjectList.end()) gameObjectList.erase(itr);
+	gameObjectList.shrink_to_fit();
+}
+
+void GameObjectManager::RemoveObjectByName(std::string name)
+{
+	AGameObject* object = FindObjectByName(name);
+
+	if (object != NULL)
+	{
+		RemoveObject(object);
 	}
 }
 #pragma endregion

@@ -1,6 +1,6 @@
 #include "ARenderer.h"
 #include "../Transform.h"
-#include "../../GameObjects/AGameObject.h"
+#include "GameEngine/GameObjects/AGameObject.h"
 
 
 ARenderer::ARenderer(std::string compoonentName, LPCWSTR shaderType) : AComponent(compoonentName, EComponentTypes::Renderer), shaderType(shaderType)

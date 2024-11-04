@@ -1,5 +1,5 @@
 #pragma once
-#include "../GameEngine/Graphics/GraphicsEngine.h"
+#include "GameEngine/Graphics/GraphicsEngine.h"
 
 
 class AD3D11Object
