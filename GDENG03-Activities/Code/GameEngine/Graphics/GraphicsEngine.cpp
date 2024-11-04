@@ -93,6 +93,8 @@ bool GraphicsEngine::InitializeShaders()
 
 bool GraphicsEngine::Release()
 {
+    if (!sharedInstance) return false;
+
     for (auto& sc : swapChainList)
     {
         if (sc != nullptr)
@@ -109,6 +111,8 @@ bool GraphicsEngine::Release()
 
     d3d11Context.Get()->Release();
     d3d11Device.Get()->Release();
+
+    delete sharedInstance;
 
     return true;
 }

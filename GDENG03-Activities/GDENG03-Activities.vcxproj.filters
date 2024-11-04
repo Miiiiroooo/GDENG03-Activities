@@ -50,6 +50,12 @@
     <Filter Include="GameEngine\Components\Scripts">
       <UniqueIdentifier>{c1401415-0581-4e3e-b1e6-5b1726de29ef}</UniqueIdentifier>
     </Filter>
+    <Filter Include="EditorGUI">
+      <UniqueIdentifier>{ad0414d4-2f32-4698-8780-73d55028e395}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DearIMGUI">
+      <UniqueIdentifier>{034a65b2-4e77-4b53-bbb3-87e7afc99218}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\WinMain.cpp" />
@@ -155,6 +161,54 @@
     </ClCompile>
     <ClCompile Include="Code\GameEngine\MathUtils.cpp">
       <Filter>GameEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\EditorGUI\EditorGUIManager.cpp">
+      <Filter>EditorGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\EditorGUI\AUITab.cpp">
+      <Filter>EditorGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\EditorGUI\CreditsTab.cpp">
+      <Filter>EditorGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="packages\DearIMGUI\imgui.cpp">
+      <Filter>DearIMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="packages\DearIMGUI\imgui_demo.cpp">
+      <Filter>DearIMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="packages\DearIMGUI\imgui_draw.cpp">
+      <Filter>DearIMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="packages\DearIMGUI\imgui_impl_dx11.cpp">
+      <Filter>DearIMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="packages\DearIMGUI\imgui_impl_win32.cpp">
+      <Filter>DearIMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="packages\DearIMGUI\imgui_stdlib.cpp">
+      <Filter>DearIMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="packages\DearIMGUI\imgui_tables.cpp">
+      <Filter>DearIMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="packages\DearIMGUI\imgui_widgets.cpp">
+      <Filter>DearIMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\EditorGUI\MenuTab.cpp">
+      <Filter>EditorGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\EditorGUI\HierarchyTab.cpp">
+      <Filter>EditorGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\EditorGUI\DockSpace.cpp">
+      <Filter>EditorGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\EditorGUI\ColorPickerTab.cpp">
+      <Filter>EditorGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\DirectXClasses\Texture.cpp">
+      <Filter>DirectXClasses</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -299,6 +353,58 @@
     </ClInclude>
     <ClInclude Include="Code\GameEngine\MathUtils.h">
       <Filter>GameEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\EditorGUI\EditorGUIManager.h">
+      <Filter>EditorGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\EditorGUI\AUITab.h">
+      <Filter>EditorGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\EditorGUI\CreditsTab.h">
+      <Filter>EditorGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="packages\DearIMGUI\imconfig.h">
+      <Filter>DearIMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="packages\DearIMGUI\imgui.h">
+      <Filter>DearIMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="packages\DearIMGUI\imgui_impl_dx11.h">
+      <Filter>DearIMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="packages\DearIMGUI\imgui_impl_win32.h">
+      <Filter>DearIMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="packages\DearIMGUI\imgui_internal.h">
+      <Filter>DearIMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="packages\DearIMGUI\imgui_stdlib.h">
+      <Filter>DearIMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="packages\DearIMGUI\imstb_rectpack.h">
+      <Filter>DearIMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="packages\DearIMGUI\imstb_textedit.h">
+      <Filter>DearIMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="packages\DearIMGUI\imstb_truetype.h">
+      <Filter>DearIMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\EditorGUI\MenuTab.h">
+      <Filter>EditorGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\EditorGUI\HierarchyTab.h">
+      <Filter>EditorGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\EditorGUI\DockSpace.h">
+      <Filter>EditorGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\EditorGUI\ColorPickerTab.h">
+      <Filter>EditorGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\stb_image.h" />
+    <ClInclude Include="Code\DirectXClasses\Texture.h">
+      <Filter>DirectXClasses</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

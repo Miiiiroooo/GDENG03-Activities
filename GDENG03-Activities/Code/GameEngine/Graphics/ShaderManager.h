@@ -16,6 +16,7 @@ public:
 
 public:
 	static ShaderManager* GetInstance();
+	static void Destroy();
 	ShaderManager(const ShaderManager&) = delete; 
 	ShaderManager& operator=(const ShaderManager&) = delete; 
 

@@ -1,5 +1,6 @@
 #include "AGameObject.h"
 #include "../Components/Renderer/ARenderer.h"
+#include "../Managers/GameObjectManager.h"
 
 
 int AGameObject::currentID = 0;
@@ -149,7 +150,11 @@ void AGameObject::AttachChild(AGameObject* child)
 {
 	if (child == this || child == nullptr) return;
 
-	if (child->parent != nullptr)
+	if (child->parent == nullptr)
+	{
+		GameObjectManager::GetInstance()->RemoveObject(child); 
+	}
+	else if (child->parent != nullptr)
 	{
 		child->parent->DetachChild(child);
 	}
@@ -157,9 +162,10 @@ void AGameObject::AttachChild(AGameObject* child)
 	this->childList.push_back(child); 
 	child->SetParent(this);
 	child->level = this->level + 1;
-	if (!enabled) child->SetEnabled(false);
 
+	if (!enabled) child->SetEnabled(false);
 	if (!child->isInitialized) child->Initialize(); 
+
 	child->transform->RecalculateChildTransformWithParent(this->transform);
 }
 

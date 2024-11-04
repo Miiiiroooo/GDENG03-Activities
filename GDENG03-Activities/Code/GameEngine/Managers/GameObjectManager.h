@@ -9,6 +9,7 @@ class GameObjectManager
 {
 public:
 	static GameObjectManager* GetInstance();
+	static void Destroy(); 
 	GameObjectManager(const GameObjectManager&) = delete;
 	GameObjectManager& operator=(const GameObjectManager&) = delete;
 
@@ -21,6 +22,8 @@ public:
 	void AddObject(AGameObject* gameObject);
 	void BindRendererToShader(ARenderer* rendererComponent);
 	AGameObject* FindObjectByName(std::string name);
+	void RemoveObject(AGameObject* gameObject); 
+	void RemoveObjectByName(std::string name); 
 	void DeleteObject(AGameObject* gameObject);
 	void DeleteObjectByName(std::string name);
 	std::vector<AGameObject*> GetAllObjects(); 
@@ -28,8 +31,6 @@ public:
 
 private:
 	void UnbindRendererWithChildren(AGameObject* obj);
-	void RemoveObject(AGameObject* gameObject);
-	void RemoveObjectByName(std::string name);
 
 
 private:
