@@ -1,5 +1,4 @@
 #pragma once
-#include <wrl.h>
 #include <string>
 #include "AD3D11Object.h"
 
@@ -20,6 +19,8 @@ public:
 
 
 private:
+	const std::string STANDARD_TEXTURE_PATH = "Assets/Textures/";
+
 	std::string imagePath;
 	int width;
 	int height;

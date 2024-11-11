@@ -1,12 +1,25 @@
 #include "ARenderer.h"
 #include "../Transform.h"
 #include "GameEngine/GameObjects/AGameObject.h"
+#include "GameEngine/Graphics/Materials/UnlitColorMaterial.h"
 
 
-ARenderer::ARenderer(std::string compoonentName, LPCWSTR shaderType) : AComponent(compoonentName, EComponentTypes::Renderer), shaderType(shaderType)
+ARenderer::ARenderer(std::string compoonentName) : AComponent(compoonentName, EComponentTypes::Renderer)
 {
 	topologyType = D3D_PRIMITIVE_TOPOLOGY_UNDEFINED; 
 	indexBuffer = nullptr; 
+	material = new UnlitColorMaterial(Vector3( 
+		MathUtils::RandFloatWithRange(), 
+		MathUtils::RandFloatWithRange(), 
+		MathUtils::RandFloatWithRange() 
+	));
+}
+
+ARenderer::ARenderer(std::string compoonentName, AMaterial* material) : AComponent(compoonentName, EComponentTypes::Renderer)
+{
+	topologyType = D3D_PRIMITIVE_TOPOLOGY_UNDEFINED;
+	indexBuffer = nullptr;
+	this->material = material;
 }
 
 ARenderer::~ARenderer()
@@ -22,21 +35,18 @@ void ARenderer::Clone(AComponent* copy)
 	// consider creating copy for each buffer instead taking the ref from another renderer
 	Release();
 	InitRenderer();
-	shaderType = copyRenderer->shaderType;
 	topologyType = copyRenderer->topologyType;
-	buffersList = copyRenderer->buffersList;
+	vertexBuffer = copyRenderer->vertexBuffer;
 	indexBuffer = copyRenderer->indexBuffer;
 	//tMatrixBuffer = copyRenderer->tMatrixBuffer;
 }
 
 bool ARenderer::Release()
 {
-	for (int i = (int)buffersList.size() - 1; i >= 0; i--)
+	if (vertexBuffer)
 	{
-		buffersList[i]->Release();
+		vertexBuffer->Release();
 	}
-	buffersList.clear();
-	buffersList.shrink_to_fit();
 
 	if (indexBuffer)
 	{
@@ -53,14 +63,15 @@ bool ARenderer::Release()
 
 void ARenderer::Perform()
 {
-	if (buffersList.size() == 0) return;
+	
+}
 
-	// Bind every buffer stored in this renderer
-	for (auto& buffer : buffersList)
-	{
-		buffer->BindToPipeline();
-	}
+void ARenderer::Render()
+{
+	if (!vertexBuffer || !indexBuffer || !tMatrixBuffer || !material) return;
 
+	material->Render();
+	vertexBuffer->BindToPipeline();
 	indexBuffer->BindToPipeline();
 
 	Transform* transform = owner->GetTransform();
@@ -74,7 +85,14 @@ void ARenderer::Perform()
 
 LPCWSTR ARenderer::GetShaderType()
 {
-	return shaderType;
+	return material->GetShaderType();
+}
+
+void ARenderer::SetMaterial(AMaterial* newMaterial)
+{
+	if (material) delete material;
+
+	material = newMaterial;
 }
 
 void ARenderer::InitRenderer()

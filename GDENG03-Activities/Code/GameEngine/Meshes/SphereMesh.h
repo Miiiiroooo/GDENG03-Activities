@@ -13,7 +13,7 @@ public:
 	int longitudinalSize = 12;
 	int latitudinalSize = 18;
 
-	VertexBuffer<T>* CreateVertexBuffer() override
+	VertexBuffer<T>* CreateVertexBuffer(bool isRainbowed) override
 	{
 		int total = (longitudinalSize - 1) * latitudinalSize + 2;
 		int indexReduc = 0;
@@ -44,7 +44,9 @@ public:
 				// add new vert to list
 				int index = i * latitudinalSize + j - indexReduc;
 				vertices[index].pos = { x, y, z };
-				vertices[index].vColor = { 1.0f, 1.0f, 1.0f };
+				vertices[index].vColor = (isRainbowed) ? 
+					Vector3(MathUtils::RandFloatWithRange(), MathUtils::RandFloatWithRange(), MathUtils::RandFloatWithRange()) :
+					this->color;
 			}
 		}
 

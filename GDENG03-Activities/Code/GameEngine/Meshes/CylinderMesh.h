@@ -11,15 +11,19 @@ class CylinderMesh : public AMesh<T>
 public:
 	float numPointsOnCircle = 20;
 
-	VertexBuffer<T>* CreateVertexBuffer() override
+	VertexBuffer<T>* CreateVertexBuffer(bool isRainbowed) override
 	{
 		int total = numPointsOnCircle * 2 + 2; 
 		std::vector<T> vertices(total); 
 
 		vertices[0].pos = { 0.0f, -1.0f, 0.0f }; 
-		vertices[0].vColor = { 1.0f, 1.0f, 1.0f };
+		vertices[0].vColor = (isRainbowed) ?
+			Vector3(MathUtils::RandFloatWithRange(), MathUtils::RandFloatWithRange(), MathUtils::RandFloatWithRange()) :
+			this->color;
 		vertices[total / 2].pos = { 0.0f, 1.0f, 0.0f };
-		vertices[total / 2].vColor = { 1.0f, 1.0f, 1.0f };
+		vertices[total / 2].vColor = (isRainbowed) ? 
+			Vector3(MathUtils::RandFloatWithRange(), MathUtils::RandFloatWithRange(), MathUtils::RandFloatWithRange()) :
+			this->color;
 
 		float currAngle = 0;
 		float angleIncrements = 360.f / (numPointsOnCircle);
@@ -30,9 +34,13 @@ public:
 			float z = cos(currAngle * MathUtils::Deg2Rad) / 2.f;  
 
 			vertices[i].pos = { x, -1.0f, z }; 
-			vertices[i].vColor = { 1.0f, 1.0f, 1.0f };   
+			vertices[i].vColor = (isRainbowed) ?
+				Vector3(MathUtils::RandFloatWithRange(), MathUtils::RandFloatWithRange(), MathUtils::RandFloatWithRange()) :
+				this->color;
 			vertices[i + total / 2].pos = { x, 1.0f, z }; 
-			vertices[i + total / 2].vColor = { 1.0f, 1.0f, 1.0f };  
+			vertices[i + total / 2].vColor = (isRainbowed) ?
+				Vector3(MathUtils::RandFloatWithRange(), MathUtils::RandFloatWithRange(), MathUtils::RandFloatWithRange()) :
+				this->color;
 
 			currAngle += angleIncrements;
 		}

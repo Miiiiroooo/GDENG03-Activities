@@ -7,7 +7,7 @@ CreditsTab::CreditsTab() : AUITab(EditorGUIManager::TabNames::CREDITS_TAB.data()
 	InitializeImGuiFlags();
 	isEnabled = false;
 
-	dlsuLogo = new Texture(GraphicsEngine::GetInstance(), "Assets/Textures/DLSU_Seal.png");
+	dlsuLogo = new Texture(GraphicsEngine::GetInstance(), "DLSU_Seal.png");
 	dlsuLogo->Init(); 
 }
 
@@ -31,7 +31,7 @@ void CreditsTab::Render()
 	ImGui::Dummy(ImVec2(0.f, 5.f));
 	//ImGui::Spacing();
 
-	ImGui::Text("Scene Editor v.0.7.2");
+	ImGui::Text("Scene Editor v.0.7.3");
 	ImGui::Text("Developed by: Aamir C. Akim");
 	ImGui::Dummy(ImVec2(0.f, 10.f));
 	//ImGui::Spacing();
@@ -46,7 +46,8 @@ void CreditsTab::Render()
 	ImGui::Text("Libraries used in this project:");
 	ImGui::BulletText("DirectX Tool Kit");
 	ImGui::BulletText("Dear ImGui");
-	ImGui::BulletText("stb_image.h by Sean T. Barrett");
+	ImGui::BulletText("stb_image.h by Sean T. Barrett and others");
+	ImGui::BulletText("tiny_obj_loader.h by Syoyo Fujita and others");
 	ImGui::Dummy(ImVec2(0.f, 10.f)); 
 	//ImGui::Spacing(); 
 

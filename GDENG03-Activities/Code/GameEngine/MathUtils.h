@@ -18,8 +18,8 @@ public:
 	static float Lerp(const float a, const float b, const float t); 
 	static float Map(const float valueFrom1, const float range1Min, const float range1Max, const float range2Min, const float range2Max);
 
-	static float RandFloatWithRange(const float min, const float max);
-	static int RandIntWithRange(const int min, const int max);
+	static float RandFloatWithRange(const float min = 0.f, const float max = 1.f);
+	static int RandIntWithRange(const int min = 0, const int max = 1);
 
 	static Vector3 CheckDivisionByZero(const Vector3& dividend, const Vector3& divisor);
 

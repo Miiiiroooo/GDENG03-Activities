@@ -1,8 +1,6 @@
 #pragma once
 #include "AMesh.h"
-#include <SimpleMath.h>
-
-using namespace DirectX::SimpleMath;
+#include "../MathUtils.h"
 
 template <typename T>
 class CircleMesh : public AMesh<T>
@@ -10,11 +8,13 @@ class CircleMesh : public AMesh<T>
 public:
 	int size = 21;
 
-	VertexBuffer<T>* CreateVertexBuffer() override
+	VertexBuffer<T>* CreateVertexBuffer(bool isRainbowed) override
 	{
 		std::vector<T> vertices(size);
 		vertices[0].pos = Vector3::Zero;
-		vertices[0].vColor = { 1.0f, 1.0f, 1.0f };
+		vertices[0].vColor = (isRainbowed) ?
+			Vector3(MathUtils::RandFloatWithRange(), MathUtils::RandFloatWithRange(), MathUtils::RandFloatWithRange()) :
+			this->color;
 
 		float currAngle = 0;
 		float angleIncrements = 360.f / (size - 1.f);
@@ -26,7 +26,9 @@ public:
 			Vector3 newVert = Vector3(x, y, 0.0f);
 
 			vertices[i].pos = newVert;
-			vertices[i].vColor = { 1.0f, 1.0f, 1.0f };
+			vertices[i].vColor = (isRainbowed) ?
+				Vector3(MathUtils::RandFloatWithRange(), MathUtils::RandFloatWithRange(), MathUtils::RandFloatWithRange()) :
+				this->color;
 
 			currAngle += angleIncrements;
 		}

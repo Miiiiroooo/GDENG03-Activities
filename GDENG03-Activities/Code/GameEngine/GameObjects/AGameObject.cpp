@@ -104,7 +104,7 @@ void AGameObject::Draw()
 	for (size_t i = 0; i < rendererList.size(); i++) 
 	{
 		ARenderer* renderer = (ARenderer*)rendererList[i];
-		if (renderer->Enabled) renderer->Perform();
+		if (renderer->Enabled) renderer->Render();
 	}
 
 	for (size_t i = 0; i < childList.size(); i++) 

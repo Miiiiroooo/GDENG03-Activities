@@ -4,7 +4,7 @@
 #include "stb_image.h"
 
 
-Texture::Texture(GraphicsEngine* gfx, std::string imagePath) : AD3D11Object(gfx), imagePath(imagePath),
+Texture::Texture(GraphicsEngine* gfx, std::string imagePath) : AD3D11Object(gfx), imagePath(STANDARD_TEXTURE_PATH + imagePath),
     width(0), height(0), colorChannels(0)
 {
 
@@ -19,7 +19,7 @@ bool Texture::Init()
 {
     // load up texture from disk
     //stbi_set_flip_vertically_on_load(true);
-    unsigned char* tex_bytes = stbi_load(imagePath.c_str(), &width, &height, &colorChannels, 0);
+    unsigned char* tex_bytes = stbi_load(imagePath.c_str(), &width, &height, &colorChannels, 4);
 
     // create the texture itself with directx
     D3D11_TEXTURE2D_DESC textureDesc = {};
@@ -37,13 +37,10 @@ bool Texture::Init()
 
     D3D11_SUBRESOURCE_DATA sd = {};
     sd.pSysMem = tex_bytes;
-    sd.SysMemPitch = width * colorChannels;
+    sd.SysMemPitch = width * 4;
 
     Microsoft::WRL::ComPtr<ID3D11Texture2D> pTexture;
-    if (FAILED(gfx->GetDevice()->CreateTexture2D(&textureDesc, &sd, &pTexture)))
-    {
-        return false;
-    }
+    if (FAILED(gfx->GetDevice()->CreateTexture2D(&textureDesc, &sd, &pTexture))) return false;
 
     // create resource view on the texture
     D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
@@ -52,10 +49,7 @@ bool Texture::Init()
     srvDesc.Texture2D.MostDetailedMip = 0;
     srvDesc.Texture2D.MipLevels = 1;
 
-    if (FAILED(gfx->GetDevice()->CreateShaderResourceView(pTexture.Get(), &srvDesc, &pTextureView)))
-    {
-        return false;
-    }
+    if (FAILED(gfx->GetDevice()->CreateShaderResourceView(pTexture.Get(), &srvDesc, &pTextureView))) return false;
      
     // cleanup
     pTexture.Get()->Release();

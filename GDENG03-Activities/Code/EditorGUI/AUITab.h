@@ -4,15 +4,14 @@
 #include <imgui_impl_win32.h> 
 #include <string>
 #include "EditorGUIManager.h"
+#include "GameEngine/Graphics/IRenderable.h"
 
 
-class AUITab
+class AUITab : public IRenderable
 {
 public:
 	AUITab(std::string name);
 	~AUITab();
-
-	virtual void Render() = 0;
 
 	std::string GetName();
 	void SetName(std::string newName);

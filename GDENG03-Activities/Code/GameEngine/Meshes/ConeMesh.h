@@ -1,8 +1,6 @@
 #pragma once
 #include "AMesh.h"
-#include <SimpleMath.h>
-
-using namespace DirectX::SimpleMath; 
+#include "../MathUtils.h"
 
 template <typename T>
 class ConeMesh : public AMesh<T>
@@ -10,11 +8,14 @@ class ConeMesh : public AMesh<T>
 public:
 	int numPointsOnCircle = 20;
 
-	VertexBuffer<T>* CreateVertexBuffer() override
+	VertexBuffer<T>* CreateVertexBuffer(bool isRainbowed) override
 	{
 		std::vector<T> vertices(numPointsOnCircle + 2);
-		vertices[0].pos = Vector3::Zero; 
-		vertices[0].vColor = { 1.0f, 1.0f, 1.0f };
+		vertices[0].pos = Vector3(0.0f, -0.5f, 0.0f); 
+		vertices[0].vColor = (isRainbowed) ?
+			Vector3(MathUtils::RandFloatWithRange(), MathUtils::RandFloatWithRange(), MathUtils::RandFloatWithRange()) :
+			this->color;
+
 
 		float currAngle = 0;
 		float angleIncrements = 360.f / (float)(numPointsOnCircle);
@@ -23,16 +24,20 @@ public:
 		{
 			float x = sin(currAngle * M_PI / 180.f) / 2.f;
 			float z = cos(currAngle * M_PI / 180.f) / 2.f;
-			Vector3 newVert = Vector3(x, 0.0f, z); 
+			Vector3 newVert = Vector3(x, -0.5f, z); 
 
 			vertices[i].pos = newVert;
-			vertices[i].vColor = { 1.0f, 1.0f, 1.0f };
+			vertices[i].vColor = (isRainbowed) ?
+				Vector3(MathUtils::RandFloatWithRange(), MathUtils::RandFloatWithRange(), MathUtils::RandFloatWithRange()) :
+				this->color;
 
 			currAngle += angleIncrements;
 		}
 
-		vertices[numPointsOnCircle + 1].pos = { 0.0f, 2.0f, 0.0f }; 
-		vertices[numPointsOnCircle + 1].vColor = { 1.0f, 1.0f, 1.0f }; 
+		vertices[numPointsOnCircle + 1].pos = { 0.0f, 0.5f, 0.0f }; 
+		vertices[numPointsOnCircle + 1].vColor = (isRainbowed) ? 
+			Vector3(MathUtils::RandFloatWithRange(), MathUtils::RandFloatWithRange(), MathUtils::RandFloatWithRange()) :
+			this->color;
 
 		return new VertexBuffer<T>(GraphicsEngine::GetInstance(), vertices);
 	}

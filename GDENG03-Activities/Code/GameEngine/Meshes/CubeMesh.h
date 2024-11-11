@@ -1,12 +1,13 @@
 #pragma once
 #include "AMesh.h"
+#include "../MathUtils.h"
 
 
 template <typename T>
 class CubeMesh : public AMesh<T>
 {
 public:
-	VertexBuffer<T>* CreateVertexBuffer() override
+	VertexBuffer<T>* CreateVertexBuffer(bool isRainbowed) override
 	{
 		std::vector<T> vertices(8);
 		vertices[0].pos = { -0.5f,  0.5f, -0.5f };
@@ -18,14 +19,12 @@ public:
 		vertices[6].pos = { 0.5f, -0.5f,  0.5f };
 		vertices[7].pos = { -0.5f, -0.5f,  0.5f };
 
-		vertices[0].vColor = { 1.0f, 1.0f, 1.0f };
-		vertices[1].vColor = { 1.0f, 1.0f, 1.0f };
-		vertices[2].vColor = { 1.0f, 1.0f, 1.0f };
-		vertices[3].vColor = { 1.0f, 1.0f, 1.0f };
-		vertices[4].vColor = { 1.0f, 1.0f, 1.0f };
-		vertices[5].vColor = { 1.0f, 1.0f, 1.0f };
-		vertices[6].vColor = { 1.0f, 1.0f, 1.0f }; 
-		vertices[7].vColor = { 1.0f, 1.0f, 1.0f };
+		for (int i = 0; i < 8; i++)
+		{
+			vertices[i].vColor = (isRainbowed) ?
+				Vector3(MathUtils::RandFloatWithRange(), MathUtils::RandFloatWithRange(), MathUtils::RandFloatWithRange()) :
+				this->color;
+		}
 
 		return new VertexBuffer<T>(GraphicsEngine::GetInstance(), vertices);
 	}

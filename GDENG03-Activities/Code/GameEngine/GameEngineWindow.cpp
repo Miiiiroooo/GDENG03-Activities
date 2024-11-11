@@ -9,6 +9,7 @@
 #include "GameObjects/Primitives/CylinderObject.h"
 #include "GameObjects/Primitives/SphereObject.h"
 #include "GameObjects/Primitives/PlaneObject.h"
+#include "GameObjects/ModelObject.h"
 
 
 
@@ -37,9 +38,14 @@ void GameEngineWindow::OnCreate(HWND hWnd)
 	freeCam->GetTransform()->Position = { 0.0f, 0.0f, 0.0f }; 
 	GameObjectManager::GetInstance()->AddObject(freeCam); 
 
+	ModelObject* model = new ModelObject("teapot.obj", "DLSU_Seal.png", true); 
+	GameObjectManager::GetInstance()->AddObject(model); 
+	model->GetTransform()->Position = { 0, 10, 45.f }; 
+	model->GetTransform()->LocalScale = { 10, 10, 10 }; 
+
 
 	std::vector<AGameObject*> objsList; 
-	int rowSize = 7; int colSize = 7; 
+	int rowSize = 15; int colSize = 15; 
 	float rowSpacing = 5.f; float colSpacing = 5.f; 
 	int sphereNum = 0, cylinderNum = 0, coneNum = 0, cubeNum = 0; 
 
@@ -53,22 +59,22 @@ void GameEngineWindow::OnCreate(HWND hWnd)
 			switch (randNum) 
 			{ 
 				case 0:
-				{ randObj = new SphereObject("Sphere" + std::to_string(sphereNum)); sphereNum++; break; } 
+				{ randObj = new SphereObject("Sphere" + std::to_string(sphereNum), true); sphereNum++; break; } 
 				case 1:
-				{ randObj = new CylinderObject("Cylinder" + std::to_string(cylinderNum)); cylinderNum++; break; } 
+				{ randObj = new CylinderObject("Cylinder" + std::to_string(cylinderNum), true); cylinderNum++; break; }
 				case 2:
-				{ randObj = new ConeObject("Cone" + std::to_string(coneNum)); coneNum++; break; } 
+				{ randObj = new ConeObject("Cone" + std::to_string(coneNum), true); coneNum++; break; }
 				case 3: default:
-				{ randObj = new CubeObject("Cube" + std::to_string(cubeNum)); cubeNum++; break; } 
+				{ randObj = new CubeObject("Cube" + std::to_string(cubeNum), true); cubeNum++; break; }
 			}
 
 			float x = j * rowSpacing - (rowSize / 2.f - 0.5f) * rowSpacing; 
 			float z = i * colSpacing - (colSize / 2.f - 0.5f) * colSpacing; 
 			randObj->GetTransform()->Position = { x , 0, z }; 
 
-			randNum = (i == 0) ? colSize * 4 : rand() % colSize * 4 + 1; 
+			randNum = (i == 0) ? rowSize * 4 : rand() % rowSize * 4 + 1;
 			int parentIndex = (randNum / 4) + (i - 1) * rowSize; 
-			if (randNum == colSize * 4) GameObjectManager::GetInstance()->AddObject(randObj); 
+			if (randNum == rowSize * 4) GameObjectManager::GetInstance()->AddObject(randObj);
 			else objsList[parentIndex]->AttachChild(randObj); 
 
 			objsList.push_back(randObj); 
