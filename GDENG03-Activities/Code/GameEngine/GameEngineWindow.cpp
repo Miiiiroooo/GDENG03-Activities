@@ -41,7 +41,7 @@ void GameEngineWindow::OnCreate(HWND hWnd)
 	ModelObject* model1 = new ModelObject("teapot3.obj", "brick.png");  
 	GameObjectManager::GetInstance()->AddObject(model1);  
 	model1->GetTransform()->Position = { 0, 0, 30.f };  
-	model1->GetTransform()->LocalScale = { 0.5f, 0.5f, 0.5f }; 
+	model1->GetTransform()->LocalScale = { 0.35f, 0.35f, 0.35f }; 
 
 	ModelObject* model2 = new ModelObject("bunny2.obj"); 
 	GameObjectManager::GetInstance()->AddObject(model2); 

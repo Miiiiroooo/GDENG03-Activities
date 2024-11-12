@@ -17,10 +17,10 @@ void CameraManager::Destroy()
 {
     if (!sharedInstance) return;
 
-    for (auto camera : sharedInstance->camerasList) 
+    /*for (auto camera : sharedInstance->camerasList) 
     {
         if (camera) delete camera->GetOwner();
-    }
+    }*/
 
     delete sharedInstance;
 }

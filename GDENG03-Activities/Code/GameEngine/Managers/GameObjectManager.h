@@ -21,11 +21,11 @@ public:
 	// Object-related methods
 	void AddObject(AGameObject* gameObject);
 	void BindRendererToShader(ARenderer* rendererComponent);
-	AGameObject* FindObjectByName(std::string name);
+	std::vector<AGameObject*> FindObjectsWithName(std::string name);
 	void RemoveObject(AGameObject* gameObject); 
-	void RemoveObjectByName(std::string name); 
+	void RemoveObjectByID(unsigned int id);
 	void DeleteObject(AGameObject* gameObject);
-	void DeleteObjectByName(std::string name);
+	void DeleteObjectByID(unsigned int id);
 	std::vector<AGameObject*> GetAllObjects(); 
 	int GetActiveObjectsCount();
 
@@ -38,7 +38,7 @@ private:
 	static GameObjectManager* sharedInstance;
 
 	std::vector<AGameObject*> gameObjectList;
-	std::unordered_map<std::string, AGameObject*> gameObjectMap;  // std::unordered_map<std::string, std::vector<AGameObject*>>
+	std::unordered_map<std::string, std::vector<AGameObject*>> gameObjectMap;
 	std::unordered_map<LPCWSTR, std::vector<AGameObject*>> shaderToObjectsMap;
 };
 

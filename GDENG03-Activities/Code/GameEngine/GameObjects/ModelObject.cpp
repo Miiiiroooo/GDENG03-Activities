@@ -9,8 +9,8 @@ ModelObject::ModelObject(std::string modelName, std::string textureName) : AGame
 
 }
 
-ModelObject::ModelObject(std::string modelName) : AGameObject(modelName.substr(0, modelName.size() - 4)), 
-	modelName(modelName), textureName(""), isRainbowed(true), renderer(nullptr) 
+ModelObject::ModelObject(std::string modelName) : AGameObject(modelName.substr(0, modelName.size() - 4)),
+	modelName(modelName), textureName(""), isRainbowed(true), renderer(nullptr)
 {
 }
 
