@@ -1,5 +1,6 @@
 #include "HierarchyTab.h"
 #include "GameEngine/Managers/GameObjectManager.h"
+#include "../WindowSystem/Keyboard.h"
 
 HierarchyTab::HierarchyTab() : AUITab(EditorGUIManager::TabNames::HIERARCHY_TAB.data()), selectedObject(nullptr)
 {
@@ -45,6 +46,18 @@ void HierarchyTab::Render()
     }
 
 	ImGui::End(); 
+
+    if ((Keyboard::IsKeyDown(VK_DELETE) || Keyboard::IsKeyDown(VK_BACK))
+        && selectedObject != nullptr)
+    {
+        GameObjectManager::GetInstance()->DeleteObject(selectedObject);
+        selectedObject = nullptr;
+    }
+}
+
+AGameObject* HierarchyTab::GetSelectedObj()
+{
+    return selectedObject;
 }
 
 void HierarchyTab::PrintObject(AGameObject* obj)

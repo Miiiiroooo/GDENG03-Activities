@@ -207,6 +207,9 @@
     <ClCompile Include="Code\GameEngine\GameObjects\Primitives\PrimitiveObject.cpp">
       <Filter>GameEngine\GameObjects\Primitives</Filter>
     </ClCompile>
+    <ClCompile Include="Code\EditorGUI\InspectorTab.cpp">
+      <Filter>EditorGUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\WindowsMessageMap.h" />
@@ -424,6 +427,9 @@
     </ClInclude>
     <ClInclude Include="Code\GameEngine\GameObjects\Primitives\PrimitiveObject.h">
       <Filter>GameEngine\GameObjects\Primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\EditorGUI\InspectorTab.h">
+      <Filter>EditorGUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

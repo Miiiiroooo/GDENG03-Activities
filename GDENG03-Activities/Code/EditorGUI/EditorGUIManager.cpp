@@ -5,6 +5,7 @@
 #include "CreditsTab.h"
 #include "MenuTab.h"
 #include "HierarchyTab.h"
+#include "InspectorTab.h"
 #include "ColorPickerTab.h"
 
 
@@ -64,6 +65,9 @@ bool EditorGUIManager::Initialize(HWND hWnd)
 	HierarchyTab* hierarchy = new HierarchyTab();
 	uiTable[hierarchy->Name] = hierarchy;
 	//uiList.push_back(hierarchy); 
+
+	InspectorTab* inspector = new InspectorTab(hierarchy);
+	uiTable[inspector->Name] = inspector;
 
 	ColorPickerTab* colorPicker = new ColorPickerTab(); 
 	uiTable[colorPicker->Name] = colorPicker; 

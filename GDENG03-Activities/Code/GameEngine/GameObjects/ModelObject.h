@@ -6,7 +6,8 @@
 class ModelObject : public AGameObject
 {
 public:
-	ModelObject(std::string modelName, std::string textureName, bool isRainbowed = false);
+	ModelObject(std::string modelName, std::string textureName);
+	ModelObject(std::string modelName);
 	~ModelObject();
 
 	void Initialize() override;

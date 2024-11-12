@@ -11,6 +11,7 @@ public:
 	~HierarchyTab(); 
 
 	void Render() override;
+	AGameObject* GetSelectedObj();
 
 protected:
 	void InitializeImGuiFlags() override;

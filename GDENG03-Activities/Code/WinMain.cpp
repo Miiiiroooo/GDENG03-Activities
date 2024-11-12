@@ -3,7 +3,7 @@
 
 int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
-	srand(time(NULL)); 
+	srand((unsigned int)time(NULL)); 
 
 	GameEngineWindow gameEngine(60);  
 

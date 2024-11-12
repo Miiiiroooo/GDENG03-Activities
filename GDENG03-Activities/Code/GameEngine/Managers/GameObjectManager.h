@@ -38,7 +38,7 @@ private:
 	static GameObjectManager* sharedInstance;
 
 	std::vector<AGameObject*> gameObjectList;
-	std::unordered_map<std::string, AGameObject*> gameObjectMap;
+	std::unordered_map<std::string, AGameObject*> gameObjectMap;  // std::unordered_map<std::string, std::vector<AGameObject*>>
 	std::unordered_map<LPCWSTR, std::vector<AGameObject*>> shaderToObjectsMap;
 };
 

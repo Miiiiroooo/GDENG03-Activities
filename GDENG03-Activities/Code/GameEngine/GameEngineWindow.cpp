@@ -38,13 +38,22 @@ void GameEngineWindow::OnCreate(HWND hWnd)
 	freeCam->GetTransform()->Position = { 0.0f, 0.0f, 0.0f }; 
 	GameObjectManager::GetInstance()->AddObject(freeCam); 
 
-	ModelObject* model = new ModelObject("teapot.obj", "DLSU_Seal.png", true); 
-	GameObjectManager::GetInstance()->AddObject(model); 
-	model->GetTransform()->Position = { 0, 10, 45.f }; 
-	model->GetTransform()->LocalScale = { 10, 10, 10 }; 
+	ModelObject* model1 = new ModelObject("teapot3.obj", "brick.png");  
+	GameObjectManager::GetInstance()->AddObject(model1);  
+	model1->GetTransform()->Position = { 0, 0, 30.f };  
+	model1->GetTransform()->LocalScale = { 0.5f, 0.5f, 0.5f }; 
 
+	ModelObject* model2 = new ModelObject("bunny2.obj"); 
+	GameObjectManager::GetInstance()->AddObject(model2); 
+	model2->GetTransform()->Position = { 10, 0, 30.f }; 
+	model2->GetTransform()->LocalScale = { 35.f, 35.f, 35.f };
 
-	std::vector<AGameObject*> objsList; 
+	ModelObject* model3 = new ModelObject("armadillo.obj");
+	GameObjectManager::GetInstance()->AddObject(model3);
+	model3->GetTransform()->Position = { -10, 0, 30.f }; 
+	model3->GetTransform()->LocalScale = { 0.05f, 0.05f, 0.05f };
+
+	/*std::vector<AGameObject*> objsList; 
 	int rowSize = 15; int colSize = 15; 
 	float rowSpacing = 5.f; float colSpacing = 5.f; 
 	int sphereNum = 0, cylinderNum = 0, coneNum = 0, cubeNum = 0; 
@@ -79,7 +88,7 @@ void GameEngineWindow::OnCreate(HWND hWnd)
 
 			objsList.push_back(randObj); 
 		}
-	}
+	}*/
 }
 
 void GameEngineWindow::OnUpdate()

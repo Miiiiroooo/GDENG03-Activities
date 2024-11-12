@@ -8,6 +8,8 @@
 #include "GameEngine/Meshes/ConeMesh.h"
 
 #include "GameEngine/Graphics/Materials/UnlitColorMaterial.h"
+#include <assimp/Importer.hpp>
+#include <assimp/postprocess.h>
 
 
 MeshRenderer::MeshRenderer() : ARenderer("MeshRenderer")
@@ -75,102 +77,83 @@ void MeshRenderer::LoadPrimitive(EPrimitiveMeshTypes type, bool isRainbowed)
 
 void MeshRenderer::LoadNonPrimitive(std::string modelName, bool isRainbowed)
 {
-	tinyobj::attrib_t attributes;
-	std::vector<tinyobj::shape_t> shapes;
-	std::vector<tinyobj::material_t> material;
-	std::string warning, error;
+	Assimp::Importer imprtr; 
+	const auto pModel = imprtr.ReadFile((STANDARD_MODEL_PATH + modelName), 
+		aiProcess_Triangulate | aiProcess_JoinIdenticalVertices | 
+		aiProcess_OptimizeMeshes | aiProcess_ImproveCacheLocality | aiProcess_ValidateDataStructure | 
+		aiProcess_FindInstances | aiProcess_PreTransformVertices | aiProcess_SortByPType | aiProcess_FindDegenerates);
 
-	if (tinyobj::LoadObj(&attributes, &shapes, &material, &warning, &error, (STANDARD_MODEL_PATH + modelName).c_str()))
-	{
-		if (isRainbowed) CreateNonPrimitiveColored(attributes, shapes);
-		else CreateNonPrimitiveTextured(attributes, shapes);
+	if (pModel == nullptr) { OutputDebugString(imprtr.GetErrorString()); return; } 
 
-		InitRenderer();
-	}
-	else
-	{
-		std::string toPrint = "error loading obj file\nError: " + error + "\nWarning: " + warning + "\n";
-		OutputDebugString(toPrint.c_str());
-	}
+	if (isRainbowed) CreateNonPrimitiveColored(pModel);
+	else CreateNonPrimitiveTextured(pModel);
+
+	InitRenderer();
 }
 
-void MeshRenderer::CreateNonPrimitiveColored(tinyobj::attrib_t& attributes, std::vector<tinyobj::shape_t>& shapes)
+void MeshRenderer::CreateNonPrimitiveColored(const aiScene* model)
 {
 	std::vector<VUnlitColorData> vertices; 
 	std::vector<unsigned short> indices; 
-	std::unordered_map<std::string, int> vIndexTable; 
-	int index = 0; 
-
-	for (int i = 0; i < shapes[0].mesh.indices.size(); i++) 
+	for (int i = 0; i < model->mNumMeshes; i++) 
 	{
-		tinyobj::index_t vData = shapes[0].mesh.indices[i]; 
-		std::string indexStr = std::to_string(vData.vertex_index) + std::to_string(vData.normal_index) + std::to_string(vData.texcoord_index); 
+		const auto pMesh = model->mMeshes[i]; 
 
-		if (i == 0 || vIndexTable[indexStr] == 0) 
+		for (int j = 0; j < pMesh->mNumVertices; j++) 
 		{
-			vIndexTable[indexStr] = index; 
-			index++; 
-
-			VUnlitColorData v;
-			v.pos = Vector3(attributes.vertices[vData.vertex_index * 3 + 0], 
-				attributes.vertices[vData.vertex_index * 3 + 1], 
-				attributes.vertices[vData.vertex_index * 3 + 2]); 
-
-			v.vColor = Vector3(MathUtils::RandFloatWithRange(), MathUtils::RandFloatWithRange(), MathUtils::RandFloatWithRange());
-
-			vertices.push_back(v);
+			VUnlitColorData v; 
+			v.pos = Vector3(pMesh->mVertices[j].x, pMesh->mVertices[j].y, pMesh->mVertices[j].z); 
+			v.vColor = Vector3(MathUtils::RandFloatWithRange(), MathUtils::RandFloatWithRange(), MathUtils::RandFloatWithRange()); 
+			vertices.push_back(v); 
 		}
 
-		indices.push_back(vIndexTable[indexStr]);
+		for (int j = 0; j < pMesh->mNumFaces; j++) 
+		{
+			for (int k = 0; k < pMesh->mFaces[j].mNumIndices; k++) 
+			{
+				indices.push_back(pMesh->mFaces[j].mIndices[k]); 
+			}
+		}
 	}
 
 	VertexBuffer<VUnlitColorData>* vb = new VertexBuffer<VUnlitColorData>(GraphicsEngine::GetInstance(), vertices); 
 	vb->Init(); 
-	vertexBuffer = vb;
+	vertexBuffer = vb; 
 
-	indexBuffer = new IndexBuffer(GraphicsEngine::GetInstance(), indices);
-	indexBuffer->Init();
+	indexBuffer = new IndexBuffer(GraphicsEngine::GetInstance(), indices); 
+	indexBuffer->Init(); 
 }
 
-void MeshRenderer::CreateNonPrimitiveTextured(tinyobj::attrib_t& attributes, std::vector<tinyobj::shape_t>& shapes)
+void MeshRenderer::CreateNonPrimitiveTextured(const aiScene* model)
 {
 	std::vector<VLitTextureData> vertices;
 	std::vector<unsigned short> indices; 
-	std::unordered_map<std::string, int> vIndexTable; 
-	int index = 0; 
+	for (int i = 0; i < model->mNumMeshes; i++) 
+	{ 
+		const auto pMesh = model->mMeshes[i]; 
 
-	for (int i = 0; i < shapes[0].mesh.indices.size(); i++) 
-	{
-		tinyobj::index_t vData = shapes[0].mesh.indices[i]; 
-		std::string indexStr = std::to_string(vData.vertex_index) + std::to_string(vData.normal_index) + std::to_string(vData.texcoord_index); 
-
-		if (i == 0 || vIndexTable[indexStr] == 0) 
+		for (int j = 0; j < pMesh->mNumVertices; j++) 
 		{
-			vIndexTable[indexStr] = index; 
-			index++; 
-
-			VLitTextureData v; 
-			v.pos = Vector3(attributes.vertices[vData.vertex_index * 3 + 0], 
-				attributes.vertices[vData.vertex_index * 3 + 1], 
-				attributes.vertices[vData.vertex_index * 3 + 2]); 
-
-			v.normals = Vector3(attributes.normals[vData.normal_index * 3 + 0], 
-				attributes.normals[vData.normal_index * 3 + 1], 
-				attributes.normals[vData.normal_index * 3 + 2]); 
-
-			v.uv = Vector2(attributes.texcoords[vData.texcoord_index * 2 + 0], 
-				attributes.texcoords[vData.texcoord_index * 2 + 1]); 
-
-			vertices.push_back(v);
+			VLitTextureData v;
+			v.pos = Vector3(pMesh->mVertices[j].x, pMesh->mVertices[j].y, pMesh->mVertices[j].z); 
+			v.normals = pMesh->HasNormals() ? Vector3(pMesh->mNormals[j].x, pMesh->mNormals[j].y, pMesh->mNormals[j].z) : Vector3::Zero; 
+			v.uv = pMesh->HasTextureCoords(0) ? Vector2(pMesh->mTextureCoords[0][j].x, pMesh->mTextureCoords[0][j].y) : Vector2::Zero;
+			vertices.push_back(v); 
 		}
 
-		indices.push_back(vIndexTable[indexStr]); 
+		for (int j = 0; j < pMesh->mNumFaces; j++) 
+		{
+			for (int k = 0; k < pMesh->mFaces[j].mNumIndices; k++) 
+			{
+				indices.push_back(pMesh->mFaces[j].mIndices[k]); 
+			}
+		}
 	}
 
 	VertexBuffer<VLitTextureData>* vb = new VertexBuffer<VLitTextureData>(GraphicsEngine::GetInstance(), vertices);
-	vb->Init();
-	vertexBuffer = vb;
+	vb->Init(); 
+	vertexBuffer = vb; 
 
-	indexBuffer = new IndexBuffer(GraphicsEngine::GetInstance(), indices);
-	indexBuffer->Init();
+	indexBuffer = new IndexBuffer(GraphicsEngine::GetInstance(), indices); 
+	indexBuffer->Init(); 
 }

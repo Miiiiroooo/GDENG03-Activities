@@ -3,10 +3,15 @@
 #include "GameEngine/Graphics/Materials/LitTextureMaterial.h"
 
 
-ModelObject::ModelObject(std::string modelName, std::string textureName, bool isRainbowed) :
-	AGameObject(modelName.substr(0, modelName.size() - 4)), modelName(modelName), textureName(textureName), isRainbowed(isRainbowed)
+ModelObject::ModelObject(std::string modelName, std::string textureName) : AGameObject(modelName.substr(0, modelName.size() - 4)),  
+	modelName(modelName), textureName(textureName), isRainbowed(false), renderer(nullptr) 
 {
 
+}
+
+ModelObject::ModelObject(std::string modelName) : AGameObject(modelName.substr(0, modelName.size() - 4)), 
+	modelName(modelName), textureName(""), isRainbowed(true), renderer(nullptr) 
+{
 }
 
 ModelObject::~ModelObject()

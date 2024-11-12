@@ -11,7 +11,7 @@ CreditsTab::CreditsTab() : AUITab(EditorGUIManager::TabNames::CREDITS_TAB.data()
 	dlsuLogo->Init(); 
 }
 
-CreditsTab::~CreditsTab()
+CreditsTab::~CreditsTab() 
 {
 	dlsuLogo->Release();
 }
@@ -29,27 +29,23 @@ void CreditsTab::Render()
 
 	ImGui::Image((ImTextureID)(intptr_t)dlsuLogo->GetTextureView(), ImVec2(dlsuLogo->GetWidth()/4.f, dlsuLogo->GetHeight()/4.f));
 	ImGui::Dummy(ImVec2(0.f, 5.f));
-	//ImGui::Spacing();
 
-	ImGui::Text("Scene Editor v.0.7.3");
+	ImGui::Text("Scene Editor v.0.7.4");
 	ImGui::Text("Developed by: Aamir C. Akim");
 	ImGui::Dummy(ImVec2(0.f, 10.f));
-	//ImGui::Spacing();
 
 	ImGui::Text("Projects used as reference:");
 	ImGui::BulletText("GDENG03 Course"); 
 	ImGui::BulletText("GDADPRG Course"); 
 	ImGui::BulletText("ChiliTomatoNoodle C++ 3D DirectX Tutorial");
 	ImGui::Dummy(ImVec2(0.f, 10.f));
-	//ImGui::Spacing(); 
 
 	ImGui::Text("Libraries used in this project:");
 	ImGui::BulletText("DirectX Tool Kit");
 	ImGui::BulletText("Dear ImGui");
 	ImGui::BulletText("stb_image.h by Sean T. Barrett and others");
-	ImGui::BulletText("tiny_obj_loader.h by Syoyo Fujita and others");
+	ImGui::BulletText("Open Asset Import Library");
 	ImGui::Dummy(ImVec2(0.f, 10.f)); 
-	//ImGui::Spacing(); 
 
 	ImGuiStyle& style = ImGui::GetStyle(); 
 	float midPoint = ImGui::GetContentRegionAvail().x / 2.f;

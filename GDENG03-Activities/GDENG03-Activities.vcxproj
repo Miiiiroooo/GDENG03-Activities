@@ -57,6 +57,7 @@
     <ClCompile Include="Code\EditorGUI\ColorPickerTab.cpp" />
     <ClCompile Include="Code\GameEngine\GameObjects\ModelObject.cpp" />
     <ClCompile Include="Code\GameEngine\Graphics\Materials\LitTextureMaterial.cpp" />
+    <ClCompile Include="Code\EditorGUI\InspectorTab.cpp" />
     <ClCompile Include="packages\DearIMGUI\imgui.cpp" />
     <ClCompile Include="packages\DearIMGUI\imgui_demo.cpp" />
     <ClCompile Include="packages\DearIMGUI\imgui_draw.cpp" />
@@ -132,6 +133,7 @@
     <ClInclude Include="Code\GameEngine\Graphics\Materials\AMaterial.h" />
     <ClInclude Include="Code\GameEngine\Graphics\IRenderable.h" />
     <ClInclude Include="Code\GameEngine\Graphics\Materials\LitTextureMaterial.h" />
+    <ClInclude Include="Code\EditorGUI\InspectorTab.h" />
     <ClInclude Include="packages\DearIMGUI\imconfig.h" />
     <ClInclude Include="packages\DearIMGUI\imgui.h" />
     <ClInclude Include="packages\DearIMGUI\imgui_impl_dx11.h" />
@@ -263,16 +265,16 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;_USE_MATH_DEFINES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;_USE_MATH_DEFINES;%(PreprocessorDefinitions);NOMINMAX</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)/packages/DearIMGUI;$(ProjectDir)/Code</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)/packages/DearIMGUI;$(ProjectDir)/Code;$(ProjectDir)/packages/OpenAssetImporter/include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d3d11.lib;dxgi.lib;d3dcompiler.lib;winmm.lib;dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>d3d11.lib;dxgi.lib;d3dcompiler.lib;winmm.lib;dxguid.lib;assimp-vc143-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(ProjectDir)/packages/OpenAssetImporter/lib/x64</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -281,15 +283,17 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);NOMINMAX</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)/packages/DearIMGUI;$(ProjectDir)/Code</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)/packages/DearIMGUI;$(ProjectDir)/Code;$(ProjectDir)/packages/OpenAssetImporter/include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>;$(ProjectDir)/packages/OpenAssetImporter/lib/x64</AdditionalLibraryDirectories>
+      <AdditionalDependencies>d3d11.lib;dxgi.lib;d3dcompiler.lib;winmm.lib;dxguid.lib;assimp-vc143-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

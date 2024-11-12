@@ -1,9 +1,7 @@
 #pragma once
 #include "ARenderer.h"
 #include "GameEngine/Meshes/EPrimitiveMeshTypes.h"
-
-#define TINYOBJLOADER_IMPLEMENTATION
-#include "tiny_obj_loader.h"
+#include <assimp/scene.h>
 
 class MeshRenderer : public ARenderer
 {
@@ -16,8 +14,8 @@ public:
 	void LoadNonPrimitive(std::string modelName, bool isRainbowed = false);
 
 private:
-	void CreateNonPrimitiveColored(tinyobj::attrib_t& attributes, std::vector<tinyobj::shape_t>& shapes);
-	void CreateNonPrimitiveTextured(tinyobj::attrib_t& attributes, std::vector<tinyobj::shape_t>& shapes);
+	void CreateNonPrimitiveColored(const aiScene* model);
+	void CreateNonPrimitiveTextured(const aiScene* model);
 
 
 private:
