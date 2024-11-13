@@ -27,10 +27,13 @@ void CreditsTab::RenderUI()
 
 	ImGui::Begin(name.c_str(), &isEnabled, flags);
 
-	ImGui::Image((ImTextureID)(intptr_t)dlsuLogo->GetTextureView(), ImVec2(dlsuLogo->GetWidth()/4.f, dlsuLogo->GetHeight()/4.f));
+	float midPoint = ImGui::GetContentRegionAvail().x / 2.f;
+	float offset = dlsuLogo->GetWidth() / 10.f;
+	ImGui::SetCursorPosX(ImGui::GetCursorPosX() + midPoint - offset);
+	ImGui::Image((ImTextureID)(intptr_t)dlsuLogo->GetTextureView(), ImVec2(dlsuLogo->GetWidth()/5.f, dlsuLogo->GetHeight()/5.f));
 	ImGui::Dummy(ImVec2(0.f, 5.f));
 
-	ImGui::Text("Scene Editor v.0.7.7");
+	ImGui::Text("Scene Editor v.0.8.0");
 	ImGui::Text("Developed by: Aamir C. Akim");
 	ImGui::Dummy(ImVec2(0.f, 10.f));
 
@@ -45,11 +48,12 @@ void CreditsTab::RenderUI()
 	ImGui::BulletText("Dear ImGui");
 	ImGui::BulletText("stb_image.h by Sean T. Barrett and others");
 	ImGui::BulletText("Open Asset Import Library");
+	ImGui::BulletText("React Physics 3D");
 	ImGui::Dummy(ImVec2(0.f, 10.f)); 
 
 	ImGuiStyle& style = ImGui::GetStyle(); 
-	float midPoint = ImGui::GetContentRegionAvail().x / 2.f;
-	float offset = ImGui::CalcTextSize("Close").x / 2.f + style.FramePadding.x;
+	midPoint = ImGui::GetContentRegionAvail().x / 2.f;
+	offset = ImGui::CalcTextSize("Close").x / 2.f + style.FramePadding.x;
 	ImGui::SetCursorPosX(ImGui::GetCursorPosX() + midPoint - offset); 
 	if (ImGui::Button("Close"))
 	{

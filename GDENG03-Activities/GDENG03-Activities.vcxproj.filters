@@ -153,30 +153,6 @@
     <ClCompile Include="Code\EditorGUI\CreditsTab.cpp">
       <Filter>EditorGUI</Filter>
     </ClCompile>
-    <ClCompile Include="packages\DearIMGUI\imgui.cpp">
-      <Filter>DearIMGUI</Filter>
-    </ClCompile>
-    <ClCompile Include="packages\DearIMGUI\imgui_demo.cpp">
-      <Filter>DearIMGUI</Filter>
-    </ClCompile>
-    <ClCompile Include="packages\DearIMGUI\imgui_draw.cpp">
-      <Filter>DearIMGUI</Filter>
-    </ClCompile>
-    <ClCompile Include="packages\DearIMGUI\imgui_impl_dx11.cpp">
-      <Filter>DearIMGUI</Filter>
-    </ClCompile>
-    <ClCompile Include="packages\DearIMGUI\imgui_impl_win32.cpp">
-      <Filter>DearIMGUI</Filter>
-    </ClCompile>
-    <ClCompile Include="packages\DearIMGUI\imgui_stdlib.cpp">
-      <Filter>DearIMGUI</Filter>
-    </ClCompile>
-    <ClCompile Include="packages\DearIMGUI\imgui_tables.cpp">
-      <Filter>DearIMGUI</Filter>
-    </ClCompile>
-    <ClCompile Include="packages\DearIMGUI\imgui_widgets.cpp">
-      <Filter>DearIMGUI</Filter>
-    </ClCompile>
     <ClCompile Include="Code\EditorGUI\MenuTab.cpp">
       <Filter>EditorGUI</Filter>
     </ClCompile>
@@ -209,6 +185,33 @@
     </ClCompile>
     <ClCompile Include="Code\EditorGUI\InspectorTab.cpp">
       <Filter>EditorGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="packages\DearIMGUI\imgui.cpp">
+      <Filter>DearIMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="packages\DearIMGUI\imgui_demo.cpp">
+      <Filter>DearIMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="packages\DearIMGUI\imgui_draw.cpp">
+      <Filter>DearIMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="packages\DearIMGUI\imgui_impl_dx11.cpp">
+      <Filter>DearIMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="packages\DearIMGUI\imgui_impl_win32.cpp">
+      <Filter>DearIMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="packages\DearIMGUI\imgui_stdlib.cpp">
+      <Filter>DearIMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="packages\DearIMGUI\imgui_tables.cpp">
+      <Filter>DearIMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="packages\DearIMGUI\imgui_widgets.cpp">
+      <Filter>DearIMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\GameEngine\Managers\PhysicsEngine.cpp">
+      <Filter>GameEngine\Managers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -363,33 +366,6 @@
     <ClInclude Include="Code\EditorGUI\CreditsTab.h">
       <Filter>EditorGUI</Filter>
     </ClInclude>
-    <ClInclude Include="packages\DearIMGUI\imconfig.h">
-      <Filter>DearIMGUI</Filter>
-    </ClInclude>
-    <ClInclude Include="packages\DearIMGUI\imgui.h">
-      <Filter>DearIMGUI</Filter>
-    </ClInclude>
-    <ClInclude Include="packages\DearIMGUI\imgui_impl_dx11.h">
-      <Filter>DearIMGUI</Filter>
-    </ClInclude>
-    <ClInclude Include="packages\DearIMGUI\imgui_impl_win32.h">
-      <Filter>DearIMGUI</Filter>
-    </ClInclude>
-    <ClInclude Include="packages\DearIMGUI\imgui_internal.h">
-      <Filter>DearIMGUI</Filter>
-    </ClInclude>
-    <ClInclude Include="packages\DearIMGUI\imgui_stdlib.h">
-      <Filter>DearIMGUI</Filter>
-    </ClInclude>
-    <ClInclude Include="packages\DearIMGUI\imstb_rectpack.h">
-      <Filter>DearIMGUI</Filter>
-    </ClInclude>
-    <ClInclude Include="packages\DearIMGUI\imstb_textedit.h">
-      <Filter>DearIMGUI</Filter>
-    </ClInclude>
-    <ClInclude Include="packages\DearIMGUI\imstb_truetype.h">
-      <Filter>DearIMGUI</Filter>
-    </ClInclude>
     <ClInclude Include="Code\EditorGUI\MenuTab.h">
       <Filter>EditorGUI</Filter>
     </ClInclude>
@@ -430,6 +406,36 @@
     </ClInclude>
     <ClInclude Include="Code\EditorGUI\IRenderableUI.h">
       <Filter>EditorGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="packages\DearIMGUI\imstb_truetype.h">
+      <Filter>DearIMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="packages\DearIMGUI\imconfig.h">
+      <Filter>DearIMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="packages\DearIMGUI\imgui.h">
+      <Filter>DearIMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="packages\DearIMGUI\imgui_impl_dx11.h">
+      <Filter>DearIMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="packages\DearIMGUI\imgui_impl_win32.h">
+      <Filter>DearIMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="packages\DearIMGUI\imgui_internal.h">
+      <Filter>DearIMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="packages\DearIMGUI\imgui_stdlib.h">
+      <Filter>DearIMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="packages\DearIMGUI\imstb_rectpack.h">
+      <Filter>DearIMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="packages\DearIMGUI\imstb_textedit.h">
+      <Filter>DearIMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\GameEngine\Managers\PhysicsEngine.h">
+      <Filter>GameEngine\Managers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
