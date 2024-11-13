@@ -63,24 +63,19 @@ bool ARenderer::Release()
 
 void ARenderer::Perform()
 {
-	
-}
+	if (!vertexBuffer || !indexBuffer || !tMatrixBuffer || !material) return; 
 
-void ARenderer::Render()
-{
-	if (!vertexBuffer || !indexBuffer || !tMatrixBuffer || !material) return;
+	material->Render(); 
+	vertexBuffer->BindToPipeline(); 
+	indexBuffer->BindToPipeline(); 
 
-	material->Render();
-	vertexBuffer->BindToPipeline();
-	indexBuffer->BindToPipeline();
-
-	Transform* transform = owner->GetTransform();
-	tMatrixBuffer->SetConstants(transform->GetTransformationMatrix());
-	tMatrixBuffer->BindToPipeline();
+	Transform* transform = owner->GetTransform(); 
+	tMatrixBuffer->SetConstants(transform->GetTransformationMatrix()); 
+	tMatrixBuffer->BindToPipeline(); 
 
 	// Set the topology type, then draw to the GPU
-	GraphicsEngine::GetInstance()->GetDeviceContext()->IASetPrimitiveTopology(topologyType);
-	GraphicsEngine::GetInstance()->GetDeviceContext()->DrawIndexed(indexBuffer->GetIndexCount(), 0u, 0u);
+	GraphicsEngine::GetInstance()->GetDeviceContext()->IASetPrimitiveTopology(topologyType); 
+	GraphicsEngine::GetInstance()->GetDeviceContext()->DrawIndexed(indexBuffer->GetIndexCount(), 0u, 0u); 
 }
 
 LPCWSTR ARenderer::GetShaderType()

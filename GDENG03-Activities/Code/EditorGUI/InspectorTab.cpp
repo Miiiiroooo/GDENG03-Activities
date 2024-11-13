@@ -19,7 +19,7 @@ void InspectorTab::InitializeImGuiFlags()
     flags |= ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_HorizontalScrollbar; 
 }
 
-void InspectorTab::Render()
+void InspectorTab::RenderUI()
 {
 	if (hierarchy->GetSelectedObj() == nullptr) return;
 
@@ -38,7 +38,6 @@ void InspectorTab::Render()
 	eulerAngle[0] = t->GetLocalEulerAngles().x;
 	eulerAngle[1] = t->GetLocalEulerAngles().y;
 	eulerAngle[2] = t->GetLocalEulerAngles().z;
-	Vector3 diffEuler = Vector3(eulerAngle) - t->GetLocalEulerAngles();
 
 	scale[0] = t->LocalScale.x;
 	scale[1] = t->LocalScale.y;
@@ -55,6 +54,8 @@ void InspectorTab::Render()
 		ImGui::DragFloat3("Scale", scale);
 		ImGui::TreePop(); 
 	}
+
+	Vector3 diffEuler = Vector3(eulerAngle) - t->GetLocalEulerAngles();
 
 	selected->Enabled = enabled;
 	if (Keyboard::IsKeyPressed(VK_RETURN) && std::string(objName) != "") selected->Name = objName; // reupdate gameobjectmanaer

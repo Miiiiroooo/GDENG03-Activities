@@ -90,7 +90,7 @@ void EditorGUIManager::Render()
 	for (auto keyValuePair : uiTable)
 	{
 		AUITab* ui = keyValuePair.second;
-		if (ui && ui->Enabled) ui->Render();
+		if (ui && ui->Enabled) ui->RenderUI();
 	}
 
 	ImGui::Render(); 
@@ -100,4 +100,9 @@ void EditorGUIManager::Render()
 AUITab* EditorGUIManager::GetTab(std::string tabName)
 {
 	return uiTable[tabName];
+}
+
+bool EditorGUIManager::IsMousesOverUI()
+{
+	return ImGui::GetIO().WantCaptureMouse; 
 }

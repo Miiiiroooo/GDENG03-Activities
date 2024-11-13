@@ -9,7 +9,7 @@ public:
 	InspectorTab(HierarchyTab* hierarchy);
 	~InspectorTab();
 
-	void Render() override;
+	void RenderUI() override;
 
 protected:
 	void InitializeImGuiFlags() override;

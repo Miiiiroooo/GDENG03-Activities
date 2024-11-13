@@ -7,7 +7,7 @@ public:
 	MenuTab();
 	~MenuTab();
 
-	void Render() override;
+	void RenderUI() override;
 
 
 private:

@@ -10,7 +10,7 @@ public:
 	HierarchyTab();
 	~HierarchyTab(); 
 
-	void Render() override;
+	void RenderUI() override;
 	AGameObject* GetSelectedObj();
 
 protected:

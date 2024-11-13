@@ -10,7 +10,7 @@ MenuTab::~MenuTab()
 
 }
 
-void MenuTab::Render()
+void MenuTab::RenderUI()
 {
 	if (ImGui::BeginMainMenuBar())
 	{

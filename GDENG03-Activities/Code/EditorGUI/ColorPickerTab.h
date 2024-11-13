@@ -8,7 +8,7 @@ public:
 	ColorPickerTab();
 	~ColorPickerTab();
 
-	void Render() override;
+	void RenderUI() override;
 
 protected:
 	void InitializeImGuiFlags() override;

@@ -219,18 +219,33 @@ void Transform::Rotate(float xAngleInDeg, float yAngleInDeg, float zAngleInDeg)
 
 void Transform::Rotate(const Vector3& eulerInDeg)
 {
-	Vector3 parentRight = (owner->GetParent()) ?
-		owner->GetParent()->GetTransform()->localRight :
-		localRight; 
+	Vector3 parentUp = (owner->GetParent()) ?
+		owner->GetParent()->GetTransform()->localUp :
+		Vector3::Up;
 
-	Quaternion yaw = Quaternion::CreateFromAxisAngle(Vector3::Up, eulerInDeg.y * MathUtils::Deg2Rad);  
-	Quaternion pitch = Quaternion::CreateFromAxisAngle(parentRight, eulerInDeg.x * MathUtils::Deg2Rad); 
-	Quaternion roll = Quaternion::CreateFromAxisAngle(localForward, eulerInDeg.z * MathUtils::Deg2Rad); // check THIS one more time 
+	Vector3 axisRight = Vector3::Right;
+	if (owner->GetParent())
+	{
+		Vector3::Transform(owner->GetParent()->GetTransform()->localRight,  
+			Quaternion::CreateFromAxisAngle(owner->GetParent()->GetTransform()->localUp, eulerAngles.y * MathUtils::Deg2Rad), 
+			axisRight);  
+	}
+	else
+	{
+		Vector3::Transform(Vector3::Right, 
+			Quaternion::CreateFromAxisAngle(Vector3::Up, eulerAngles.y * MathUtils::Deg2Rad), 
+			axisRight); 
+	}
+
+	Quaternion yaw = Quaternion::CreateFromAxisAngle(parentUp, eulerInDeg.y * MathUtils::Deg2Rad);  
+	Quaternion pitch = Quaternion::CreateFromAxisAngle(axisRight, eulerInDeg.x * MathUtils::Deg2Rad);  
+	Quaternion roll = Quaternion::CreateFromAxisAngle(localForward, eulerInDeg.z * MathUtils::Deg2Rad);
 	Quaternion toRotate = roll * pitch * yaw; 
 	orientation *= toRotate;
 
 	// update euler angles and local vectors
-	eulerAngles += eulerInDeg;
+	eulerAngles += eulerInDeg; 
+	eulerAngles = MathUtils::GetNearestReferenceAngles(eulerAngles);
 	UpdateLocalVectors(); 
 
 	// update local euler angles, taking consideration of the parent
@@ -239,6 +254,7 @@ void Transform::Rotate(const Vector3& eulerInDeg)
 	localEulerAngles = (parentObj) ?
 		eulerAngles - parentObj->GetTransform()->eulerAngles :
 		eulerAngles;
+	localEulerAngles = MathUtils::GetNearestReferenceAngles(localEulerAngles); 
 
 	// update all the transforms of every 'descendant'
 	auto transformsFromChildren = owner->GetComponentsInChildrenOfType(EComponentTypes::Transform);
@@ -251,13 +267,15 @@ void Transform::Rotate(const Vector3& eulerInDeg)
 	UpdateTransformationMatrix();
 }
 
-void Transform::RotateFromParent(const Vector3& eulerInDeg, const Quaternion& toRotate, const Transform* parent)
+void Transform::RotateFromParent(const Vector3& eulerInDeg, const Quaternion& toRotate, const Transform* parent) // revisit parent rotations, not yet accurate
 {
 	orientation *= toRotate;  
 	 
 	// update all euler angles and local vectors
 	eulerAngles += eulerInDeg;
-	localEulerAngles = eulerAngles - parent->eulerAngles;
+	eulerAngles = MathUtils::GetNearestReferenceAngles(eulerAngles); 
+	localEulerAngles = eulerAngles - parent->eulerAngles; 
+	localEulerAngles = MathUtils::GetNearestReferenceAngles(localEulerAngles); 
 	UpdateLocalVectors(); 
 
 	// update position based on an offset from parent

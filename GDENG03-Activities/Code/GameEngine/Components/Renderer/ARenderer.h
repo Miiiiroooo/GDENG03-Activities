@@ -8,7 +8,7 @@
 #include "DirectXClasses/Buffers/BufferDataTypes.h"
 
 
-class ARenderer : public AComponent, public IRenderable
+class ARenderer : public AComponent
 {
 public:
 	ARenderer(std::string compoonentName);
@@ -18,7 +18,6 @@ public:
 	virtual void Clone(AComponent* copy) override;
 	virtual bool Release();
 	void Perform() override;
-	void Render() override;
 	LPCWSTR GetShaderType();
 	void SetMaterial(AMaterial* newMaterial);
 

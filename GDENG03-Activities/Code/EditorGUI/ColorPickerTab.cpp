@@ -17,7 +17,7 @@ void ColorPickerTab::InitializeImGuiFlags()
 	flags |= ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoDocking;
 }
 
-void ColorPickerTab::Render()
+void ColorPickerTab::RenderUI()
 {
 	if (ImGui::Begin(name.c_str(), &isEnabled, flags));
 

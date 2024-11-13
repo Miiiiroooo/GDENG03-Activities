@@ -8,7 +8,7 @@ public:
 	CreditsTab();
 	~CreditsTab();
 
-	void Render() override;
+	void RenderUI() override;
 
 protected:
 	void InitializeImGuiFlags() override;

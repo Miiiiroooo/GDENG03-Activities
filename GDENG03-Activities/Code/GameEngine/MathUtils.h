@@ -23,6 +23,9 @@ public:
 
 	static Vector3 CheckDivisionByZero(const Vector3& dividend, const Vector3& divisor);
 
+	static float GetNearestReferenceAngle(const float angle);
+	static Vector3 GetNearestReferenceAngles(const Vector3& eulerAngle);
+
 
 public:
 	static const float Deg2Rad;

@@ -80,3 +80,16 @@ Vector3 MathUtils::CheckDivisionByZero(const Vector3& dividend, const Vector3& d
 	result.z = (divisor.z == 0) ? 0 : (dividend.z / divisor.z);
 	return result;
 }
+
+float MathUtils::GetNearestReferenceAngle(const float angle)
+{
+	if (angle >= 0.0f && angle <= 360.f) return angle;
+	return std::fmod(angle, 360.f);
+}
+
+Vector3 MathUtils::GetNearestReferenceAngles(const Vector3& eulerAngle)
+{
+	return Vector3(GetNearestReferenceAngle(eulerAngle.x),
+		GetNearestReferenceAngle(eulerAngle.y),
+		GetNearestReferenceAngle(eulerAngle.z));
+}

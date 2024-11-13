@@ -413,9 +413,6 @@
     <ClInclude Include="Code\DirectXClasses\TextureSampler.h">
       <Filter>DirectXClasses</Filter>
     </ClInclude>
-    <ClInclude Include="Code\GameEngine\Graphics\IRenderable.h">
-      <Filter>GameEngine\Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="Code\GameEngine\Graphics\Materials\AMaterial.h">
       <Filter>GameEngine\Graphics\Materials</Filter>
     </ClInclude>
@@ -429,6 +426,9 @@
       <Filter>GameEngine\GameObjects\Primitives</Filter>
     </ClInclude>
     <ClInclude Include="Code\EditorGUI\InspectorTab.h">
+      <Filter>EditorGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\EditorGUI\IRenderableUI.h">
       <Filter>EditorGUI</Filter>
     </ClInclude>
   </ItemGroup>

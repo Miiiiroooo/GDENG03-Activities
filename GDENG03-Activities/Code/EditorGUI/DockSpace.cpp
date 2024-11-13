@@ -18,7 +18,7 @@ void DockSpace::InitializeImGuiFlags()
     dockSpaceFlags |= ImGuiDockNodeFlags_PassthruCentralNode;
 }
 
-void DockSpace::Render()
+void DockSpace::RenderUI()
 {
     const ImGuiViewport* viewport = ImGui::GetMainViewport();
     ImVec2 size = ImVec2(viewport->WorkSize.x + 20.f, viewport->WorkSize.y + 20.f);

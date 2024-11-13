@@ -8,7 +8,7 @@ public:
 	DockSpace();
 	~DockSpace();
 
-	void Render() override;
+	void RenderUI() override;
 
 protected:
 	void InitializeImGuiFlags() override;

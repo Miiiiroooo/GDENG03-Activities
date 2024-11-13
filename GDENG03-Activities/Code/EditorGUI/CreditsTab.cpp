@@ -21,7 +21,7 @@ void CreditsTab::InitializeImGuiFlags()
 	flags |= ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoDocking;
 }
 
-void CreditsTab::Render()
+void CreditsTab::RenderUI()
 { 
 	if (!isEnabled) return;
 
@@ -30,7 +30,7 @@ void CreditsTab::Render()
 	ImGui::Image((ImTextureID)(intptr_t)dlsuLogo->GetTextureView(), ImVec2(dlsuLogo->GetWidth()/4.f, dlsuLogo->GetHeight()/4.f));
 	ImGui::Dummy(ImVec2(0.f, 5.f));
 
-	ImGui::Text("Scene Editor v.0.7.6");
+	ImGui::Text("Scene Editor v.0.7.7");
 	ImGui::Text("Developed by: Aamir C. Akim");
 	ImGui::Dummy(ImVec2(0.f, 10.f));
 

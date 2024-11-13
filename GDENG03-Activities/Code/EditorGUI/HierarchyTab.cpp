@@ -17,7 +17,7 @@ void HierarchyTab::InitializeImGuiFlags()
     flags |= ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_HorizontalScrollbar;
 }
 
-void HierarchyTab::Render()
+void HierarchyTab::RenderUI()
 {
 	ImGui::Begin(name.c_str(), &isEnabled, flags);
 

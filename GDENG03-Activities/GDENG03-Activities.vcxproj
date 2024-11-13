@@ -131,9 +131,9 @@
     <ClInclude Include="Code\EditorGUI\ColorPickerTab.h" />
     <ClInclude Include="Code\GameEngine\GameObjects\ModelObject.h" />
     <ClInclude Include="Code\GameEngine\Graphics\Materials\AMaterial.h" />
-    <ClInclude Include="Code\GameEngine\Graphics\IRenderable.h" />
     <ClInclude Include="Code\GameEngine\Graphics\Materials\LitTextureMaterial.h" />
     <ClInclude Include="Code\EditorGUI\InspectorTab.h" />
+    <ClInclude Include="Code\EditorGUI\IRenderableUI.h" />
     <ClInclude Include="packages\DearIMGUI\imconfig.h" />
     <ClInclude Include="packages\DearIMGUI\imgui.h" />
     <ClInclude Include="packages\DearIMGUI\imgui_impl_dx11.h" />

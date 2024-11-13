@@ -1,13 +1,10 @@
 #pragma once
-#include <imgui.h>
-#include <imgui_impl_dx11.h> 
-#include <imgui_impl_win32.h> 
 #include <string>
 #include "EditorGUIManager.h"
-#include "GameEngine/Graphics/IRenderable.h"
+#include "IRenderableUI.h"
 
 
-class AUITab : public IRenderable
+class AUITab : public IRenderableUI
 {
 public:
 	AUITab(std::string name);

@@ -32,6 +32,7 @@ public:
 	void Render();
 
 	AUITab* GetTab(std::string tabName);
+	bool IsMousesOverUI();
 
 
 private:
