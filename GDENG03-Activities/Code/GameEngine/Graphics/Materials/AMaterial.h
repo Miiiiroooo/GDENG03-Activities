@@ -3,7 +3,7 @@
 #include "../IRenderable.h"
 
 
-// due to the complexity of serialization of data types, materials in this project are HARD-CODED
+// materials  might require some serialization and other more modules; so for now materials in this project are HARD-CODED into classes
 class AMaterial : public IRenderable
 {
 public:

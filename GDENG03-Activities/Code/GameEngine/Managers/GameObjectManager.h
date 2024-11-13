@@ -22,6 +22,7 @@ public:
 	void AddObject(AGameObject* gameObject);
 	void BindRendererToShader(ARenderer* rendererComponent);
 	std::vector<AGameObject*> FindObjectsWithName(std::string name);
+	void UpdateObjectWithNewName(AGameObject* gameObject, std::string newName);
 	void RemoveObject(AGameObject* gameObject); 
 	void RemoveObjectByID(unsigned int id);
 	void DeleteObject(AGameObject* gameObject);

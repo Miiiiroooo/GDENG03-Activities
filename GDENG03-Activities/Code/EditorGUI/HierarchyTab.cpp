@@ -47,8 +47,7 @@ void HierarchyTab::Render()
 
 	ImGui::End(); 
 
-    if ((Keyboard::IsKeyDown(VK_DELETE) || Keyboard::IsKeyDown(VK_BACK))
-        && selectedObject != nullptr)
+    if (Keyboard::IsKeyPressed(VK_DELETE) && selectedObject != nullptr)
     {
         GameObjectManager::GetInstance()->DeleteObject(selectedObject);
         selectedObject = nullptr;

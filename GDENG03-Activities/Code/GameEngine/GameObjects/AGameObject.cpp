@@ -125,6 +125,7 @@ std::string AGameObject::GetName()
 
 void AGameObject::SetName(std::string newName)
 {
+	GameObjectManager::GetInstance()->UpdateObjectWithNewName(this, newName);
 	this->name = newName;
 }
 

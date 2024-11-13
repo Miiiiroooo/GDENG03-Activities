@@ -93,23 +93,24 @@ void GameEngineWindow::OnCreate(HWND hWnd)
 
 void GameEngineWindow::OnUpdate()
 {
-	swapChain->ClearBuffer(0.4f, 0.4f, 0.6f);
+	swapChain->ClearBuffer(0.0f, 0.0f, 0.0f);
+	//swapChain->ClearBuffer(0.4f, 0.4f, 0.6f);
 
 	currDelta += (float)EngineTime::GetDeltaTime();
 	float secsPerFrame = 1.f / (float)fps;
-	if (currDelta >= secsPerFrame) 
+	while (currDelta >= secsPerFrame) 
 	{
 		currDelta -= secsPerFrame; 
 		GameObjectManager::GetInstance()->Update(secsPerFrame); 
-
-		Keyboard::FlushEventsBuffer();  
-		Keyboard::FlushCharBuffer(); 
-		Mouse::FlushEventsBuffer(); 
 	}
 
 	GameObjectManager::GetInstance()->Draw(); 
 	EditorGUIManager::GetInstance()->Render();
 	swapChain->Present(true); 
+
+	Keyboard::FlushEventsBuffer(); 
+	Keyboard::FlushCharBuffer(); 
+	Mouse::FlushEventsBuffer(); 
 }
 
 void GameEngineWindow::OnDestroy() 
@@ -119,8 +120,6 @@ void GameEngineWindow::OnDestroy()
 	GameObjectManager::Destroy();
 	EditorGUIManager::Destroy(); 
 	GraphicsEngine::GetInstance()->Release();
-	// engine time???
-	// other more managers???
 }
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);

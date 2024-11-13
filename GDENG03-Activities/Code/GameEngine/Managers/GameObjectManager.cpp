@@ -123,7 +123,7 @@ void GameObjectManager::AddObject(AGameObject* gameObject)
 	if (gameObject == nullptr) return;
 	
 	// check if game object is already tracked by manager
-	auto& namedObjList = gameObjectMap[gameObject->GetName()];
+	auto& namedObjList = gameObjectMap[gameObject->Name];
 	for (auto& namedObj : namedObjList)
 	{
 		if (namedObj->GetInstanceID() == gameObject->GetInstanceID()) return;
@@ -137,7 +137,7 @@ void GameObjectManager::AddObject(AGameObject* gameObject)
 
 	// set trackers
 	gameObjectList.push_back(gameObject);
-	gameObjectMap[gameObject->GetName()].push_back(gameObject); 
+	gameObjectMap[gameObject->Name].push_back(gameObject); 
 	if (!gameObject->IsInitialized()) gameObject->Initialize(); 
 }
 
@@ -152,6 +152,19 @@ std::vector<AGameObject*> GameObjectManager::FindObjectsWithName(std::string nam
 	return gameObjectMap[name];
 }
 
+void GameObjectManager::UpdateObjectWithNewName(AGameObject* gameObject, std::string newName)
+{
+	auto& namedList = gameObjectMap[gameObject->Name];
+	for (int i = 0; i < namedList.size(); i++) 
+	{
+		if (namedList[i]->GetInstanceID() == gameObject->GetInstanceID()) namedList.erase(namedList.begin() + i); 
+	}
+
+	if (namedList.size() == 0) gameObjectMap.erase(gameObject->Name);
+
+	gameObjectMap[newName].push_back(gameObject);
+}
+
 void GameObjectManager::RemoveObject(AGameObject* gameObject)
 {
 	if (gameObject == nullptr) return;
@@ -163,7 +176,7 @@ void GameObjectManager::RemoveObject(AGameObject* gameObject)
 		gameObjectList.erase(itr); 
 		gameObjectList.shrink_to_fit(); 
 
-		auto& namedList = gameObjectMap[gameObject->GetName()]; 
+		auto& namedList = gameObjectMap[gameObject->Name]; 
 		for (int i = 0; i < namedList.size(); i++)  
 		{
 			if (namedList[i]->GetInstanceID() == gameObject->GetInstanceID()) namedList.erase(namedList.begin() + i); 

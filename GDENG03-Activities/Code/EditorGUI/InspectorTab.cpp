@@ -28,6 +28,9 @@ void InspectorTab::Render()
 	AGameObject* selected = hierarchy->GetSelectedObj();
 	Transform* t = selected->GetTransform();
 
+	enabled = selected->Enabled;
+	strcpy_s(objName, selected->Name.c_str());
+
 	position[0] = t->LocalPosition.x;
 	position[1] = t->LocalPosition.y;
 	position[2] = t->LocalPosition.z;
@@ -35,19 +38,30 @@ void InspectorTab::Render()
 	eulerAngle[0] = t->GetLocalEulerAngles().x;
 	eulerAngle[1] = t->GetLocalEulerAngles().y;
 	eulerAngle[2] = t->GetLocalEulerAngles().z;
+	Vector3 diffEuler = Vector3(eulerAngle) - t->GetLocalEulerAngles();
 
 	scale[0] = t->LocalScale.x;
 	scale[1] = t->LocalScale.y;
 	scale[2] = t->LocalScale.z;
 
-	ImGui::Text(selected->Name.c_str());
-	ImGui::DragFloat3("Position", position);
-	ImGui::DragFloat3("Rotation", eulerAngle);
-	ImGui::DragFloat3("Scale", scale);
+	ImGui::Checkbox("##ObjEnabled", &enabled); ImGui::SameLine();
+	ImGui::InputText("##ObjName", objName, IM_ARRAYSIZE(objName));
 
-	t->SetLocalPosition(Vector3(position[0], position[1], position[2]));
-	t->Rotate(Vector3(eulerAngle[0], eulerAngle[1], eulerAngle[2]) - t->GetLocalEulerAngles());
-	t->SetLocalScale(Vector3(scale[0], scale[1], scale[2]));
+	ImGui::AlignTextToFramePadding();
+	if (ImGui::TreeNodeEx("Transform Component", ImGuiTreeNodeFlags_AllowItemOverlap))
+	{
+		ImGui::DragFloat3("Position", position); 
+		ImGui::DragFloat3("Rotation", eulerAngle); 
+		ImGui::DragFloat3("Scale", scale);
+		ImGui::TreePop(); 
+	}
+
+	selected->Enabled = enabled;
+	if (Keyboard::IsKeyPressed(VK_RETURN) && std::string(objName) != "") selected->Name = objName; // reupdate gameobjectmanaer
+
+	if (Vector3(position) != t->LocalPosition)           t->SetLocalPosition(Vector3(position));
+	if (Vector3(eulerAngle) != t->GetLocalEulerAngles()) t->Rotate(diffEuler);
+	if (Vector3(scale) != t->LocalScale)                 t->SetLocalScale(Vector3(scale));
 
 	ImGui::End();
 }
