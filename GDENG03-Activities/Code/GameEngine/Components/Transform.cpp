@@ -187,6 +187,10 @@ void Transform::UpdateGlobalScaleWithChildren()
 
 
 #pragma region Rotation
+Quaternion Transform::GetOrientation()
+{
+	return orientation;
+}
 Vector3 Transform::GetEulerAngles()
 {
 	return eulerAngles;

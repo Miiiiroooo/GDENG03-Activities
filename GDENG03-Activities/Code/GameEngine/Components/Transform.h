@@ -29,12 +29,12 @@ public:
 	void SetLocalPosition(const Vector3& newPos);
 	__declspec(property(get = GetLocalPosition, put = SetLocalPosition)) Vector3 LocalPosition;
 
-
 	Vector3 GetLocalScale();
 	void SetLocalScale(const Vector3& newScale);
 	__declspec(property(get = GetLocalScale, put = SetLocalScale)) Vector3 LocalScale;
 
 
+	Quaternion GetOrientation();
 	Vector3 GetEulerAngles();
 	Vector3 GetLocalEulerAngles();
 	Vector3 GetLocalRight();

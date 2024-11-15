@@ -13,7 +13,7 @@
 
 
 
-GameEngineWindow::GameEngineWindow(int fps) : fps(fps), currDelta(0.f)
+GameEngineWindow::GameEngineWindow(int fps) : fps(fps), accumulator(0.f)
 {
 	windowClassName = "GameEngineClass";
 }
@@ -34,24 +34,24 @@ void GameEngineWindow::OnCreate(HWND hWnd)
 
 
 	// setup the objects
-	FreeCameraObject* freeCam = new FreeCameraObject(width, height); 
+	FreeCameraObject* freeCam = new FreeCameraObject(width, height);  
 	freeCam->GetTransform()->Position = { 0.0f, 0.0f, 0.0f }; 
 	GameObjectManager::GetInstance()->AddObject(freeCam); 
 
-	ModelObject* model1 = new ModelObject("teapot3.obj", "brick.png");  
-	GameObjectManager::GetInstance()->AddObject(model1);  
-	model1->GetTransform()->Position = { 0, 0, 30.f };  
-	model1->GetTransform()->LocalScale = { 0.35f, 0.35f, 0.35f }; 
+	ModelObject* model1 = new ModelObject("teapot3.obj", "brick.png");   
+	GameObjectManager::GetInstance()->AddObject(model1);   
+	model1->GetTransform()->Position = { 0, 0, 30.f };   
+	model1->GetTransform()->LocalScale = { 0.35f, 0.35f, 0.35f };  
 
-	ModelObject* model2 = new ModelObject("bunny2.obj"); 
-	GameObjectManager::GetInstance()->AddObject(model2); 
-	model2->GetTransform()->Position = { 10, 0, 30.f }; 
-	model2->GetTransform()->LocalScale = { 35.f, 35.f, 35.f };
+	ModelObject* model2 = new ModelObject("bunny2.obj");  
+	GameObjectManager::GetInstance()->AddObject(model2);  
+	model2->GetTransform()->Position = { 10, 0, 30.f };  
+	model2->GetTransform()->LocalScale = { 35.f, 35.f, 35.f }; 
 
-	ModelObject* model3 = new ModelObject("armadillo.obj");
-	GameObjectManager::GetInstance()->AddObject(model3);
-	model3->GetTransform()->Position = { -10, 0, 30.f }; 
-	model3->GetTransform()->LocalScale = { 0.05f, 0.05f, 0.05f };
+	ModelObject* model3 = new ModelObject("armadillo.obj"); 
+	GameObjectManager::GetInstance()->AddObject(model3); 
+	model3->GetTransform()->Position = { -10, 0, 30.f };  
+	model3->GetTransform()->LocalScale = { 0.05f, 0.05f, 0.05f }; 
 
 	/*std::vector<AGameObject*> objsList; 
 	int rowSize = 15; int colSize = 15; 
@@ -96,12 +96,14 @@ void GameEngineWindow::OnUpdate()
 	swapChain->ClearBuffer(0.0f, 0.0f, 0.0f);
 	//swapChain->ClearBuffer(0.4f, 0.4f, 0.6f);
 
-	currDelta += (float)EngineTime::GetDeltaTime();
+	accumulator += (float)EngineTime::GetDeltaTime();
 	float secsPerFrame = 1.f / (float)fps;
-	while (currDelta >= secsPerFrame) 
+	while (accumulator >= secsPerFrame) 
 	{
-		currDelta -= secsPerFrame; 
-		GameObjectManager::GetInstance()->Update(secsPerFrame); 
+		accumulator -= secsPerFrame; 
+		GameObjectManager::GetInstance()->Update(secsPerFrame);
+
+		Keyboard::FlushCharBuffer();
 	}
 
 	GameObjectManager::GetInstance()->Draw(); 
@@ -109,7 +111,6 @@ void GameEngineWindow::OnUpdate()
 	swapChain->Present(true); 
 
 	Keyboard::FlushEventsBuffer(); 
-	Keyboard::FlushCharBuffer(); 
 	Mouse::FlushEventsBuffer(); 
 }
 

@@ -1,6 +1,7 @@
 #pragma once
 #include <SimpleMath.h>
 #include <cmath>
+#include <reactphysics3d/reactphysics3d.h>
 
 using namespace DirectX::SimpleMath;
 
@@ -26,6 +27,10 @@ public:
 	static float GetNearestReferenceAngle(const float angle);
 	static Vector3 GetNearestReferenceAngles(const Vector3& eulerAngle);
 
+	static rp3d::Vector3 ConvertVector(const Vector3& vec);
+	static Vector3 ConvertVector(const rp3d::Vector3& vec);
+	static rp3d::Quaternion ConvertQuaternion(const Quaternion& quat);
+	static Quaternion ConvertQuaternion(const rp3d::Quaternion& quat);
 
 public:
 	static const float Deg2Rad;

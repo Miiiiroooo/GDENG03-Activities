@@ -93,3 +93,23 @@ Vector3 MathUtils::GetNearestReferenceAngles(const Vector3& eulerAngle)
 		GetNearestReferenceAngle(eulerAngle.y),
 		GetNearestReferenceAngle(eulerAngle.z));
 }
+
+rp3d::Vector3 MathUtils::ConvertVector(const Vector3& vec)
+{
+	return rp3d::Vector3(vec.x, vec.y, vec.z);
+}
+
+Vector3 MathUtils::ConvertVector(const rp3d::Vector3& vec)
+{
+	return Vector3(vec.x, vec.y, vec.z);
+}
+
+rp3d::Quaternion MathUtils::ConvertQuaternion(const Quaternion& quat)
+{
+	return rp3d::Quaternion(quat.x, quat.y, quat.z, quat.w);
+}
+
+Quaternion MathUtils::ConvertQuaternion(const rp3d::Quaternion& quat)
+{
+	return Quaternion(quat.x, quat.y, quat.z, quat.w);
+}

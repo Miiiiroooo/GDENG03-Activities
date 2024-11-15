@@ -2,19 +2,15 @@
 #include "AMesh.h"
 #include "../MathUtils.h"
 
-template <typename T>
-class CircleMesh : public AMesh<T>
+class CircleMesh : public AMesh
 {
 public:
 	int size = 21;
 
-	VertexBuffer<T>* CreateVertexBuffer(bool isRainbowed) override
+	std::vector<Vector3> GetVertexPositions() override
 	{
-		std::vector<T> vertices(size);
-		vertices[0].pos = Vector3::Zero;
-		vertices[0].vColor = (isRainbowed) ?
-			Vector3(MathUtils::RandFloatWithRange(), MathUtils::RandFloatWithRange(), MathUtils::RandFloatWithRange()) :
-			this->color;
+		std::vector<Vector3> vertices(size);
+		vertices[0] = Vector3::Zero;
 
 		float currAngle = 0;
 		float angleIncrements = 360.f / (size - 1.f);
@@ -23,30 +19,25 @@ public:
 		{
 			float x = sin(currAngle * M_PI / 180.f) / 2.f;
 			float y = cos(currAngle * M_PI / 180.f) / 2.f;
-			Vector3 newVert = Vector3(x, y, 0.0f);
-
-			vertices[i].pos = newVert;
-			vertices[i].vColor = (isRainbowed) ?
-				Vector3(MathUtils::RandFloatWithRange(), MathUtils::RandFloatWithRange(), MathUtils::RandFloatWithRange()) :
-				this->color;
+			vertices[i] = Vector3(x, y, 0.0f);
 
 			currAngle += angleIncrements;
 		}
 
-		return new VertexBuffer<T>(GraphicsEngine::GetInstance(), vertices);
+		return vertices;
 	}
 
-	IndexBuffer* CreateIndexBuffer() override
+	std::vector<unsigned short> GetIndices() override
 	{
-		std::vector<unsigned short> indices;
+		std::vector<unsigned short> indices; 
 
-		for (int i = 0; i < size - 1; i++)
+		for (int i = 0; i < size - 1; i++) 
 		{
 			indices.push_back(0); 
 			indices.push_back(i + 1); 
-			indices.push_back((i == size - 2) ? 1 : i + 2);
+			indices.push_back((i == size - 2) ? 1 : i + 2); 
 		}
 
-		return new IndexBuffer(GraphicsEngine::GetInstance(), indices);
+		return indices;
 	}
 };

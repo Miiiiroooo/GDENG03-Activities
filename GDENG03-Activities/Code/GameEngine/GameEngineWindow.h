@@ -20,7 +20,7 @@ protected:
 private:
 	SwapChain* swapChain;
 	int fps;
-	float currDelta;
+	float accumulator;
 
 	Transform* t1;
 	Transform* t2;

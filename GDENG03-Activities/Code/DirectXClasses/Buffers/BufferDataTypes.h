@@ -41,6 +41,26 @@ struct VLitTextureData
 	}
 };
 
+struct GenericVertexData
+{
+	Vector3 pos;
+	Vector3 normals;
+	Vector2 uv;
+	Vector3 vColor;
+
+	GenericVertexData() : pos(0.0f, 0.0f, 0.0f), normals(0.0f, 0.0f, 0.0f), uv(0.0f, 0.0f), vColor(1.0f, 1.0f, 1.0f)
+	{
+	}
+
+	GenericVertexData(const Vector3& pos, const Vector3& normals, const Vector2& uv) : pos(pos), normals(normals), uv(uv), vColor(vColor)
+	{
+	}
+
+	GenericVertexData(const GenericVertexData& copy) : pos(copy.pos), normals(copy.normals), uv(copy.uv), vColor(copy.vColor)
+	{
+	}
+};
+
 __declspec(align(16))
 struct TMatrix
 {

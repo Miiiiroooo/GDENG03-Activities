@@ -44,9 +44,6 @@
     <Filter Include="GameEngine\Components\Camera">
       <UniqueIdentifier>{e43d8e90-b56b-4dd8-8f09-e2328695a0e6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GameEngine\Components\Inputs">
-      <UniqueIdentifier>{79fe56b6-87c2-410a-9474-1f44fddd22db}</UniqueIdentifier>
-    </Filter>
     <Filter Include="GameEngine\Components\Scripts">
       <UniqueIdentifier>{c1401415-0581-4e3e-b1e6-5b1726de29ef}</UniqueIdentifier>
     </Filter>
@@ -58,6 +55,9 @@
     </Filter>
     <Filter Include="GameEngine\Graphics\Materials">
       <UniqueIdentifier>{7613b788-4d97-4a6a-aeac-35a7b3dc189d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEngine\Components\Physics">
+      <UniqueIdentifier>{31bed144-7b03-43d0-a452-b6b6f3c45f79}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -116,9 +116,6 @@
     </ClCompile>
     <ClCompile Include="Code\GameEngine\Components\Camera\Camera.cpp">
       <Filter>GameEngine\Components\Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\GameEngine\Components\Inputs\GenericInputController.cpp">
-      <Filter>GameEngine\Components\Inputs</Filter>
     </ClCompile>
     <ClCompile Include="Code\GameEngine\GameObjects\CameraObject.cpp">
       <Filter>GameEngine\GameObjects</Filter>
@@ -213,6 +210,12 @@
     <ClCompile Include="Code\GameEngine\Managers\PhysicsEngine.cpp">
       <Filter>GameEngine\Managers</Filter>
     </ClCompile>
+    <ClCompile Include="Code\GameEngine\Components\Physics\Rigidbody3D.cpp">
+      <Filter>GameEngine\Components\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\GameEngine\Managers\MeshManager.cpp">
+      <Filter>GameEngine\Managers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\WindowsMessageMap.h" />
@@ -296,9 +299,6 @@
     </ClInclude>
     <ClInclude Include="Code\GameEngine\Components\Camera\EProjectionTypes.h">
       <Filter>GameEngine\Components\Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="Code\GameEngine\Components\Inputs\GenericInputController.h">
-      <Filter>GameEngine\Components\Inputs</Filter>
     </ClInclude>
     <ClInclude Include="Code\GameEngine\Meshes\CircleMesh.h">
       <Filter>GameEngine\Meshes</Filter>
@@ -435,6 +435,12 @@
       <Filter>DearIMGUI</Filter>
     </ClInclude>
     <ClInclude Include="Code\GameEngine\Managers\PhysicsEngine.h">
+      <Filter>GameEngine\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\GameEngine\Components\Physics\Rigidbody3D.h">
+      <Filter>GameEngine\Components\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\GameEngine\Managers\MeshManager.h">
       <Filter>GameEngine\Managers</Filter>
     </ClInclude>
   </ItemGroup>
