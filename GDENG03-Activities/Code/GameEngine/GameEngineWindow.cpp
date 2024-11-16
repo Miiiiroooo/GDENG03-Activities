@@ -2,6 +2,7 @@
 #include "EngineTime.h"
 #include "EditorGUI/EditorGUIManager.h"
 #include "Managers/GameObjectManager.h"
+#include "Managers/PhysicsEngine.h"
 #include "GameObjects/FreeCameraObject.h"
 
 #include "GameObjects/Primitives/CubeObject.h"
@@ -10,6 +11,8 @@
 #include "GameObjects/Primitives/SphereObject.h"
 #include "GameObjects/Primitives/PlaneObject.h"
 #include "GameObjects/ModelObject.h"
+#include "GameObjects/PhysicsObject.h"
+#include "MathUtils.h"
 
 
 
@@ -31,27 +34,40 @@ void GameEngineWindow::OnCreate(HWND hWnd)
 	swapChain = GraphicsEngine::GetInstance()->CreateSwapChain(hWnd, width, height); 
 	EngineTime::Initialize();
 	EditorGUIManager::GetInstance()->Initialize(hWnd); 
+	PhysicsEngine::GetInstance()->Init();
 
 
 	// setup the objects
 	FreeCameraObject* freeCam = new FreeCameraObject(width, height);  
-	freeCam->GetTransform()->Position = { 0.0f, 0.0f, 0.0f }; 
+	freeCam->GetTransform()->Position = { 0.0f, 10.0f, -40.0f }; 
 	GameObjectManager::GetInstance()->AddObject(freeCam); 
 
-	ModelObject* model1 = new ModelObject("teapot3.obj", "brick.png");   
-	GameObjectManager::GetInstance()->AddObject(model1);   
-	model1->GetTransform()->Position = { 0, 0, 30.f };   
-	model1->GetTransform()->LocalScale = { 0.35f, 0.35f, 0.35f };  
 
-	ModelObject* model2 = new ModelObject("bunny2.obj");  
-	GameObjectManager::GetInstance()->AddObject(model2);  
-	model2->GetTransform()->Position = { 10, 0, 30.f };  
-	model2->GetTransform()->LocalScale = { 35.f, 35.f, 35.f }; 
+	PhysicsObject* phy1 = new PhysicsObject(EPrimitiveMeshTypes::Plane);
+	phy1->GetTransform()->Position = Vector3(0.0f, -10.0f, 0.0f);
+	phy1->GetTransform()->LocalScale = Vector3(4.0f, 1.0f, 4.0f);
+	GameObjectManager::GetInstance()->AddObject(phy1); 
+	phy1->GetRB()->BodyType = rp3d::BodyType::STATIC;
 
-	ModelObject* model3 = new ModelObject("armadillo.obj"); 
-	GameObjectManager::GetInstance()->AddObject(model3); 
-	model3->GetTransform()->Position = { -10, 0, 30.f };  
-	model3->GetTransform()->LocalScale = { 0.05f, 0.05f, 0.05f }; 
+	for (int i = 0; i < 50; i++)
+	{ 
+		PhysicsObject* phy = new PhysicsObject(EPrimitiveMeshTypes::Cube); 
+		phy->GetTransform()->Position = Vector3(MathUtils::RandFloatWithRange(-3.f, 3.f), 
+			MathUtils::RandFloatWithRange(4.f, 15.f), 
+			MathUtils::RandFloatWithRange(-3.f, 3.f));
+
+		phy->GetTransform()->Rotate(MathUtils::RandFloatWithRange(15.f, 75.f), 
+			MathUtils::RandFloatWithRange(15.f, 75.f),
+			MathUtils::RandFloatWithRange(15.f, 75.f));
+
+		/*phy->GetTransform()->LocalScale = Vector3(MathUtils::RandFloatWithRange(0.5f, 1.4f), 
+			MathUtils::RandFloatWithRange(0.5f, 1.4f), 
+			MathUtils::RandFloatWithRange(0.5f, 1.4f));*/
+
+		GameObjectManager::GetInstance()->AddObject(phy); 
+	}
+
+
 
 	/*std::vector<AGameObject*> objsList; 
 	int rowSize = 15; int colSize = 15; 
@@ -102,9 +118,13 @@ void GameEngineWindow::OnUpdate()
 	{
 		accumulator -= secsPerFrame; 
 		GameObjectManager::GetInstance()->Update(secsPerFrame);
+		PhysicsEngine::GetInstance()->UpdateWorld(secsPerFrame);
 
 		Keyboard::FlushCharBuffer();
 	}
+
+	float factor = accumulator / secsPerFrame;
+	PhysicsEngine::GetInstance()->UpdateRigidBodies(factor);
 
 	GameObjectManager::GetInstance()->Draw(); 
 	EditorGUIManager::GetInstance()->Render();
@@ -118,6 +138,7 @@ void GameEngineWindow::OnDestroy()
 { 
 	Window::OnDestroy();
 
+	PhysicsEngine::GetInstance()->Release();
 	GameObjectManager::Destroy();
 	EditorGUIManager::Destroy(); 
 	GraphicsEngine::GetInstance()->Release();

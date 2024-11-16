@@ -1,14 +1,17 @@
 #include "Rigidbody3D.h"
+#include "../Transform.h"
 #include "GameEngine/MathUtils.h"
+#include "GameEngine/Managers/PhysicsEngine.h"
+#include "GameEngine/GameObjects/AGameObject.h"
 
-RigidBody3D::RigidBody3D(EPrimitiveMeshTypes shapeType) : AComponent("RigidBody3D", EComponentTypes::Physics), shapeType(shapeType)
+RigidBody3D::RigidBody3D(EPrimitiveMeshTypes shapeType) : AComponent("RigidBody3D", EComponentTypes::Physics), meshType(shapeType)
 {
 	rb = nullptr;
 	collider = nullptr;
-	shapeTransform = rp3d::Transform::identity();
+	meshTransform = rp3d::Transform::identity();
 }
 
-RigidBody3D::~RigidBody3D()
+RigidBody3D::~RigidBody3D() 
 {
 
 }
@@ -29,7 +32,15 @@ void RigidBody3D::Clone(AComponent* copy)
 
 void RigidBody3D::Perform()
 {
+	rp3d::Transform lerpTransform = rp3d::Transform::interpolateTransforms(prevTransform, rb->getTransform(), factor);
+	prevTransform = rb->getTransform();
 
+	transform->Position = MathUtils::ConvertVector(lerpTransform.getPosition());
+
+	Quaternion conjugateQuat = transform->GetOrientation(); 
+	conjugateQuat.Conjugate(); 
+	Quaternion diffQuat = conjugateQuat * MathUtils::ConvertQuaternion(lerpTransform.getOrientation()); 
+	transform->Rotate(diffQuat.ToEuler());
 }
 
 #pragma region Getters-Setters
@@ -39,15 +50,31 @@ bool RigidBody3D::Init(rp3d::RigidBody* rb)
 
 	this->rb = rb;
 
-	// create collider
+	rp3d::CollisionShape* shape = PhysicsEngine::GetInstance()->CreatePrimitiveShape(meshType, transform->LocalScale, owner->GetInstanceID()); 
 
+	if (shape == nullptr) return false;
 
+	meshTransform = rp3d::Transform::identity();   
+	collider = rb->addCollider(shape, meshTransform);  
+	rb->updateMassPropertiesFromColliders();
+	prevTransform = rb->getTransform();
+	
 	return true;
 }
 
 rp3d::RigidBody* RigidBody3D::GetRigidBody()
 {
 	return rb;
+}
+
+EPrimitiveMeshTypes RigidBody3D::GetMeshType()
+{
+	return meshType;
+}
+
+void RigidBody3D::SetInterpolationFactor(float factor)
+{
+	this->factor = factor;
 }
 
 float RigidBody3D::GetMass()
@@ -58,6 +85,7 @@ float RigidBody3D::GetMass()
 void RigidBody3D::SetMass(const float& newMass)
 {
 	rb->setMass(newMass);
+	rb->updateMassPropertiesFromColliders();
 }
 
 rp3d::BodyType RigidBody3D::GetBodyType()
@@ -121,6 +149,14 @@ void RigidBody3D::SetAngularLocks(const Vector3& newLocks)
 }
 #pragma endregion
 
+
+void RigidBody3D::UpdateTransform()
+{
+	rp3d::Transform newTransform = rp3d::Transform(MathUtils::ConvertVector(transform->Position), MathUtils::ConvertQuaternion(transform->GetOrientation()));
+	rb->setTransform(newTransform);
+
+	prevTransform = newTransform;
+}
 
 void RigidBody3D::ApplyForce(const Vector3& force)
 {

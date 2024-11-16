@@ -1,5 +1,6 @@
 #include "PhysicsEngine.h"
 #include "../MathUtils.h"
+#include "MeshManager.h"
 #include "GameEngine/Components/Transform.h"
 
 
@@ -23,12 +24,14 @@ bool PhysicsEngine::Init()
 	physicsCommon = new rp3d::PhysicsCommon();
 
 	rp3d::PhysicsWorld::WorldSettings settings;
-	settings.defaultVelocitySolverNbIterations = 30; 
-	settings.defaultPositionSolverNbIterations = 15;
+	settings.defaultVelocitySolverNbIterations = 50; 
+	settings.defaultPositionSolverNbIterations = 25;
 	settings.gravity = rp3d::Vector3(0, -9.81, 0);  
+	settings.restitutionVelocityThreshold = 0.05f;
+	settings.defaultFrictionCoefficient = 0.7f;
 
 	physicsWorld = physicsCommon->createPhysicsWorld(settings);
-	//physicsWorld->setTimeBeforeSleep(2.0f);
+	physicsWorld->setTimeBeforeSleep(0.03f);
 
 	return true;
 }
@@ -39,11 +42,24 @@ bool PhysicsEngine::Release()
 	{
 		UnregisterRigidBody(rigidBodyList[i]);
 	}
+	rigidBodyList.clear();
+	rigidBodyList.shrink_to_fit();
 
-	for (auto& shapePair : collisionShapesTable)
+	for (auto& shapePair : primitiveShapesTable)
 	{
-		// destory shapes
+		DestroyPrimitiveShape(shapePair.second);
+		shapePair.second = nullptr; 
+		//primitiveShapesTable.erase(shapePair.first); 
 	}
+	primitiveShapesTable.clear();
+
+	for (auto& meshPair : convexMeshTable)
+	{
+		physicsCommon->destroyConvexMesh(meshPair.second);
+		convexMeshTable[meshPair.first] = nullptr; 
+		//convexMeshTable.erase(meshPair.first); 
+	}
+	convexMeshTable.clear();
 
 	physicsCommon->destroyPhysicsWorld(physicsWorld);
 	delete physicsCommon;
@@ -51,14 +67,23 @@ bool PhysicsEngine::Release()
 	return true;
 }
 
-void PhysicsEngine::Update(float dt)
+void PhysicsEngine::UpdateWorld(float dt)
 {
 	physicsWorld->update(dt);
+}
 
-	for (auto& rb : rigidBodyList)
+void PhysicsEngine::UpdateRigidBodies(float factor)
+{ 
+	for (auto& rb : rigidBodyList) 
 	{
-		rb->Perform();
+		rb->SetInterpolationFactor(factor);
+		rb->Perform(); 
 	}
+}
+
+rp3d::PhysicsCommon* PhysicsEngine::GetPhysicsCommon() 
+{
+	return physicsCommon; 
 }
 
 
@@ -71,10 +96,10 @@ void PhysicsEngine::RegisterRigidBody(RigidBody3D* rb)
 	rp3d::Quaternion orientation = MathUtils::ConvertQuaternion(rb->GetTransform()->GetOrientation());
 	rp3d::Transform rTransform = rp3d::Transform(position, orientation);
 
-	if (rb->Init(physicsWorld->createRigidBody(rTransform)))
-	{
-		rigidBodyList.push_back(rb);
-	}
+	rp3d::RigidBody* newRB = physicsWorld->createRigidBody(rTransform);
+
+	if (rb->Init(newRB)) rigidBodyList.push_back(rb);
+	else physicsWorld->destroyRigidBody(newRB);
 }
 
 void PhysicsEngine::UnregisterRigidBody(RigidBody3D* rb)
@@ -88,32 +113,147 @@ void PhysicsEngine::UnregisterRigidBody(RigidBody3D* rb)
 	rigidBodyList.shrink_to_fit(); 
 }
 
-
-rp3d::PhysicsCommon* PhysicsEngine::GetPhysicsCommon()
+rp3d::CollisionShape* PhysicsEngine::CreatePrimitiveShape(EPrimitiveMeshTypes meshType, Vector3 scaling, unsigned int instanceID)
 {
-	return physicsCommon;
-}
-
-rp3d::CollisionShape* PhysicsEngine::GetCollisionShape(EPrimitiveMeshTypes meshType)
-{
-	if (collisionShapesTable[meshType] == nullptr)
+	// destroy the old shape
+	if (primitiveShapesTable.find(instanceID) != primitiveShapesTable.end())
 	{
-		switch (meshType)
-		{
+		DestroyPrimitiveShape(primitiveShapesTable[instanceID]);
+	}
+
+	// check if mesh has predefined shape
+	switch (meshType)
+	{
 		case EPrimitiveMeshTypes::Cube:
-			collisionShapesTable[meshType] = physicsCommon->createBoxShape(rp3d::Vector3(1.0f, 1.0f, 1.0f)); break;
+		{ 
+			primitiveShapesTable[instanceID] = physicsCommon->createBoxShape(
+				rp3d::Vector3(0.5f * scaling.x, 0.5f * scaling.y, 0.5f * scaling.z)
+			);
+			return primitiveShapesTable[instanceID]; 
+		}
+		case EPrimitiveMeshTypes::Plane:
+		{
+			primitiveShapesTable[instanceID] = physicsCommon->createBoxShape( 
+				rp3d::Vector3(2.5f * scaling.x, 0.01f * scaling.y, 2.5f * scaling.z)
+			);
+			return primitiveShapesTable[instanceID]; 
+		}
 		case EPrimitiveMeshTypes::Sphere:
-			collisionShapesTable[meshType] = physicsCommon->createSphereShape(1.0f); break;
-		case EPrimitiveMeshTypes::Plane: 
+		{ 
+			float biggerScale = scaling.x;
+			if (scaling.y > biggerScale) biggerScale = scaling.y; 
+			if (scaling.z > biggerScale) biggerScale = scaling.z;
+			primitiveShapesTable[instanceID] = physicsCommon->createSphereShape(1.0f * biggerScale);
+			return primitiveShapesTable[instanceID]; 
+		}
+		default: break;
+	}
 
-		case EPrimitiveMeshTypes::Cylinder: 
+	// check if convex shape is already created
+	rp3d::ConvexMesh* mesh = convexMeshTable[meshType];
+	if (mesh)
+	{
+		rp3d::ConvexMeshShape* convexMeshShape = physicsCommon->createConvexMeshShape(mesh, MathUtils::ConvertVector(scaling));
+		primitiveShapesTable[instanceID] = convexMeshShape; 
+		return convexMeshShape;
+	}
 
-		case EPrimitiveMeshTypes::Cone: 
+	// convert vertices into array of floats
+	auto vertices = MeshManager::GetInstance()->GetVertexDataFromMesh(meshType);
+	if (vertices.size() == 0) return nullptr;
 
-		default:
-			return nullptr;
+	float* vertexPosOnly = new float[vertices.size() * 3];
+	for (int i = 0; i < vertices.size(); i++)
+	{
+		vertexPosOnly[i * 3] = vertices[i].pos.x;
+		vertexPosOnly[i * 3 + 1] = vertices[i].pos.y;
+		vertexPosOnly[i * 3 + 2] = vertices[i].pos.z;
+	}
+
+	//// invert indices in counter-clockwise order
+	//auto indices = (meshType != EPrimitiveMeshTypes::Unknown) ? 
+	//	MeshManager::GetInstance()->GetIndexDataFromMesh(meshType) : 
+	//	MeshManager::GetInstance()->GetIndexDataFromMesh(meshName); 
+
+	//int* invertedIndices = new int[indices.size()];
+	//for (int i = 0; i < indices.size(); i+=3)
+	//{
+	//	invertedIndices[i] = indices[i + 2];
+	//	invertedIndices[i + 1] = indices[i + 1];
+	//	invertedIndices[i + 2] = indices[i];
+	//}
+
+	//// create faces of the convex mesh
+	//int numFaces = indices.size() / 3;
+	//rp3d::PolygonVertexArray::PolygonFace* polygonFaces = new rp3d::PolygonVertexArray::PolygonFace[numFaces];
+	//rp3d::PolygonVertexArray::PolygonFace* face = polygonFaces; 
+	//for (int f = 0; f < numFaces; f++) 
+	//{
+	//	// First vertex of the face in the indices array 
+	//	face->indexBase = f * 3; 
+	//	// Number of vertices in the face
+	//	face->nbVertices = 3; 
+
+	//	face++;
+	//}
+
+	//// create the polygon vertex array
+	//rp3d::PolygonVertexArray polygonVertexArray = rp3d::PolygonVertexArray(vertices.size(), vertexPosOnly, 3 * sizeof(float),
+	//	invertedIndices, sizeof(int), numFaces, polygonFaces,
+	//	rp3d::PolygonVertexArray::VertexDataType::VERTEX_FLOAT_TYPE, 
+	//	rp3d::PolygonVertexArray::IndexDataType::INDEX_INTEGER_TYPE);
+
+	// create convex shape	
+	rp3d::VertexArray vertexArray(vertexPosOnly, 3 * sizeof(float), vertices.size(), rp3d::VertexArray::DataType::VERTEX_FLOAT_TYPE);
+	std::vector<rp3d::Message> messages;
+	mesh = physicsCommon->createConvexMesh(vertexArray, messages);
+
+	//std::vector<rp3d::Message> messages;
+	//rp3d::ConvexMesh* convexMesh = physicsCommon->createConvexMesh(polygonVertexArray, messages);
+
+	// cleanup
+	delete[] vertexPosOnly;
+	//delete[] invertedIndices; 
+
+	// display the messages (info, warning and errors)
+	if (messages.size() > 0) {
+
+		for (const rp3d::Message& message : messages) {
+
+			std::string messageType;
+			switch (message.type) {
+			case rp3d::Message::Type::Information:
+				messageType = "info";
+				break;
+			case rp3d::Message::Type::Warning:
+				messageType = "warning";
+				break;
+			case rp3d::Message::Type::Error:
+				messageType = "error";
+				break;
+			}
+
+			OutputDebugString(("Message (" + messageType + "): " + message.text).c_str());
 		}
 	}
 
-	return nullptr;
+	if (mesh == nullptr) return nullptr;
+
+	rp3d::ConvexMeshShape* convexMeshShape = physicsCommon->createConvexMeshShape(mesh, MathUtils::ConvertVector(scaling));
+	primitiveShapesTable[instanceID] = convexMeshShape;
+	convexMeshTable[meshType] = mesh;
+
+	return convexMeshShape; 
+}
+
+void PhysicsEngine::DestroyPrimitiveShape(rp3d::CollisionShape* shape)
+{
+	rp3d::BoxShape* box = (rp3d::BoxShape*)shape;
+	if (box) { physicsCommon->destroyBoxShape(box); return; }
+
+	rp3d::SphereShape* sphere = (rp3d::SphereShape*)shape;
+	if (sphere) { physicsCommon->destroySphereShape(sphere); return; }
+
+	rp3d::ConvexMeshShape* convex = (rp3d::ConvexMeshShape*)shape;
+	if (convex) { physicsCommon->destroyConvexMeshShape(convex); return; }
 }

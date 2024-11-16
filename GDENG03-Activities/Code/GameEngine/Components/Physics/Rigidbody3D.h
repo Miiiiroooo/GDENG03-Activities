@@ -19,6 +19,8 @@ public:
 	#pragma region Getters-Setters
 	bool Init(rp3d::RigidBody* rb);
 	rp3d::RigidBody* GetRigidBody();
+	EPrimitiveMeshTypes GetMeshType();
+	void SetInterpolationFactor(float factor);
 
 	float GetMass();
 	void SetMass(const float& newMass);
@@ -49,6 +51,7 @@ public:
 	__declspec(property(get = GetAngularLocks, put = SetAngularLocks)) Vector3 AngularLocks;
 	#pragma endregion
 
+	void UpdateTransform();
 	void ApplyForce(const Vector3& force);
 	void ApplyForce(const Vector3& force, const Vector3& point);
 	void ApplyTorque(const Vector3& torque);
@@ -56,8 +59,10 @@ public:
 
 private:
 	rp3d::RigidBody* rb;
+	rp3d::Transform prevTransform;
+	float factor;
 
-	EPrimitiveMeshTypes shapeType;
+	EPrimitiveMeshTypes meshType;
 	rp3d::Collider* collider;
-	rp3d::Transform shapeTransform;
+	rp3d::Transform meshTransform;
 };

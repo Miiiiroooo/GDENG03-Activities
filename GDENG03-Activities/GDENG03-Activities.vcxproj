@@ -72,6 +72,7 @@
     <ClCompile Include="packages\DearIMGUI\imgui_widgets.cpp" />
     <ClCompile Include="Code\GameEngine\Managers\PhysicsEngine.cpp" />
     <ClCompile Include="Code\GameEngine\Components\Physics\Rigidbody3D.cpp" />
+    <ClCompile Include="Code\GameEngine\GameObjects\PhysicsObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\EditorGUI\AUITab.h" />
@@ -151,6 +152,7 @@
     <ClInclude Include="packages\DearIMGUI\imstb_truetype.h" />
     <ClInclude Include="Code\GameEngine\Managers\PhysicsEngine.h" />
     <ClInclude Include="Code\GameEngine\Components\Physics\Rigidbody3D.h" />
+    <ClInclude Include="Code\GameEngine\GameObjects\PhysicsObject.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Code\Shaders\PLitTextureShader.hlsl">
