@@ -1,8 +1,6 @@
 #include "GameEngine/GameEngineWindow.h"
 #include <time.h>
 
-#include "GameEngine/MathUtils.h"
-
 
 int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
