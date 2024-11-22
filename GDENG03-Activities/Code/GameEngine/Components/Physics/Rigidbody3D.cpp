@@ -37,10 +37,14 @@ void RigidBody3D::Perform()
 
 	transform->Position = MathUtils::ConvertVector(lerpTransform.getPosition());
 
-	Quaternion conjugateQuat = transform->GetOrientation(); 
-	conjugateQuat.Conjugate(); 
-	Quaternion diffQuat = conjugateQuat * MathUtils::ConvertQuaternion(lerpTransform.getOrientation()); 
-	transform->Rotate(diffQuat.ToEuler());
+	Quaternion q = transform->GetOrientation();
+
+	Quaternion lerpQuat = MathUtils::ConvertQuaternion(lerpTransform.getOrientation()); 
+	Quaternion inverseQuat = transform->GetOrientation();  
+	inverseQuat.Inverse(inverseQuat);  
+
+	Quaternion diffQuat = inverseQuat * lerpQuat;
+	transform->Rotate(diffQuat);
 }
 
 #pragma region Getters-Setters

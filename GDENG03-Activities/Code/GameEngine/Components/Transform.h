@@ -46,6 +46,7 @@ public:
 
 	void Rotate(float xAngleInDeg, float yAngleInDeg, float zAngleInDeg);
 	void Rotate(const Vector3& eulerInDeg);
+	void Rotate(const Quaternion& toRotate);
 	//void Rotate(const Vector3& axis, float angleInDeg);
 
 private:

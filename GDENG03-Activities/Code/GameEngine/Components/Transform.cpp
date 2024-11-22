@@ -223,25 +223,19 @@ void Transform::Rotate(float xAngleInDeg, float yAngleInDeg, float zAngleInDeg)
 
 void Transform::Rotate(const Vector3& eulerInDeg)
 {
-	Vector3 parentUp = (owner->GetParent()) ?
+	// setup axis vectors when rotating the object on each axis
+	Vector3 axisUp = (owner->GetParent()) ?
 		owner->GetParent()->GetTransform()->localUp :
 		Vector3::Up;
 
-	Vector3 axisRight = Vector3::Right;
-	if (owner->GetParent())
-	{
-		Vector3::Transform(owner->GetParent()->GetTransform()->localRight,  
-			Quaternion::CreateFromAxisAngle(owner->GetParent()->GetTransform()->localUp, eulerAngles.y * MathUtils::Deg2Rad), 
-			axisRight);  
-	}
-	else
-	{
-		Vector3::Transform(Vector3::Right, 
-			Quaternion::CreateFromAxisAngle(Vector3::Up, eulerAngles.y * MathUtils::Deg2Rad), 
-			axisRight); 
-	}
+	Vector3 refRight = (owner->GetParent()) ? owner->GetParent()->GetTransform()->localRight : Vector3::Right;
+	Quaternion rotateRight = Quaternion::CreateFromAxisAngle((owner->GetParent()) ?
+		owner->GetParent()->GetTransform()->localUp : Vector3::Up, 
+		eulerAngles.y * MathUtils::Deg2Rad); 
+	Vector3 axisRight = Vector3::Transform(refRight, rotateRight);
 
-	Quaternion yaw = Quaternion::CreateFromAxisAngle(parentUp, eulerInDeg.y * MathUtils::Deg2Rad);  
+	// combine all rotations using the axis vectors, then apply to current orientation
+	Quaternion yaw = Quaternion::CreateFromAxisAngle(axisUp, eulerInDeg.y * MathUtils::Deg2Rad);  
 	Quaternion pitch = Quaternion::CreateFromAxisAngle(axisRight, eulerInDeg.x * MathUtils::Deg2Rad);  
 	Quaternion roll = Quaternion::CreateFromAxisAngle(localForward, eulerInDeg.z * MathUtils::Deg2Rad);
 	Quaternion toRotate = roll * pitch * yaw; 
@@ -266,6 +260,34 @@ void Transform::Rotate(const Vector3& eulerInDeg)
 	{
 		Transform* childTransform = (Transform*)transformsFromChildren[i];
 		childTransform->RotateFromParent(eulerInDeg, toRotate, this);
+	}
+
+	UpdateTransformationMatrix();
+}
+
+void Transform::Rotate(const Quaternion& toRotate)
+{
+	orientation *= toRotate;
+
+	// update euler angles and local vectors
+	eulerAngles += toRotate.ToEuler() * MathUtils::Rad2Deg; 
+	eulerAngles = MathUtils::GetNearestReferenceAngles(eulerAngles);
+	UpdateLocalVectors();
+
+	// update local euler angles, taking consideration of the parent
+	AGameObject* parentObj = owner->GetParent();
+
+	localEulerAngles = (parentObj) ?
+		eulerAngles - parentObj->GetTransform()->eulerAngles :
+		eulerAngles;
+	localEulerAngles = MathUtils::GetNearestReferenceAngles(localEulerAngles);
+
+	// update all the transforms of every 'descendant'
+	auto transformsFromChildren = owner->GetComponentsInChildrenOfType(EComponentTypes::Transform);
+	for (int i = 0; i < transformsFromChildren.size(); i++)
+	{
+		Transform* childTransform = (Transform*)transformsFromChildren[i];
+		childTransform->RotateFromParent(toRotate.ToEuler() * MathUtils::Rad2Deg, toRotate, this);
 	}
 
 	UpdateTransformationMatrix();
