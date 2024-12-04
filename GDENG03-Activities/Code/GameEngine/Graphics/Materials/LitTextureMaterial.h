@@ -11,9 +11,14 @@ public:
 	~LitTextureMaterial();
 
 	void Render() override;
+	void RenderUI() override;
+
+	std::string GetTextureName();
 
 
 private:
 	Texture* texture;
 	TextureSampler* sampler;
+
+	std::string textureName;
 };

@@ -13,13 +13,17 @@ public:
 
 	bool Init();
 	bool Release();
+	void Reset();
 	void UpdateWorld(float dt);
 	void UpdateRigidBodies(float factor);
 
 	rp3d::PhysicsCommon* GetPhysicsCommon();
+	rp3d::PhysicsWorld* GetPhysicsWorld();
 
 	void RegisterRigidBody(RigidBody3D* rb);
 	void UnregisterRigidBody(RigidBody3D* rb);
+	rp3d::RigidBody* CreateRigidBody(Transform* transform);
+	void DestroyRigidBody(rp3d::RigidBody* rb);
 	rp3d::CollisionShape* CreatePrimitiveShape(EPrimitiveMeshTypes meshType, Vector3 scaling, unsigned int instanceID);
 
 private:
@@ -32,16 +36,11 @@ private:
 private:
 	static PhysicsEngine* sharedInstance;
 
-	rp3d::PhysicsCommon* physicsCommon;
-	rp3d::PhysicsWorld* physicsWorld;
+	rp3d::PhysicsCommon* physicsCommon = NULL;
+	rp3d::PhysicsWorld* physicsWorld = NULL;
 
 	std::vector<RigidBody3D*> rigidBodyList;
 
 	std::unordered_map<unsigned int, rp3d::CollisionShape*> primitiveShapesTable;
 	std::unordered_map< EPrimitiveMeshTypes, rp3d::ConvexMesh*> convexMeshTable;
-
-
-
-	std::unordered_map<EPrimitiveMeshTypes, rp3d::CollisionShape*> temp;
-	std::vector<rp3d::ConvexMesh*> convexMeshList; 
 };

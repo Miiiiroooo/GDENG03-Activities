@@ -1,22 +1,27 @@
 #include "AGameObject.h"
 #include "../Components/Renderer/ARenderer.h"
 #include "../Managers/GameObjectManager.h"
+#include "../Debug.h"
 
 
 int AGameObject::currentID = 0;
 
 #pragma region Constructor-Destructor
-AGameObject::AGameObject(std::string name)
+AGameObject::AGameObject(std::string name, bool isEditorObject)
 {
 	this->instanceID = currentID; currentID++; 
 	this->name = name;
 	this->parent = NULL;
 	this->enabled = true;
+	this->parentEnabled = true;
 	this->isInitialized = false;
 	this->level = 0; 
+	this->isEditorObject = isEditorObject;
 
 	transform = new Transform();
 	AttachComponent(transform);
+
+	Debug::Log("Initialized GameObject: " + name);
 }
 
 AGameObject::~AGameObject()
@@ -42,6 +47,8 @@ AGameObject::~AGameObject()
 	{
 		this->parent = NULL; 
 	}
+
+	Debug::Log("Destroyed GameObject: " + name);
 }
 #pragma endregion
 
@@ -50,6 +57,10 @@ AGameObject::~AGameObject()
 bool AGameObject::IsInitialized()
 {
 	return isInitialized;
+}
+
+void AGameObject::Initialize()
+{
 }
 
 //void AGameObject::ProcessInputs(WPARAM wParam, LPARAM lParam)
@@ -76,7 +87,7 @@ bool AGameObject::IsInitialized()
 
 void AGameObject::Update(float dt) 
 {
-	if (!this->enabled) return;
+	if (!this->parentEnabled) return;
 
 	std::vector<AComponent*> componentList = this->GetComponentsOfType(EComponentTypes::Script); 
 
@@ -97,7 +108,7 @@ void AGameObject::Update(float dt)
 
 void AGameObject::Draw()
 {
-	if (!this->enabled) return;
+	if (!this->parentEnabled) return;
 
 	std::vector<AComponent*> rendererList = this->GetComponentsOfType(EComponentTypes::Renderer); 
 
@@ -111,6 +122,11 @@ void AGameObject::Draw()
 	{
 		this->childList[i]->Draw(); 
 	}
+}
+
+bool AGameObject::IsEditorObject()
+{
+	return isEditorObject;
 }
 
 unsigned int AGameObject::GetInstanceID()
@@ -138,9 +154,33 @@ void AGameObject::SetEnabled(bool flag)
 {
 	enabled = flag;
 
+	AGameObject* parentObj = this;
+	parentEnabled = true;
+
+	while (parentObj != nullptr)
+	{
+		if (!parentObj->enabled)
+		{
+			parentEnabled = false;
+			break;
+		}
+
+		parentObj = parentObj->parent;
+	}
+
 	for (size_t i = 0; i < childList.size(); i++)
 	{
-		this->childList[i]->SetEnabled(flag);
+		this->childList[i]->SetParentEnabled(parentEnabled);
+	}
+}
+
+void AGameObject::SetParentEnabled(bool status)
+{
+	parentEnabled = status && enabled;
+
+	for (size_t i = 0; i < childList.size(); i++) 
+	{
+		this->childList[i]->SetParentEnabled(parentEnabled);
 	}
 }
 #pragma endregion
@@ -321,5 +361,9 @@ std::vector<AComponent*> AGameObject::GetComponentsInChildrenOfType(EComponentTy
 	}
 
 	return foundList;
+}
+std::vector<AComponent*> AGameObject::GetAllComponents()
+{
+	return componentList;
 }
 #pragma endregion

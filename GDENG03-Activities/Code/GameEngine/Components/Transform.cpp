@@ -1,7 +1,10 @@
 #include "Transform.h"
 #include "../MathUtils.h"
 #include "../GameObjects/AGameObject.h"
-
+#include "./EditorStates/EditorActions/EditorActionHistory.h"
+#include <EditorGUI/HierarchyTab.h>
+#include <EditorGUI/EditorGUIManager.h>
+#include <GameEngine/Debug.h>
 
 Transform::Transform() : AComponent("Transform", EComponentTypes::Transform)
 {
@@ -52,6 +55,53 @@ void Transform::Perform()
 void Transform::SetEnabled(bool flag)
 {
 
+}
+
+void Transform::RenderUI()
+{
+#if 1
+	HierarchyTab* h = (HierarchyTab*)EditorGUIManager::GetInstance()->GetTab(EditorGUIManager::TabNames::HIERARCHY_TAB.data());
+
+	if (ImGui::IsMouseClicked(0, true) && !clicked)
+	{
+		//Debug::Log("[Transform] click down");
+		clicked = true;
+		EditorActionHistory::get()->RecordAction(h->GetSelectedObj());
+	}
+	else if (ImGui::IsMouseReleased(0) && clicked)
+	{
+		//Debug::Log("[Transform] click up");
+		clicked = false;
+		EditorActionHistory::get()->CheckIfSimilar(h->GetSelectedObj());
+	}
+		
+#endif
+
+	float local_position[3];
+	local_position[0] = localPos.x;
+	local_position[1] = localPos.y;
+	local_position[2] = localPos.z;
+
+	float local_euler_angle[3];
+	local_euler_angle[0] = localEulerAngles.x;
+	local_euler_angle[1] = localEulerAngles.y;
+	local_euler_angle[2] = localEulerAngles.z;
+
+	float local_scale[3];
+	local_scale[0] = localScale.x;
+	local_scale[1] = localScale.y;
+	local_scale[2] = localScale.z;
+
+	ImGui::DragFloat3("Position", local_position);
+	ImGui::DragFloat3("Rotation", local_euler_angle);
+	ImGui::DragFloat3("Scale", local_scale);
+
+	//new - old;
+	Vector3 diffEuler = Vector3(local_euler_angle) - localEulerAngles;
+
+	if (Vector3(local_position) != localPos)           SetLocalPosition(Vector3(local_position));
+	if (Vector3(local_euler_angle) != localEulerAngles) Rotate(diffEuler);
+	if (Vector3(local_scale) != localScale)            SetLocalScale(Vector3(local_scale));
 }
 
 TMatrix Transform::GetTransformationMatrix()

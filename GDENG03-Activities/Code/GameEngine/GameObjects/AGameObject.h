@@ -9,15 +9,17 @@ class AGameObject
 {
 public:
 	// Constructor-Destructor
-	AGameObject(std::string name);
+	AGameObject(std::string name, bool isEditorObject = false);
 	~AGameObject();
 
 	// Game-related methods
 	bool IsInitialized();
-	virtual void Initialize() = 0;
+	virtual void Initialize();
 	//virtual void ProcessInputs(WPARAM wParam, LPARAM lParam);
 	virtual void Update(float dt);
 	virtual void Draw(); 
+
+	bool IsEditorObject();
 
 	unsigned int GetInstanceID(); 
 	std::string GetName();
@@ -42,15 +44,18 @@ public:
 	AComponent* FindComponentByType(EComponentTypes type, std::string name);
 	std::vector<AComponent*> GetComponentsOfType(EComponentTypes type);
 	std::vector<AComponent*> GetComponentsInChildrenOfType(EComponentTypes type);
+	std::vector<AComponent*> GetAllComponents();
 
 private:
 	void SetParent(AGameObject* parent);
+	void SetParentEnabled(bool status);
 
 
 protected:
 	unsigned int instanceID;
 	std::string name;
 	bool enabled;
+	bool parentEnabled;
 	bool isInitialized;
 	Transform* transform;
 
@@ -58,6 +63,8 @@ protected:
 	AGameObject* parent;
 	std::vector<AGameObject*> childList;
 	std::vector<AComponent*> componentList; 
+
+	bool isEditorObject;
 
 private:
 	static int currentID;

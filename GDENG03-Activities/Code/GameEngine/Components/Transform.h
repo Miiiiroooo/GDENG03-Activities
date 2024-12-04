@@ -15,6 +15,7 @@ public:
 	void Clone(AComponent* copy) override;
 	void Perform() override;
 	void SetEnabled(bool flag) override;
+	void RenderUI() override;
 
 	TMatrix GetTransformationMatrix();
 	void RecalculateChildTransformWithoutParent();
@@ -76,4 +77,6 @@ private:
 	Vector3 localForward;
 
 	TMatrix tMatrix;
+
+	bool clicked;
 };

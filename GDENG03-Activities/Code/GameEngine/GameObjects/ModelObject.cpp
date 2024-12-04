@@ -1,5 +1,6 @@
 #include "ModelObject.h"
 #include "GameEngine/Managers/GameObjectManager.h"
+#include "GameEngine/Graphics/Materials/UnlitRainbowMaterial.h"
 #include "GameEngine/Graphics/Materials/LitTextureMaterial.h"
 
 
@@ -16,20 +17,22 @@ ModelObject::ModelObject(std::string modelName) : AGameObject(modelName.substr(0
 
 ModelObject::~ModelObject()
 {
-	if (renderer) renderer->Release();
+	//if (renderer) renderer->Release();
 }
 
 void ModelObject::Initialize()
 {
-	if (!isRainbowed) 
+	if (isRainbowed) 
 	{
-		LitTextureMaterial* mat = new LitTextureMaterial(textureName); 
+		UnlitRainbowMaterial* mat = new UnlitRainbowMaterial();
 		renderer = new MeshRenderer(mat); 
 	}
 	else
 	{
-		renderer = new MeshRenderer();
+		LitTextureMaterial* mat = new LitTextureMaterial(textureName); 
+		renderer = new MeshRenderer(mat); 
 	}
+
 	renderer->LoadNonPrimitive(modelName, isRainbowed);
 	AttachComponent(renderer);
 	GameObjectManager::GetInstance()->BindRendererToShader(renderer); 

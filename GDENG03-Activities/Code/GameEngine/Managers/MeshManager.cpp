@@ -6,6 +6,7 @@
 #include "GameEngine/Meshes/PlaneMesh.h"
 #include "GameEngine/Meshes/CylinderMesh.h"
 #include "GameEngine/Meshes/ConeMesh.h"
+#include "GameEngine/Meshes/CapsuleMesh.h"
 #include <assimp/Importer.hpp>
 #include <assimp/postprocess.h>
 #include <assimp/scene.h>
@@ -24,8 +25,6 @@ MeshManager* MeshManager::GetInstance()
 	return sharedInstance;
 }
 #pragma endregion
-
-
 
 bool MeshManager::Release()
 {
@@ -126,6 +125,9 @@ bool MeshManager::LoadPrimitiveMesh(EPrimitiveMeshTypes meshType)
 		break;
 	case EPrimitiveMeshTypes::Cone:
 		mesh = new ConeMesh();
+		break;
+	case EPrimitiveMeshTypes::Capsule:
+		mesh = new CapsuleMesh();
 		break;
 	default:
 		return false;

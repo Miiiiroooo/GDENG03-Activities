@@ -3,6 +3,7 @@
 #include <unordered_map>
 #include "../GameObjects/AGameObject.h"
 #include "../Components/Renderer/ARenderer.h"
+#include <map>
 
 // Should only contain base game objects (one's with no parents)
 class GameObjectManager
@@ -13,13 +14,15 @@ public:
 	GameObjectManager(const GameObjectManager&) = delete;
 	GameObjectManager& operator=(const GameObjectManager&) = delete;
 
+	static void DeleteScene();
+
 	// Game-related methods
-	//void ProcessInputs(WPARAM wParam, LPARAM lParam);
-	void Update(float dt);
+	void UpdateEditor(float dt);
+	void UpdateGame(float dt);
 	void Draw();
 
 	// Object-related methods
-	void AddObject(AGameObject* gameObject);
+	void AddRootObject(AGameObject* gameObject);
 	void BindRendererToShader(ARenderer* rendererComponent);
 	std::vector<AGameObject*> FindObjectsWithName(std::string name);
 	void UpdateObjectWithNewName(AGameObject* gameObject, std::string newName);
@@ -27,8 +30,9 @@ public:
 	void RemoveObjectByID(unsigned int id);
 	void DeleteObject(AGameObject* gameObject);
 	void DeleteObjectByID(unsigned int id);
-	std::vector<AGameObject*> GetAllObjects(); 
-	int GetActiveObjectsCount();
+	std::vector<AGameObject*> GetAllGameObjects();
+	std::map<unsigned int, AGameObject*> GetGameObjectMap();
+	int GetActiveGameObjectsCount();
 
 private:
 	void UnbindRendererWithChildren(AGameObject* obj);
@@ -39,7 +43,8 @@ private:
 	static GameObjectManager* sharedInstance;
 
 	std::vector<AGameObject*> gameObjectList;
-	std::unordered_map<std::string, std::vector<AGameObject*>> gameObjectMap;
+	std::map<unsigned int, AGameObject*> gameObjectMap;
+	std::unordered_map<std::string, std::vector<AGameObject*>> objectNameMap; // objs can have same names, so make it a list
 	std::unordered_map<LPCWSTR, std::vector<AGameObject*>> shaderToObjectsMap;
 };
 

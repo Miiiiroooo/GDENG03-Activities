@@ -6,6 +6,7 @@
 #include "MenuTab.h"
 #include "HierarchyTab.h"
 #include "InspectorTab.h"
+#include "DebugLogUI.h"
 #include "ColorPickerTab.h"
 
 
@@ -52,35 +53,33 @@ bool EditorGUIManager::Initialize(HWND hWnd)
 
 	DockSpace* dockSpace = new DockSpace();
 	uiTable[dockSpace->Name] = dockSpace;
-	//uiList.push_back(dockSpace); 
 
 	CreditsTab* credits = new CreditsTab();
 	uiTable[credits->Name] = credits;
-	//uiList.push_back(credits); 
 
 	MenuTab* menu = new MenuTab();
 	uiTable[menu->Name] = menu;
-	//uiList.push_back(menu); 
 
 	HierarchyTab* hierarchy = new HierarchyTab();
 	uiTable[hierarchy->Name] = hierarchy;
-	//uiList.push_back(hierarchy); 
 
 	InspectorTab* inspector = new InspectorTab(hierarchy);
 	uiTable[inspector->Name] = inspector;
 
+	DebugLogUI* debug = new DebugLogUI();
+	uiTable[debug->Name] = debug;
+
 	ColorPickerTab* colorPicker = new ColorPickerTab(); 
 	uiTable[colorPicker->Name] = colorPicker; 
-	//uiList.push_back(colorPicker); 
 
 	return true;
 }
 
 void EditorGUIManager::Render()
 {
-	ImGui_ImplDX11_NewFrame(); 
-	ImGui_ImplWin32_NewFrame(); 
-	ImGui::NewFrame(); 
+	ImGui_ImplDX11_NewFrame();
+	ImGui_ImplWin32_NewFrame();
+	ImGui::NewFrame();
 
 	/*for (auto tab : uiList)
 	{
@@ -93,8 +92,9 @@ void EditorGUIManager::Render()
 		if (ui && ui->Enabled) ui->RenderUI();
 	}
 
-	ImGui::Render(); 
-	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData()); 
+	ImGui::Render();
+	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+	ImGui::EndFrame();
 }
 
 AUITab* EditorGUIManager::GetTab(std::string tabName)
