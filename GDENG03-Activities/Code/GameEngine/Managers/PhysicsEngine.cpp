@@ -49,6 +49,7 @@ bool PhysicsEngine::Release()
 
 	for (auto& shapePair : primitiveShapesTable)
 	{
+		OutputDebugString((std::to_string((int)shapePair.second->getName()) + "\n").c_str());
 		DestroyPrimitiveShape(shapePair.second);
 		shapePair.second = nullptr; 
 		//primitiveShapesTable.erase(shapePair.first); 
@@ -180,6 +181,11 @@ rp3d::CollisionShape* PhysicsEngine::CreatePrimitiveShape(EPrimitiveMeshTypes me
 			primitiveShapesTable[instanceID] = physicsCommon->createSphereShape(1.0f * biggerScale);
 			return primitiveShapesTable[instanceID]; 
 		}
+		case EPrimitiveMeshTypes::Capsule:
+		{
+			primitiveShapesTable[instanceID] = physicsCommon->createCapsuleShape(0.5f, 2.0f);
+			return primitiveShapesTable[instanceID];
+		}
 		default: break;
 	}
 
@@ -282,12 +288,24 @@ rp3d::CollisionShape* PhysicsEngine::CreatePrimitiveShape(EPrimitiveMeshTypes me
 
 void PhysicsEngine::DestroyPrimitiveShape(rp3d::CollisionShape* shape)
 {
-	rp3d::BoxShape* box = (rp3d::BoxShape*)shape;
-	if (box) { physicsCommon->destroyBoxShape(box); return; }
-
-	rp3d::SphereShape* sphere = (rp3d::SphereShape*)shape;
-	if (sphere) { physicsCommon->destroySphereShape(sphere); return; }
-
-	rp3d::ConvexMeshShape* convex = (rp3d::ConvexMeshShape*)shape;
-	if (convex) { physicsCommon->destroyConvexMeshShape(convex); return; }
+	if (shape->getName() == rp3d::CollisionShapeName::BOX)
+	{
+		rp3d::BoxShape* box = (rp3d::BoxShape*)shape;
+		physicsCommon->destroyBoxShape(box); 
+	}
+	else if (shape->getName() == rp3d::CollisionShapeName::SPHERE)
+	{
+		rp3d::SphereShape* sphere = (rp3d::SphereShape*)shape;
+		physicsCommon->destroySphereShape(sphere); 
+	}
+	else if (shape->getName() == rp3d::CollisionShapeName::CONVEX_MESH)
+	{
+		rp3d::ConvexMeshShape* convex = (rp3d::ConvexMeshShape*)shape;
+		physicsCommon->destroyConvexMeshShape(convex); 
+	}
+	else if (shape->getName() == rp3d::CollisionShapeName::CAPSULE)
+	{
+		rp3d::CapsuleShape* capsule = (rp3d::CapsuleShape*)shape;
+		physicsCommon->destroyCapsuleShape(capsule);
+	}
 }

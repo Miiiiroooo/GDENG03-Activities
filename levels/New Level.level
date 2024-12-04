@@ -1,0 +1,346 @@
+{
+  "SceneName": "Lalalla",
+  "GameObjects": [
+    {
+      "ObjName": "GameObject",
+      "IsEnabled": true,
+      "ChildrenList": [
+        {
+          "ObjName": "Plane",
+          "IsEnabled": true,
+          "ChildrenList": [],
+          "ComponentsList": [
+            {
+              "ComponentType": "Transform",
+              "Position": {
+                "x": -11.81,
+                "y": -2.23714614,
+                "z": -4.040472
+              },
+              "Rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "Scale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+              }
+            },
+            {
+              "ComponentType": "MeshRenderer",
+              "ModelName": "",
+              "MeshType": 5,
+              "IsRainbowed": false,
+              "Material": {
+                "MaterialType": "ColorMaterial",
+                "Color": {
+                  "r": 1.0,
+                  "g": 1.0,
+                  "b": 1.0
+                }
+              }
+            },
+            {
+              "ComponentType": "RigidBody3D",
+              "Mass": 10.0,
+              "BodyType": 0,
+              "GravityEnabled": false,
+              "LinearDamping": 0.0,
+              "AngularDamping": 0.0,
+              "MeshType": 4
+            }
+          ]
+        }
+      ],
+      "ComponentsList": [
+        {
+          "ComponentType": "Transform",
+          "Position": {
+            "x": -11.81,
+            "y": -2.23714614,
+            "z": -4.040472
+          },
+          "Rotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "Scale": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          }
+        }
+      ]
+    },
+    {
+      "ObjName": "Cylinder",
+      "IsEnabled": true,
+      "ChildrenList": [
+        {
+          "ObjName": "Plane",
+          "IsEnabled": true,
+          "ChildrenList": [],
+          "ComponentsList": [
+            {
+              "ComponentType": "Transform",
+              "Position": {
+                "x": 1.973097,
+                "y": -2.23714614,
+                "z": 6.74
+              },
+              "Rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "Scale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+              }
+            },
+            {
+              "ComponentType": "MeshRenderer",
+              "ModelName": "",
+              "MeshType": 5,
+              "IsRainbowed": false,
+              "Material": {
+                "MaterialType": "ColorMaterial",
+                "Color": {
+                  "r": 1.0,
+                  "g": 1.0,
+                  "b": 1.0
+                }
+              }
+            },
+            {
+              "ComponentType": "RigidBody3D",
+              "Mass": 1.0,
+              "BodyType": 2,
+              "GravityEnabled": true,
+              "LinearDamping": 0.0,
+              "AngularDamping": 0.05,
+              "MeshType": 4
+            }
+          ]
+        },
+        {
+          "ObjName": "Sphere",
+          "IsEnabled": true,
+          "ChildrenList": [],
+          "ComponentsList": [
+            {
+              "ComponentType": "Transform",
+              "Position": {
+                "x": 1.973097,
+                "y": -2.23714614,
+                "z": 25.77
+              },
+              "Rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "Scale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+              }
+            },
+            {
+              "ComponentType": "MeshRenderer",
+              "ModelName": "",
+              "MeshType": 1,
+              "IsRainbowed": false,
+              "Material": {
+                "MaterialType": "ColorMaterial",
+                "Color": {
+                  "r": 1.0,
+                  "g": 1.0,
+                  "b": 1.0
+                }
+              }
+            },
+            {
+              "ComponentType": "RigidBody3D",
+              "Mass": 10.0,
+              "BodyType": 0,
+              "GravityEnabled": false,
+              "LinearDamping": 0.0,
+              "AngularDamping": 0.0,
+              "MeshType": 2
+            }
+          ]
+        },
+        {
+          "ObjName": "Cube",
+          "IsEnabled": true,
+          "ChildrenList": [],
+          "ComponentsList": [
+            {
+              "ComponentType": "Transform",
+              "Position": {
+                "x": -7.146903,
+                "y": -2.23714614,
+                "z": 6.74
+              },
+              "Rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "Scale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+              }
+            },
+            {
+              "ComponentType": "MeshRenderer",
+              "ModelName": "",
+              "MeshType": 4,
+              "IsRainbowed": false,
+              "Material": {
+                "MaterialType": "ColorMaterial",
+                "Color": {
+                  "r": 1.0,
+                  "g": 1.0,
+                  "b": 1.0
+                }
+              }
+            },
+            {
+              "ComponentType": "RigidBody3D",
+              "Mass": 1.0,
+              "BodyType": 1,
+              "GravityEnabled": true,
+              "LinearDamping": 0.0,
+              "AngularDamping": 0.05,
+              "MeshType": 1
+            }
+          ]
+        }
+      ],
+      "ComponentsList": [
+        {
+          "ComponentType": "Transform",
+          "Position": {
+            "x": 1.973097,
+            "y": -2.23714614,
+            "z": 6.74
+          },
+          "Rotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "Scale": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          }
+        },
+        {
+          "ComponentType": "MeshRenderer",
+          "ModelName": "",
+          "MeshType": 0,
+          "IsRainbowed": false,
+          "Material": {
+            "MaterialType": "ColorMaterial",
+            "Color": {
+              "r": 1.0,
+              "g": 1.0,
+              "b": 1.0
+            }
+          }
+        },
+        {
+          "ComponentType": "RigidBody3D",
+          "Mass": 10.0,
+          "BodyType": 0,
+          "GravityEnabled": false,
+          "LinearDamping": 0.0,
+          "AngularDamping": 0.0,
+          "MeshType": 8
+        }
+      ]
+    },
+    {
+      "ObjName": "Sphere",
+      "IsEnabled": true,
+      "ChildrenList": [
+        {
+          "ObjName": "GameObject",
+          "IsEnabled": true,
+          "ChildrenList": [],
+          "ComponentsList": [
+            {
+              "ComponentType": "Transform",
+              "Position": {
+                "x": 1.973097,
+                "y": -2.23714614,
+                "z": -4.040472
+              },
+              "Rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "Scale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+              }
+            }
+          ]
+        }
+      ],
+      "ComponentsList": [
+        {
+          "ComponentType": "Transform",
+          "Position": {
+            "x": 1.973097,
+            "y": -2.23714614,
+            "z": -4.040472
+          },
+          "Rotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "Scale": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          }
+        },
+        {
+          "ComponentType": "MeshRenderer",
+          "ModelName": "",
+          "MeshType": 1,
+          "IsRainbowed": false,
+          "Material": {
+            "MaterialType": "ColorMaterial",
+            "Color": {
+              "r": 1.0,
+              "g": 1.0,
+              "b": 1.0
+            }
+          }
+        },
+        {
+          "ComponentType": "RigidBody3D",
+          "Mass": 10.0,
+          "BodyType": 0,
+          "GravityEnabled": false,
+          "LinearDamping": 0.0,
+          "AngularDamping": 0.0,
+          "MeshType": 2
+        }
+      ]
+    }
+  ]
+}

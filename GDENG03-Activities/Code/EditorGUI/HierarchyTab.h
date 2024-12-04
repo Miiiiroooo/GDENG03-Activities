@@ -12,6 +12,7 @@ public:
 
 	void RenderUI() override;
 	AGameObject* GetSelectedObj();
+	void SetSelectedToNull();
 
 protected:
 	void InitializeImGuiFlags() override;

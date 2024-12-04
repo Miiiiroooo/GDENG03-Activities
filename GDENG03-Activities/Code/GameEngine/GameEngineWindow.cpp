@@ -55,15 +55,61 @@ void GameEngineWindow::OnCreate(HWND hWnd)
 	freeCam->GetTransform()->Rotate(50.0f, 0.0f, 0.0f);
 	GameObjectManager::GetInstance()->AddRootObject(freeCam); 
 
-	/*PhysicsObject* phy1 = new PhysicsObject(EPrimitiveMeshTypes::Plane);
-	phy1->GetTransform()->Position = Vector3(0.0f, 0.0f, 0.0f);
+	PhysicsObject* phy1 = new PhysicsObject(EPrimitiveMeshTypes::Plane); 
+	phy1->GetTransform()->Position = Vector3(0.0f, -20.0f, 0.0f);
 	phy1->GetTransform()->LocalScale = Vector3(7.0f, 1.0f, 7.0f);
-	GameObjectManager::GetInstance()->AddRootObject(phy1); 
-	phy1->GetRB()->BodyType = rp3d::BodyType::STATIC;*/
+	GameObjectManager::GetInstance()->AddRootObject(phy1);  
+	phy1->GetRB()->BodyType = rp3d::BodyType::STATIC;  
+
+	PhysicsObject* phy2 = new PhysicsObject(EPrimitiveMeshTypes::Sphere);
+	phy2->GetTransform()->Position = Vector3(0.0f, -20.0f, 0.0f);
+	phy2->GetTransform()->LocalScale = Vector3(7.0f, 1.0f, 7.0f);
+	GameObjectManager::GetInstance()->AddRootObject(phy2);
+	phy2->GetRB()->BodyType = rp3d::BodyType::STATIC;
 
 
 	CapsuleObject* cap = new CapsuleObject();
+	cap->GetTransform()->Position = Vector3(0.0f, -15.0f, 0.0f);
 	GameObjectManager::GetInstance()->AddRootObject(cap);
+
+
+	std::vector<AGameObject*> objsList; 
+	int rowSize = 30; int colSize = 20; 
+	float rowSpacing = 5.f; float colSpacing = 5.f; 
+	int sphereNum = 0, capsuleNum = 0, planeNum = 0, cubeNum = 0; 
+
+	for (int i = 0; i < colSize; i++) 
+	{
+		for (int j = 0; j < rowSize; j++) 
+		{
+			int randNum = rand() % 4; 
+			AGameObject* randObj = nullptr; 
+
+			switch (randNum)
+			{
+			case 0:
+			{ randObj = new SphereObject("Sphere" + std::to_string(sphereNum)); sphereNum++; break; }
+			case 1:
+			{ randObj = new CapsuleObject("Capsule" + std::to_string(capsuleNum)); capsuleNum++; break; }
+			case 2:
+			{ randObj = new PlaneObject("Plane" + std::to_string(planeNum)); planeNum++; break; }
+			case 3:
+			default:
+			{ randObj = new CubeObject("Cube" + std::to_string(cubeNum)); cubeNum++; break; }
+			}
+
+			float x = j * rowSpacing - (rowSize / 2.f - 0.5f) * rowSpacing;
+			float z = i * colSpacing - (colSize / 2.f - 0.5f) * colSpacing;
+			randObj->GetTransform()->Position = { x , 0, z };
+
+			randNum = (i == 0) ? rowSize * 4 : rand() % rowSize * 4 + 1;
+			int parentIndex = (randNum / 4) + (i - 1) * rowSize;
+			if (randNum == rowSize * 4) GameObjectManager::GetInstance()->AddRootObject(randObj);
+			else objsList[parentIndex]->AttachChild(randObj);
+
+			objsList.push_back(randObj);
+		}
+	}
 }
 
 void GameEngineWindow::OnUpdate()

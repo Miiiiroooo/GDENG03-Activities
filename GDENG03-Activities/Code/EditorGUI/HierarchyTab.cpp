@@ -59,6 +59,11 @@ AGameObject* HierarchyTab::GetSelectedObj()
     return selectedObject;
 }
 
+void HierarchyTab::SetSelectedToNull()
+{
+    selectedObject = nullptr;
+}
+
 void HierarchyTab::PrintObject(AGameObject* obj)
 {
     std::string objID_str = std::to_string(obj->GetInstanceID()); 

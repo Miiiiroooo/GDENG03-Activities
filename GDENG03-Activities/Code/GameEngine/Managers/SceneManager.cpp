@@ -1,6 +1,8 @@
 #include "SceneManager.h"
 #include "GameObjectManager.h"
 #include "PhysicsEngine.h"
+#include "EditorGUI/EditorGUIManager.h"
+#include "EditorGUI/HierarchyTab.h"
 
 #include <sstream>
 #include <fstream>
@@ -243,6 +245,8 @@ void SceneManager::OpenScene(std::string scenePath)
 	GameObjectManager::DeleteScene();
 	PhysicsEngine::GetInstance()->Release();
 	PhysicsEngine::GetInstance()->Init(); 
+	HierarchyTab* hierarchy = (HierarchyTab*)EditorGUIManager::GetInstance()->GetTab(EditorGUIManager::TabNames::HIERARCHY_TAB.data());
+	hierarchy->SetSelectedToNull();
 
 	FILE* inFile = fopen(scenePath.c_str(), "rb");
 	assert(inFile != NULL); 
@@ -283,7 +287,7 @@ void SceneManager::InitializeObj(rapidjson::Value::ConstValueIterator& obj_itr, 
 		{
 			InitializeMeshRenderer(comp_itr, newObj);
 		}
-		else if (compType == "RigdBody3D")  
+		else if (compType == "RigidBody3D")  
 		{
 			InitializeRigidBody3D(comp_itr, newObj); 
 		}
