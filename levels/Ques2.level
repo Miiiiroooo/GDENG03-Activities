@@ -1,0 +1,161 @@
+{
+    "SceneName": "Ques2",
+    "GameObjects": [
+        {
+            "ObjName": "PlaneObj",
+            "IsEnabled": true,
+            "ChildrenList": [],
+            "ComponentsList": [
+                {
+                    "ComponentType": "Transform",
+                    "Position": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "Rotation": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "Scale": {
+                        "x": 2.5,
+                        "y": 2.5,
+                        "z": 2.5
+                    }
+                },
+                {
+                    "ComponentType": "MeshRenderer",
+                    "ModelName": "",
+                    "MeshType": 4,
+                    "IsRainbowed": false,
+                    "Material": {
+                        "MaterialType": "ColorMaterial",
+                        "Color": {
+                            "r": 0.2297738641500473,
+                            "g": 0.30512404441833496,
+                            "b": 0.2789086699485779
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "ObjName": "CubeObj",
+            "IsEnabled": true,
+            "ChildrenList": [],
+            "ComponentsList": [
+                {
+                    "ComponentType": "Transform",
+                    "Position": {
+                        "x": 0.0,
+                        "y": 1.0,
+                        "z": 0.0
+                    },
+                    "Rotation": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "Scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
+                },
+                {
+                    "ComponentType": "MeshRenderer",
+                    "ModelName": "",
+                    "MeshType": 1,
+                    "IsRainbowed": false,
+                    "Material": {
+                        "MaterialType": "ColorMaterial",
+                        "Color": {
+                            "r": 0.8832056522369385,
+                            "g": 0.1898251324892044,
+                            "b": 0.9631641507148743
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "ObjName": "CubeObj",
+            "IsEnabled": true,
+            "ChildrenList": [],
+            "ComponentsList": [
+                {
+                    "ComponentType": "Transform",
+                    "Position": {
+                        "x": 0.0,
+                        "y": 2.0,
+                        "z": 2.0
+                    },
+                    "Rotation": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "Scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
+                },
+                {
+                    "ComponentType": "MeshRenderer",
+                    "ModelName": "",
+                    "MeshType": 1,
+                    "IsRainbowed": false,
+                    "Material": {
+                        "MaterialType": "ColorMaterial",
+                        "Color": {
+                            "r": 0.9508957266807556,
+                            "g": 0.8361461162567139,
+                            "b": 0.2214117795228958
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "ObjName": "CubeObj",
+            "IsEnabled": true,
+            "ChildrenList": [],
+            "ComponentsList": [
+                {
+                    "ComponentType": "Transform",
+                    "Position": {
+                        "x": -2.0,
+                        "y": 3.0,
+                        "z": 2.0
+                    },
+                    "Rotation": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "Scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
+                },
+                {
+                    "ComponentType": "MeshRenderer",
+                    "ModelName": "",
+                    "MeshType": 1,
+                    "IsRainbowed": false,
+                    "Material": {
+                        "MaterialType": "ColorMaterial",
+                        "Color": {
+                            "r": 0.8417615294456482,
+                            "g": 0.8554948568344116,
+                            "b": 0.6883449554443359
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}

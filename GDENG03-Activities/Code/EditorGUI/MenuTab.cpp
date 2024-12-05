@@ -11,6 +11,9 @@
 #include "GameEngine/Managers/SceneManager.h"
 #include <GameEngine/Managers/GameObjectManager.h>
 #include <GameEngine/GameObjects/Primitives/CubeObject.h>
+#include <GameEngine/GameObjects/Primitives/SphereObject.h>
+#include <GameEngine/GameObjects/Primitives/PlaneObject.h>
+#include <GameEngine/GameObjects/Primitives/CapsuleObject.h>
 
 
 
@@ -183,9 +186,23 @@ void MenuTab::RenderUndoRedoMenu()
     {
         if (ImGui::MenuItem("Spawn Cube"))
         {
-            CubeObject* cube = new CubeObject("cube", false);
-            cube->GetTransform()->Position = Vector3(0.f, 0.9f, 0.f);
+            CubeObject* cube = new CubeObject();
             GameObjectManager::GetInstance()->AddRootObject(cube);
+        }
+        else if (ImGui::MenuItem("Spawn Sphere"))
+        {
+            SphereObject* sphere = new SphereObject();
+            GameObjectManager::GetInstance()->AddRootObject(sphere);
+        }
+        else if (ImGui::MenuItem("Spawn Plane"))
+        {
+            PlaneObject* plane = new PlaneObject();
+            GameObjectManager::GetInstance()->AddRootObject(plane);
+        }
+        else if (ImGui::MenuItem("Spawn Capsule"))
+        {
+            CapsuleObject* capsule = new CapsuleObject();
+            GameObjectManager::GetInstance()->AddRootObject(capsule);
         }
 
         ImGui::EndMenu();

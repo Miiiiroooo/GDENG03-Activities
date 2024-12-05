@@ -55,7 +55,12 @@ void GameEngineWindow::OnCreate(HWND hWnd)
 	freeCam->GetTransform()->Rotate(50.0f, 0.0f, 0.0f);
 	GameObjectManager::GetInstance()->AddRootObject(freeCam); 
 
-	PhysicsObject* phy1 = new PhysicsObject(EPrimitiveMeshTypes::Plane); 
+
+
+
+
+
+	/*PhysicsObject* phy1 = new PhysicsObject(EPrimitiveMeshTypes::Plane); 
 	phy1->GetTransform()->Position = Vector3(0.0f, -20.0f, 0.0f);
 	phy1->GetTransform()->LocalScale = Vector3(7.0f, 1.0f, 7.0f);
 	GameObjectManager::GetInstance()->AddRootObject(phy1);  
@@ -67,11 +72,9 @@ void GameEngineWindow::OnCreate(HWND hWnd)
 	GameObjectManager::GetInstance()->AddRootObject(phy2);
 	phy2->GetRB()->BodyType = rp3d::BodyType::STATIC;
 
-
 	CapsuleObject* cap = new CapsuleObject();
 	cap->GetTransform()->Position = Vector3(0.0f, -15.0f, 0.0f);
 	GameObjectManager::GetInstance()->AddRootObject(cap);
-
 
 	std::vector<AGameObject*> objsList; 
 	int rowSize = 30; int colSize = 20; 
@@ -109,7 +112,7 @@ void GameEngineWindow::OnCreate(HWND hWnd)
 
 			objsList.push_back(randObj);
 		}
-	}
+	}*/
 }
 
 void GameEngineWindow::OnUpdate()

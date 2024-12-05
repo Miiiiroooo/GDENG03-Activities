@@ -9,10 +9,10 @@ public:
 	std::vector<Vector3> GetVertexPositions() override
 	{
 		std::vector<Vector3> vertices(4); 
-		vertices[0] = { -2.5f, 0.0f,  2.5f }; 
-		vertices[1] = { 2.5f, 0.0f,  2.5f }; 
-		vertices[2] = { -2.5f, 0.0f, -2.5f }; 
-		vertices[3] = { 2.5f, 0.0f, -2.5f }; 
+		vertices[0] = { -5.0f, 0.0f,  5.0f }; 
+		vertices[1] = { 5.0f, 0.0f,  5.0f }; 
+		vertices[2] = { -5.0f, 0.0f, -5.0f }; 
+		vertices[3] = { 5.0f, 0.0f, -5.0f }; 
 
 		return vertices;
 	}

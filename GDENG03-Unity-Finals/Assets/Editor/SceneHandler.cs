@@ -235,7 +235,7 @@ public class SceneHandler : EditorWindow
             using (StreamWriter writer = new StreamWriter(path))
             {
                 JObject jsonRoot = new JObject();
-                jsonRoot.Add("SceneName", currentScene.SceneName);
+                jsonRoot.Add("SceneName", (currentScene.SceneName == "") ? "New Level" : currentScene.SceneName);
 
                 JArray objArray = new JArray();
                 var rootObjsList = Array.FindAll(UnityEngine.Object.FindObjectsOfType<GameObject>(),
@@ -324,12 +324,20 @@ public class SceneHandler : EditorWindow
         jsonComp.Add("ModelName", "");
 
         int meshType = 0;
-        foreach (var kvPair in MeshManager.GetMeshTable())
+        //foreach (var kvPair in MeshManager.GetMeshTable())
+        //{
+        //    if (mf.sharedMesh == kvPair.Value)
+        //    {
+        //        meshType = (int)kvPair.Key + 1;
+        //    }
+        //}
+        if (mr.GetComponent<Collider>() is BoxCollider) meshType = 1;
+        else if (mr.GetComponent<Collider>() is SphereCollider) meshType = 2;
+        else if (mr.GetComponent<Collider>() is CapsuleCollider) meshType = 8;
+        else
         {
-            if (mf.sharedMesh == kvPair.Value)
-            {
-                meshType = (int)kvPair.Key + 1;
-            }
+            MeshCollider mc = (MeshCollider)mr.GetComponent<Collider>();
+            if (mc.sharedMesh == MeshManager.GetMesh(PrimitiveType.Plane)) meshType = 4;
         }
         jsonComp.Add("MeshType", meshType);
 
