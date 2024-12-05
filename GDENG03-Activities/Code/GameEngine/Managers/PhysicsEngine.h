@@ -13,7 +13,7 @@ public:
 
 	bool Init();
 	bool Release();
-	void Reset();
+	void ResetTransforms();
 	void UpdateWorld(float dt);
 	void UpdateRigidBodies(float factor);
 

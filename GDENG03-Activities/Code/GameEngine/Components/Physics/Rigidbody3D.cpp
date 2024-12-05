@@ -115,12 +115,14 @@ bool RigidBody3D::Init(rp3d::RigidBody* rb)
 	if (rb == nullptr) return false;
 
 	this->rb = rb;
+	UpdateTransform();
 
 	colliderShape = PhysicsEngine::GetInstance()->CreatePrimitiveShape(meshType, transform->LocalScale, owner->GetInstanceID());
 
 	if (colliderShape == nullptr) return false;
 
-	meshTransform = rp3d::Transform::identity();   
+	meshTransform = rp3d::Transform::identity();
+	if (meshType == EPrimitiveMeshTypes::Plane) meshTransform.setPosition(rp3d::Vector3(0.0f, -0.4f, 0.0f));
 	collider = rb->addCollider(colliderShape, meshTransform);
 	collider->setIsTrigger(false);
 	//rb->updateMassPropertiesFromColliders();

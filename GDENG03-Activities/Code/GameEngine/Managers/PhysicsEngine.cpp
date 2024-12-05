@@ -25,15 +25,15 @@ bool PhysicsEngine::Init()
 	physicsCommon = new rp3d::PhysicsCommon();
 
 	rp3d::PhysicsWorld::WorldSettings settings;
-	settings.defaultVelocitySolverNbIterations = 200; 
-	settings.defaultPositionSolverNbIterations = 200;
+	settings.defaultVelocitySolverNbIterations = 20; 
+	settings.defaultPositionSolverNbIterations = 30;
 	settings.isSleepingEnabled = true;
 	settings.gravity = rp3d::Vector3(0, -9.81, 0);  
-	settings.restitutionVelocityThreshold = 0.25f;
-	settings.defaultFrictionCoefficient = 0.7f;
+	settings.restitutionVelocityThreshold = 0.45f;
+	settings.defaultFrictionCoefficient = 0.35f;
 
 	physicsWorld = physicsCommon->createPhysicsWorld(settings);
-	physicsWorld->setTimeBeforeSleep(0.03f);
+	physicsWorld->setTimeBeforeSleep(0.3f);
 
 	return true;
 }
@@ -70,9 +70,12 @@ bool PhysicsEngine::Release()
 	return true;
 }
 
-void PhysicsEngine::Reset()
+void PhysicsEngine::ResetTransforms()
 {
-	
+	for (auto& rb : rigidBodyList)
+	{
+		rb->UpdateTransform();
+	}
 }
 
 void PhysicsEngine::UpdateWorld(float dt)
@@ -169,7 +172,7 @@ rp3d::CollisionShape* PhysicsEngine::CreatePrimitiveShape(EPrimitiveMeshTypes me
 		case EPrimitiveMeshTypes::Plane:
 		{
 			primitiveShapesTable[instanceID] = physicsCommon->createBoxShape( 
-				rp3d::Vector3(2.5f * scaling.x, 0.2f * scaling.y, 2.5f * scaling.z)
+				rp3d::Vector3(5.0f * scaling.x, 0.4f * scaling.y, 5.0f * scaling.z)
 			);
 			return primitiveShapesTable[instanceID]; 
 		}

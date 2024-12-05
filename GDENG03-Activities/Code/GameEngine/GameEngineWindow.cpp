@@ -57,67 +57,29 @@ void GameEngineWindow::OnCreate(HWND hWnd)
 
 
 
-
-
-
-	/*PhysicsObject* phy1 = new PhysicsObject(EPrimitiveMeshTypes::Plane); 
-	phy1->GetTransform()->Position = Vector3(0.0f, -20.0f, 0.0f);
-	phy1->GetTransform()->LocalScale = Vector3(7.0f, 1.0f, 7.0f);
-	GameObjectManager::GetInstance()->AddRootObject(phy1);  
-	phy1->GetRB()->BodyType = rp3d::BodyType::STATIC;  
-
-	PhysicsObject* phy2 = new PhysicsObject(EPrimitiveMeshTypes::Sphere);
-	phy2->GetTransform()->Position = Vector3(0.0f, -20.0f, 0.0f);
-	phy2->GetTransform()->LocalScale = Vector3(7.0f, 1.0f, 7.0f);
-	GameObjectManager::GetInstance()->AddRootObject(phy2);
-	phy2->GetRB()->BodyType = rp3d::BodyType::STATIC;
-
-	CapsuleObject* cap = new CapsuleObject();
-	cap->GetTransform()->Position = Vector3(0.0f, -15.0f, 0.0f);
-	GameObjectManager::GetInstance()->AddRootObject(cap);
-
-	std::vector<AGameObject*> objsList; 
-	int rowSize = 30; int colSize = 20; 
-	float rowSpacing = 5.f; float colSpacing = 5.f; 
-	int sphereNum = 0, capsuleNum = 0, planeNum = 0, cubeNum = 0; 
-
-	for (int i = 0; i < colSize; i++) 
+	for (int i = 0; i < 50; i++)
 	{
-		for (int j = 0; j < rowSize; j++) 
+		PhysicsObject* phy = new PhysicsObject(EPrimitiveMeshTypes::Cube);
+		phy->GetTransform()->Position =
 		{
-			int randNum = rand() % 4; 
-			AGameObject* randObj = nullptr; 
+			MathUtils::RandFloatWithRange(-0.5f, 0.5f),
+			MathUtils::RandFloatWithRange(2.5f, 4.5f),
+			MathUtils::RandFloatWithRange(-0.5f, 0.5f)
+		};
+		GameObjectManager::GetInstance()->AddRootObject(phy);
+	}
 
-			switch (randNum)
-			{
-			case 0:
-			{ randObj = new SphereObject("Sphere" + std::to_string(sphereNum)); sphereNum++; break; }
-			case 1:
-			{ randObj = new CapsuleObject("Capsule" + std::to_string(capsuleNum)); capsuleNum++; break; }
-			case 2:
-			{ randObj = new PlaneObject("Plane" + std::to_string(planeNum)); planeNum++; break; }
-			case 3:
-			default:
-			{ randObj = new CubeObject("Cube" + std::to_string(cubeNum)); cubeNum++; break; }
-			}
-
-			float x = j * rowSpacing - (rowSize / 2.f - 0.5f) * rowSpacing;
-			float z = i * colSpacing - (colSize / 2.f - 0.5f) * colSpacing;
-			randObj->GetTransform()->Position = { x , 0, z };
-
-			randNum = (i == 0) ? rowSize * 4 : rand() % rowSize * 4 + 1;
-			int parentIndex = (randNum / 4) + (i - 1) * rowSize;
-			if (randNum == rowSize * 4) GameObjectManager::GetInstance()->AddRootObject(randObj);
-			else objsList[parentIndex]->AttachChild(randObj);
-
-			objsList.push_back(randObj);
-		}
-	}*/
+	PhysicsObject* plane = new PhysicsObject(EPrimitiveMeshTypes::Plane);
+	plane->GetTransform()->LocalScale = { 3.0f, 1.0f, 3.0f };
+	GameObjectManager::GetInstance()->AddRootObject(plane);
+	plane->GetRB()->BodyType = rp3d::BodyType::STATIC;
 }
 
 void GameEngineWindow::OnUpdate()
 {
 	swapChain->ClearBuffer(0.0f, 0.0f, 0.0f);
+
+	PhysicsEngine::GetInstance()->ResetTransforms();
 
 	accumulator += (float)EngineTime::GetDeltaTime();
 	float secsPerFrame = 1.f / (float)fps;
@@ -130,8 +92,6 @@ void GameEngineWindow::OnUpdate()
 		{
 			GameObjectManager::GetInstance()->UpdateGame(secsPerFrame);
 			PhysicsEngine::GetInstance()->UpdateWorld(secsPerFrame);
-			float factor = accumulator / secsPerFrame;
-			PhysicsEngine::GetInstance()->UpdateRigidBodies(factor);
 		}
 		else if (EditorBackend::get()->getState() == EditorBackend::PAUSE)
 		{
@@ -139,9 +99,6 @@ void GameEngineWindow::OnUpdate()
 			{
 				GameObjectManager::GetInstance()->UpdateGame(secsPerFrame);
 				PhysicsEngine::GetInstance()->UpdateWorld(secsPerFrame);
-				float factor = accumulator / secsPerFrame;
-				PhysicsEngine::GetInstance()->UpdateRigidBodies(factor);
-				EditorBackend::get()->endFrameStep();
 			}
 		}
 		else if (EditorBackend::get()->getState() == EditorBackend::EDIT)
@@ -160,7 +117,18 @@ void GameEngineWindow::OnUpdate()
 
 		Keyboard::FlushCharBuffer();
 	}
-	
+
+	if (EditorBackend::get()->getState() == EditorBackend::PLAY) 
+	{
+		float factor = accumulator / secsPerFrame; 
+		PhysicsEngine::GetInstance()->UpdateRigidBodies(factor); 
+	}
+	else if (EditorBackend::get()->getState() == EditorBackend::PAUSE && EditorBackend::get()->getIsFrameStep())
+	{
+		float factor = accumulator / secsPerFrame;
+		PhysicsEngine::GetInstance()->UpdateRigidBodies(factor);
+		EditorBackend::get()->endFrameStep();
+	}
 
 	GameObjectManager::GetInstance()->Draw(); 
 	EditorGUIManager::GetInstance()->Render();
